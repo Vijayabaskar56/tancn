@@ -9,7 +9,7 @@ export const generateImports = (
 	const importSet = new Set([
 		`import { ${schemaName}${isMS ? `, ${schemaName}Steps` : ""} } from '@/lib/${schemaName}'`,
 		'import { useAppForm } from "@/components/ui/tanstack-form"',
-		'import { revalidateLogic } from "@tanstack/react-form"',
+		'import { revalidateLogic, useStore } from "@tanstack/react-form"',
 		'import { toast } from "sonner"',
 	]);
 	const processField = (field: FormElement | FormArray) => {
@@ -103,6 +103,9 @@ export const generateImports = (
 			importSet.add(
 				'import { withFieldGroup } from "@/components/ui/tanstack-form"',
 			);
+			importSet.add(
+				'import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"',
+			);
 		}
 	};
 
@@ -126,9 +129,7 @@ export const extractImportDependencies = (
 		if (modulePath.startsWith("@/components/")) {
 			const component = modulePath.split("/").pop();
 			if (component && component === "tanstack-form") {
-				registry.add(
-					"https://tancn.dev/r/tanstack-form.json",
-				);
+				registry.add("https://tancn.dev/r/tanstack-form.json");
 			} else {
 				if (component) registry.add(component);
 			}

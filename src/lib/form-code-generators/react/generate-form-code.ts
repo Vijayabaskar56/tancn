@@ -147,8 +147,9 @@ export const generateFormCode = ({
 ${imports}
 
 export function ${componentName}() {
+ const isDefault = useStore(${variableName}.store, (state) => state.isDefaultValue);
 
-const ${variableName} = useAppForm({
+ const ${variableName} = useAppForm({
    defaultValues: ${getDefaultValuesString(validationSchema, schemaName, formElements)},
   validationLogic: ${generateValidationLogic(settings)},
   validators: ${generateValidatorsString(settings, schemaName)},
@@ -181,14 +182,19 @@ return (
     <${variableName}.AppForm>
       <${variableName}.Form>
          ${renderFields(formElements as (FormElementOrList | FormArray)[], false, variableName)}
-        ${
-					!isMS
-						? `
-         <div className="flex justify-end items-center w-full pt-3">
+         ${
+						!isMS
+							? `
+         <div className="flex justify-end items-center w-full pt-3 gap-3">
+         {!isDefault &&
+							<Button type="button" onClick={() => ${variableName}.reset()} className="rounded-lg" variant='outline' size="sm">
+										Reset
+							</Button>
+						}
          <${variableName}.SubmitButton label="Submit" />
         </div>`
-						: ""
-				}
+							: ""
+					}
       </${variableName}.Form>
     </${variableName}.AppForm>
   </div>
@@ -271,6 +277,8 @@ return (
       handleNextStepOrSubmit,
     } = useFormStepper(stepSchemas);
 
+    const isDefault = useStore(${variableName}.store, (state) => state.isDefaultValue);
+
     const ${variableName} = useAppForm({
       defaultValues: ${getDefaultValuesString(validationSchema, schemaName, formElements)},
       validationLogic: ${generateValidationLogic(settings)},
@@ -328,7 +336,7 @@ return (
               </AnimatePresence>
                <div className="flex items-center justify-between gap-3 w-full pt-3">
                <${variableName}.StepButton
-                  label="Previous"
+                  label={<><ChevronLeftIcon /> Previous</>}
                   disabled={isFirstStep}
                   handleMovement={() =>
                     handleCancelOrBack({
@@ -337,12 +345,26 @@ return (
                   }
                 />
                 {step.isCompleted ? (
+                  <div className="flex items-center justify-end w-full pt-3 gap-3">
+                  {!isDefault &&
+                    <Button type="button" onClick={() => ${variableName}.reset()} className="rounded-lg" variant='outline' size="sm">
+                              Reset
+                    </Button>
+                  }
                   <${variableName}.SubmitButton
                     label="Submit"
                     onClick={() => handleNextStepOrSubmit(${variableName})}
                   />
+                  </div>
                 ) : (
-                   <${variableName}.StepButton label="Next" handleMovement={handleNext} />
+                  <div className="flex items-center justify-end w-full pt-3 gap-3">
+                  {!isDefault &&
+                    <Button type="button" onClick={() => ${variableName}.reset()} className="rounded-lg" variant='outline' size="sm">
+                              Reset
+                    </Button>
+                  }
+                    <${variableName}.StepButton label={<>Next <ChevronRightIcon /></>} handleMovement={handleNext} />
+                  </div>
                 )}
               </div>
             </div>

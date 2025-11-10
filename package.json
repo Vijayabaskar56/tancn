@@ -14,7 +14,9 @@
 		"registry:build": "shadcn build",
 		"prepare": "husky",
 		"deploy": "wrangler deploy",
-		"cf-typegen": "wrangler types --env-interface Env"
+		"cf-typegen": "wrangler types --env-interface Env",
+		"changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
+		"changelog:all": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
 	},
 	"dependencies": {
 		"@base-ui-components/react": "1.0.0-beta.4",
@@ -112,6 +114,8 @@
 	"devDependencies": {
 		"@biomejs/biome": "^2.2.7",
 		"@cloudflare/vite-plugin": "^1.13.7",
+		"@commitlint/cli": "^20.1.0",
+		"@commitlint/config-conventional": "^20.0.0",
 		"@tanstack/devtools-event-client": "^0.3.2",
 		"@tanstack/devtools-vite": "^0.2.14",
 		"@testing-library/dom": "^10.4.1",
@@ -122,6 +126,7 @@
 		"@types/react-dom": "^19.2.0",
 		"@vitejs/plugin-react": "^5.0.4",
 		"babel-plugin-react-compiler": "^1.0.0",
+		"conventional-changelog-cli": "^5.0.0",
 		"husky": "^9.1.7",
 		"jsdom": "^27.0.0",
 		"lint-staged": "^16.2.3",

@@ -8,6 +8,7 @@ import { useFormStore } from "@/hooks/use-form-store";
 import { useMultiStepForm } from "@/hooks/use-multi-step-form";
 import useSettings from "@/hooks/use-settings";
 import type { FormArray, FormElement, FormStep } from "@/types/form-types";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 
 function collectFieldNames(items: any[]): string[] {
@@ -36,7 +37,7 @@ function collectFieldNames(items: any[]): string[] {
 }
 export function MultiStepFormPreview() {
 		const { formElements,  } = useFormStore();
-	const { form } = useFormBuilder();
+	const { form , isDefault } = useFormBuilder();
 	const { validationMethod } = useSettings();
 	const validate =
 		validationMethod === "onBlur"
@@ -124,10 +125,17 @@ export function MultiStepFormPreview() {
 			</AnimatePresence>
 			<div className="flex items-center justify-between gap-3 w-full pt-3">
 				<Button size="sm" variant="ghost" onClick={goToPrevious} type="button">
+					<ChevronLeftIcon />
 					Previous
 				</Button>
 				{isLastStep ? (
-					<Button
+				<div className="flex items-center justify-end w-full pt-3 gap-3">
+				{!isDefault &&
+					<Button type="button" onClick={() => form.reset()} className="rounded-lg" variant='outline' size="sm">
+								Reset
+					</Button>
+				}
+				<Button
 						size="sm"
 						type="button"
 						onClick={async (e) => {
@@ -142,7 +150,14 @@ export function MultiStepFormPreview() {
 								? "Submitted "
 								: "Submit"}
 					</Button>
+				</div>
 				) : (
+				<div className="flex items-center justify-end w-full pt-3 gap-3">
+				{!isDefault &&
+					<Button type="button" onClick={() => form.reset()} className="rounded-lg" variant='outline' size="sm">
+								Reset
+					</Button>
+				}
 					<Button
 						size="sm"
 						type="button"
@@ -150,7 +165,9 @@ export function MultiStepFormPreview() {
 						onClick={goToNext}
 					>
 						Next
+						<ChevronRightIcon />
 					</Button>
+				</div>
 				)}
 			</div>
 		</div>

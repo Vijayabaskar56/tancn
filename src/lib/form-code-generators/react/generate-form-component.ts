@@ -122,7 +122,7 @@ export const getFormElementCode = (
                   <field.InputGroupAddon align="inline-end">
                     <button
                       type="button"
-                      className="cursor-pointer flex items-center justify-center p-1 hover:bg-gray-100 rounded transition-colors"
+                      className="cursor-pointer flex items-center justify-center p-1 hover:text-gray-100 rounded transition-colors"
                       onClick={(e) => {
                         const input = e.currentTarget.parentElement?.parentElement?.querySelector('input') as HTMLInputElement;
                         if (input) {
