@@ -11,7 +11,7 @@
 	 		* Nodejs support
 	 	*/
 		 "compatibility_date": "2025-09-02",
-		 "compatibility_flags": ["nodejs_compat_v2"],
+		 "compatibility_flags": ["nodejs_compat"],
 	/**
 	 * Smart Placement
 	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement

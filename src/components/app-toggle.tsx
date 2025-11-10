@@ -57,7 +57,6 @@ export default function AppToggle() {
 		>
 			<TableIcon className="mr-2 opacity-60" size={16} />
 			<span className="hidden xl:block">Table Builder</span>
-			<span className="absolute text-primary -top-2 -right-3">Beta</span>
 		</Link>
 	);
 
