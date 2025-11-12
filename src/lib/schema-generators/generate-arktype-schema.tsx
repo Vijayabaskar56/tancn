@@ -1,13 +1,10 @@
 // generate-arktype-schema.tsx
-import { type } from "arktype";
+import { type, type Type } from "arktype";
 import { isStatic } from "@/utils/utils";
 import type { FormArray, FormElement } from "@/types/form-types";
 
-// Type definitions for ArkType schemas
-/** ArkType schema type - represents the return value of type() function */
-type ArkTypeSchema = ReturnType<typeof type>;
 /** Record of field names to ArkType schemas */
-type ArkTypeSchemaRecord = Record<string, ArkTypeSchema>;
+type ArkTypeSchemaRecord = Record<string, Type>;
 
 // Type guard to check if an element is a FormArray
 const isFormArray = (element: unknown): element is FormArray => {
@@ -67,7 +64,7 @@ const FIELD_SCHEMA_MAP = new Map<
 					return type("number");
 				}
 			}
-			return type("string");
+			return type("string >= 1");
 		},
 	],
 	[
@@ -80,7 +77,7 @@ const FIELD_SCHEMA_MAP = new Map<
 					return type("number");
 				}
 			}
-			return type("string");
+			return type("string >= 1");
 		},
 	],
 	[
@@ -131,7 +128,7 @@ const FIELD_SCHEMA_MAP = new Map<
 ]);
 
 // Helper function to generate schema for a single field
-const generateFieldSchema = (element: FormElement): ArkTypeSchema => {
+const generateFieldSchema = (element: FormElement): Type => {
 	const generator = FIELD_SCHEMA_MAP.get(element.fieldType);
 	if (!generator) {
 		return type("string");
@@ -141,9 +138,7 @@ const generateFieldSchema = (element: FormElement): ArkTypeSchema => {
 
 	// Handle optional fields - ArkType uses union with undefined for optional
 	if (!("required" in element) || element.required !== true) {
-		return type([baseSchema, "undefined"]) as unknown as ReturnType<
-			typeof type
-		>;
+		return baseSchema.or("undefined");
 	}
 
 	return baseSchema;
@@ -163,10 +158,10 @@ const processFormElements = (
 		if (isFormArray(element)) {
 			const arrayItemSchema = processArrayFields(element.arrayField);
 			const arrayItemType = type(arrayItemSchema);
-			let elementSchema = type([arrayItemType, "[]"]);
+			let elementSchema: Type<unknown[]> | Type<unknown[] | undefined> = type([arrayItemType, "[]"]);
 
 			if (!("required" in element) || element.required !== true) {
-				elementSchema = type([elementSchema, "undefined"]);
+				elementSchema = elementSchema.or("undefined");
 			}
 
 			schemaObject[element.name] = elementSchema;
@@ -209,7 +204,7 @@ const processArrayFields = (
 
 export const generateArkTypeSchemaObject = (
 	formElements: (FormElement | FormArray)[],
-): ArkTypeSchema => {
+): Type => {
 	const schemaObject: ArkTypeSchemaRecord = {};
 
 	const addType = (element: FormElement | FormArray): void => {
@@ -220,12 +215,10 @@ export const generateArkTypeSchemaObject = (
 			const arraySchema = generateArkTypeSchemaObject(
 				actualFields as FormElement[],
 			);
-			let elementSchema = type([arraySchema, "[]"]) as unknown as ReturnType<
-				typeof type
-			>;
+				let elementSchema: Type<unknown[]> | Type<unknown[] | undefined> = type([arraySchema, "[]"]);
 
 			if (!("required" in element) || element.required !== true) {
-				elementSchema = type([elementSchema, "undefined"]);
+				elementSchema = elementSchema.or("undefined");
 			}
 
 			schemaObject[element.name] = elementSchema;
@@ -236,7 +229,7 @@ export const generateArkTypeSchemaObject = (
 		if (isStatic(element.fieldType)) return;
 
 		const generator = FIELD_SCHEMA_MAP.get(element.fieldType);
-		let elementSchema: ArkTypeSchema;
+		let elementSchema: Type;
 
 		if (generator) {
 			elementSchema = generator(element);
@@ -261,7 +254,7 @@ export const generateArkTypeSchemaObject = (
 
 		// Handle required/optional fields - ArkType uses union with undefined for optional
 		if (!("required" in element) || element.required !== true) {
-			elementSchema = type([elementSchema, "undefined"]);
+			elementSchema = elementSchema.or("undefined");
 		}
 
 		const fieldName = element.name.split(".").pop() || element.name;
