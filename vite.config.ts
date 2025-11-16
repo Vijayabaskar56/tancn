@@ -15,9 +15,36 @@ const config = defineConfig({
 		}),
 		tailwindcss(),
 		tanstackStart({
-			sitemap : {
-				enabled : true,
+			sitemap: {
+				enabled: true,
+				host: 'https://tancn.dev/',
 			},
+			pages: [
+				{
+					path: '/',
+					sitemap: {
+						priority: 1.0,
+					}
+				},
+				{
+					path: '/form-builder',
+					sitemap: {
+						priority: 0.9,
+					}
+				},
+				{
+					path: '/table-builder',
+					sitemap: {
+						priority: 0.9,
+					}
+				},
+				{
+					path: '/form-registry',
+					sitemap: {
+						priority: 0.8,
+					}
+				},
+			]
 		}),
 		viteReact({
 		}),
