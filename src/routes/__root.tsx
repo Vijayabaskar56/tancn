@@ -48,7 +48,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 	notFoundComponent: NotFound,
 });
 
-function RootDocument() {
+function RootDocument({ children }: { children: React.ReactNode }) {
 	const isFetching = useRouterState({
 		select: (s) => s.isLoading,
 	});
@@ -67,9 +67,10 @@ function RootDocument() {
 				>
 					<div className="h-screen overflow-hidden flex flex-col">
 						<NavBar />
-						<div className="h-screen pt-12 overflow-auto">
+						<main className="h-screen pt-12 overflow-auto [view-transition-name:main-content]">
 							{isFetching ? <Loader /> : <Outlet />}
-						</div>
+							  {/* {children} */}
+						</main>
 					</div>
 					{import.meta.env.DEV && <DevTools />}
 					<Toaster richColors />

@@ -132,7 +132,7 @@ export default function TableHeader() {
 							variant="ghost"
 							onClick={resetTable}
 						/>
-						<div className="h-4 w-px bg-border" />
+						{/* <div className="h-4 w-px bg-border" /> */}
 						{/* <AnimatedIconButton
 							icon={<ShareIcon className="w-4 h-4 mr-1" />}
 							text={<span className="hidden xl:block ml-1">Share</span>}
