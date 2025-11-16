@@ -68,8 +68,8 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 					<div className="h-screen overflow-hidden flex flex-col">
 						<NavBar />
 						<main className="h-screen pt-12 overflow-auto [view-transition-name:main-content]">
-							{isFetching ? <Loader /> : <Outlet />}
-							  {/* {children} */}
+							{/* {isFetching ? <Loader /> : <Outlet />} */}
+							{children}
 						</main>
 					</div>
 					{import.meta.env.DEV && <DevTools />}
