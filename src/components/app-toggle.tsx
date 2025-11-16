@@ -1,6 +1,7 @@
 // app-toggle.tsx
-import { useEffect, useId, useState } from "react";
+
 import { Link, useLocation } from "@tanstack/react-router";
+import { useEffect, useId, useState } from "react";
 
 import { FormIcon } from "@/components/ui/form-icon";
 import { TableIcon } from "@/components/ui/table-icon";
