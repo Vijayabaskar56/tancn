@@ -2,12 +2,9 @@ import type { QueryClient } from "@tanstack/react-query";
 import {
 	createRootRouteWithContext,
 	HeadContent,
-	Outlet,
 	Scripts,
-	useRouterState,
 } from "@tanstack/react-router";
 import { ErrorBoundary } from "@/components/error-boundary";
-import Loader from "@/components/loader";
 import NavBar from "@/components/nav-bar";
 import { NotFound } from "@/components/not-found";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -22,15 +19,15 @@ interface MyRouterContext {
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
 	head: () => ({
-		meta : [
-			 {
-        charSet: "utf-8",
-      },
-      {
-        name: "viewport",
-        content: "width=device-width, initial-scale=1",
-      },
-			...seo({title : "TANCN - Form and Table Builder"}),
+		meta: [
+			{
+				charSet: "utf-8",
+			},
+			{
+				name: "viewport",
+				content: "width=device-width, initial-scale=1",
+			},
+			...seo({ title: "TANCN - Form and Table Builder" }),
 		],
 		links: [
 			{
@@ -49,10 +46,6 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-	const isFetching = useRouterState({
-		select: (s) => s.isLoading,
-	});
-
 	return (
 		<html lang="en" suppressHydrationWarning className="font-sans">
 			<head>
@@ -67,9 +60,11 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 				>
 					<div className="h-screen overflow-hidden flex flex-col">
 						<NavBar />
-						<main className="h-screen pt-12 overflow-auto [view-transition-name:main-content]">
-							{/* {isFetching ? <Loader /> : <Outlet />} */}
-							{children}
+						<main className="h-screen pt-12 overflow-auto">
+							<div className="[view-transition-name:main-content] min-h-full" >
+								{/* {isFetching ? <Loader /> : <Outlet />} */}
+								{children}
+							</div>
 						</main>
 					</div>
 					{import.meta.env.DEV && <DevTools />}
