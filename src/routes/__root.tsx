@@ -47,13 +47,23 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 	scripts: () => [
 		{
 			children: `
-				const STORAGE_KEY = "sponsor-banner-closed";
-				const isClosed = localStorage.getItem(STORAGE_KEY) === "true";
-				window.__SPONSOR_BANNER_CLOSED__ = isClosed;
+				const STORAGE_KEY = "sponsor-banner-closed-at";
+				const BANNER_HIDE_DURATION = 2 * 24 * 60 * 60 * 1000; // 2 days in milliseconds
+				
+				const closedAt = localStorage.getItem(STORAGE_KEY);
+				let shouldHideBanner = false;
+				
+				if (closedAt) {
+					const closedTime = new Date(closedAt).getTime();
+					const currentTime = new Date().getTime();
+					shouldHideBanner = (currentTime - closedTime) < BANNER_HIDE_DURATION;
+				}
+				
+				window.__SPONSOR_BANNER_CLOSED__ = shouldHideBanner;
 				
 				const banner = document.getElementById("sponsor-banner");
 				if (banner) {
-					if (isClosed) {
+					if (shouldHideBanner) {
 						banner.classList.add("banner-hidden");
 					} else {
 						banner.classList.remove("banner-hidden");

@@ -1,14 +1,15 @@
 import { ArrowRightIcon, X } from "lucide-react";
 import { useState } from "react";
 
-const STORAGE_KEY = "sponsor-banner-closed";
+const STORAGE_KEY = "sponsor-banner-closed-at";
+const BANNER_HIDE_DURATION = 2 * 24 * 60 * 60 * 1000; // 2 days in milliseconds
 
 export default function SponsorBanner() {
 	const [isClosed, setIsClosed] = useState(false);
 
 	const handleClose = () => {
 		setIsClosed(true);
-		localStorage.setItem(STORAGE_KEY, "true");
+		localStorage.setItem(STORAGE_KEY, new Date().toISOString());
 	};
 
 	if (isClosed) {
