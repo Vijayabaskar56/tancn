@@ -44,6 +44,24 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 	shellComponent: RootDocument,
 	errorComponent: ErrorBoundary,
 	notFoundComponent: NotFound,
+	scripts: () => [
+		{
+			children: `
+				const STORAGE_KEY = "sponsor-banner-closed";
+				const isClosed = localStorage.getItem(STORAGE_KEY) === "true";
+				window.__SPONSOR_BANNER_CLOSED__ = isClosed;
+				
+				const banner = document.getElementById("sponsor-banner");
+				if (banner) {
+					if (isClosed) {
+						banner.classList.add("banner-hidden");
+					} else {
+						banner.classList.remove("banner-hidden");
+					}
+				}
+			`,
+		},
+	],
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
@@ -63,7 +81,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 					<div className="h-screen overflow-hidden flex flex-col">
 						<NavBar />
 						<main className="h-screen pt-12 overflow-auto">
-							<div className="[view-transition-name:main-content] min-h-full" >
+							<div className="[view-transition-name:main-content] min-h-full">
 								{/* {isFetching ? <Loader /> : <Outlet />} */}
 								{children}
 							</div>
