@@ -156,6 +156,30 @@ export default function FooterSection() {
 								</a>
 							</div>
 						</div>
+
+						{/* Email Icon */}
+						<div className="w-6 h-6 relative overflow-hidden">
+							<div className="w-6 h-6 left-0 top-0 absolute flex items-center justify-center">
+								<a href="mailto:vj2k02@gmail.com" aria-label="Email">
+									<svg
+										width="16"
+										height="16"
+										viewBox="0 0 24 24"
+										fill="none"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<title>Email</title>
+										<path
+											d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+											stroke="currentColor"
+											strokeWidth="2"
+											strokeLinecap="round"
+											strokeLinejoin="round"
+										/>
+									</svg>
+								</a>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -176,7 +200,7 @@ export default function FooterSection() {
 								}}
 							/>
 						))}
-						© 2025 tancn. All rights reserved.
+						© 2025 Better-T-Stack. All rights reserved.
 					</div>
 				</div>
 			</div>

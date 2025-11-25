@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import Loader from "@/components/loader";
 import { Button } from "@/components/ui/button";
 import { seo } from "@/utils/seo";
+import { SponsorsContributors } from "@/components/sponsors-contributors";
 
 export const Route = createFileRoute("/")({
 	head: () => ({
@@ -500,6 +501,8 @@ function HomePage() {
 							})}
 						</div>
 					</div>
+
+					<SponsorsContributors />
 
 					<div className="mt-16 text-center">
 						<h2 className="text-2xl font-semibold mb-8">Development Roadmap</h2>

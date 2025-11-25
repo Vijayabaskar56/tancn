@@ -11,6 +11,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import DevTools from "@/integrations/tanstack-query/devtools";
 import { seo } from "@/utils/seo";
+import SponsorBanner from "@/components/sponsor-banner";
 import appCss from "../styles.css?url";
 
 interface MyRouterContext {
@@ -58,6 +59,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 					enableSystem={true}
 					storageKey="theme"
 				>
+					<SponsorBanner />
 					<div className="h-screen overflow-hidden flex flex-col">
 						<NavBar />
 						<main className="h-screen pt-12 overflow-auto">
