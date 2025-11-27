@@ -1,9 +1,12 @@
 import type { FormElement } from "@/types/form-types";
 
-export const defaultFormElements: Record<
-	FormElement["fieldType"],
-	Partial<FormElement>
-> = {
+type DefaultFormElements = {
+	[K in FormElement["fieldType"]]: Partial<
+		Extract<FormElement, { fieldType: K }>
+	>;
+};
+
+export const defaultFormElements: DefaultFormElements = {
 	Input: {
 		name: "input-field",
 		label: "Input Field",
@@ -84,17 +87,14 @@ export const defaultFormElements: Record<
 		placeholder: "Enter your text",
 	},
 	H1: {
-		label: "Heading 1",
 		content: "Heading 1",
 		static: true,
 	},
 	H2: {
-		label: "Heading 2",
 		content: "Heading 2",
 		static: true,
 	},
 	H3: {
-		label: "Heading 3",
 		content: "Heading 3",
 		static: true,
 	},
@@ -103,12 +103,10 @@ export const defaultFormElements: Record<
 		static: true,
 	},
 	FieldDescription: {
-		label: "Field Description",
 		content: "Additional Details About Form",
 		static: true,
 	},
 	FieldLegend: {
-		label: "Form Legend",
 		content: "Additional Heading",
 		static: true,
 	},
