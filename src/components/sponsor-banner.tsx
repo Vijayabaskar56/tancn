@@ -37,7 +37,6 @@ export default function SponsorBanner() {
 						href="https://www.shadcnblocks.com"
 						className="group flex items-center justify-center text-center"
 						target="_blank"
-						rel="noopener noreferrer"
 					>
 						<svg
 							className="w-6 h-6 md:w-5 md:h-5 me-1 shrink-0"

@@ -134,7 +134,6 @@ export default function NavBar() {
 						<a
 							href="https://www.linkedin.com/in/vijaya-baskar/"
 							target="_blank"
-							rel="noopener noreferrer"
 						>
 							<svg
 								width="16"
@@ -161,7 +160,6 @@ export default function NavBar() {
 						<a
 							href="https://x.com/vijayabaskar56"
 							target="_blank"
-							rel="noopener noreferrer"
 						>
 							<svg
 								width="16"

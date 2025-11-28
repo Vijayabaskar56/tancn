@@ -132,7 +132,6 @@ export default function ComponentDetails({
 										<a
 											href="https://github.com/Vijayabaskar56/tancn/issues"
 											target="_blank"
-											rel="noopener noreferrer"
 											className="text-foreground font-medium underline hover:no-underline"
 										>
 											open an issue

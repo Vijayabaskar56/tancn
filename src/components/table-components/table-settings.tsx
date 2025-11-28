@@ -124,7 +124,6 @@ export function TableSettingsSidebar() {
 														className="text-primary"
 														href="https://tanstack.com/table/latest/docs/guide/global-filtering"
 														target="_blank"
-														rel="noopener noreferrer"
 													>
 														Global Filtering
 													</a>
@@ -159,7 +158,7 @@ export function TableSettingsSidebar() {
 														className="text-primary"
 														href="https://tanstack.com/table/latest/docs/guide/column-ordering"
 														target="_blank"
-														rel="noopener noreferrer"
+
 													>
 														Column Ordering
 													</a>
@@ -194,7 +193,7 @@ export function TableSettingsSidebar() {
 														className="text-primary"
 														href="https://tanstack.com/table/latest/docs/guide/global-filtering"
 														target="_blank"
-														rel="noopener noreferrer"
+
 													>
 														Global Filtering
 													</a>
@@ -230,7 +229,7 @@ export function TableSettingsSidebar() {
 														className="text-primary"
 														href="https://tanstack.com/table/latest/docs/guide/sorting"
 														target="_blank"
-														rel="noopener noreferrer"
+
 													>
 														Sorting
 													</a>
@@ -268,7 +267,7 @@ export function TableSettingsSidebar() {
 														className="text-primary"
 														href="https://tanstack.com/table/latest/docs/guide/column-sizing"
 														target="_blank"
-														rel="noopener noreferrer"
+
 													>
 														Column Sizing
 													</a>
@@ -305,7 +304,7 @@ export function TableSettingsSidebar() {
 														className="text-primary"
 														href="https://tanstack.com/table/latest/docs/guide/column-pinning"
 														target="_blank"
-														rel="noopener noreferrer"
+
 													>
 														Column Pinning
 													</a>
@@ -343,7 +342,7 @@ export function TableSettingsSidebar() {
 														className="text-primary"
 														href="https://tanstack.com/table/latest/docs/guide/column-visibility"
 														target="_blank"
-														rel="noopener noreferrer"
+
 													>
 														Column Visibility
 													</a>
@@ -380,7 +379,7 @@ export function TableSettingsSidebar() {
 														className="text-primary"
 														href="https://tanstack.com/table/latest/docs/guide/column-ordering"
 														target="_blank"
-														rel="noopener noreferrer"
+
 													>
 														Column Ordering
 													</a>
@@ -417,7 +416,7 @@ export function TableSettingsSidebar() {
 														className="text-primary"
 														href="https://tanstack.com/table/latest/docs/guide/row-selection"
 														target="_blank"
-														rel="noopener noreferrer"
+
 													>
 														Row Selection
 													</a>
@@ -455,7 +454,7 @@ export function TableSettingsSidebar() {
 														className="text-primary"
 														href="https://tanstack.com/table/latest/docs/guide/actions"
 														target="_blank"
-														rel="noopener noreferrer"
+
 													>
 														Table Actions
 													</a>
@@ -495,7 +494,7 @@ export function TableSettingsSidebar() {
 														className="text-primary"
 														href="https://tanstack.com/table/latest/docs/guide/row-dragging"
 														target="_blank"
-														rel="noopener noreferrer"
+
 													>
 														Row Dragging
 													</a>

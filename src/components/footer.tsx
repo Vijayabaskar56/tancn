@@ -85,7 +85,6 @@ export default function FooterSection() {
 								<a
 									href="https://x.com/vijayabaskar56"
 									target="_blank"
-									rel="noopener noreferrer"
 								>
 									<svg
 										width="16"
@@ -110,7 +109,6 @@ export default function FooterSection() {
 							<div className="w-6 h-6 left-0 top-0 absolute flex items-center justify-center">
 								<a
 									href="https://www.linkedin.com/in/vijaya-baskar/"
-									rel="noopener noreferrer"
 									target="_blank"
 								>
 									<svg
@@ -137,7 +135,6 @@ export default function FooterSection() {
 								<a
 									href="https://github.com/Vijayabaskar56/tancn"
 									target="_blank"
-									rel="noopener noreferrer"
 								>
 									<svg
 										width="16"

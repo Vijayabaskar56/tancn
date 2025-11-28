@@ -75,7 +75,6 @@ export function SponsorsContributors() {
 								<a
 									href="https://www.shadcnblocks.com"
 									target="_blank"
-									rel="noopener noreferrer"
 									className="group relative flex items-center justify-center p-4 rounded-xl border bg-background hover:border-primary/50 transition-colors"
 								>
 									<div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl" />
@@ -123,7 +122,6 @@ export function SponsorsContributors() {
 								<a
 									href="https://github.com/sponsors/Vijayabaskar56"
 									target="_blank"
-									rel="noopener noreferrer"
 								>
 									Become a Sponsor
 									<ArrowRightIcon className="ml-2 h-4 w-4" />
@@ -174,7 +172,6 @@ export function SponsorsContributors() {
 												key={contributor.login}
 												href={contributor.html_url}
 												target="_blank"
-												rel="noopener noreferrer"
 												className="inline-block transition-transform hover:scale-110 hover:z-10 relative z-0"
 											>
 												<Avatar className="h-10 w-10 border-2 border-background ring-2 ring-background/50">

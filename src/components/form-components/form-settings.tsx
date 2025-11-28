@@ -108,7 +108,6 @@ export function SettingsSidebar() {
 														className="text-primary"
 														href="https://tanstack.com/form/latest/docs/framework/react/guides/focus-management"
 														target="_blank"
-														rel="noopener noreferrer"
 													>
 														Focus Management
 													</a>
@@ -172,7 +171,6 @@ export function SettingsSidebar() {
 														className="text-primary"
 														href="https://tanstack.com/form/latest/docs/framework/react/guides/dynamic-validation"
 														target="_blank"
-														rel="noopener noreferrer"
 													>
 														Dynamic Validation
 													</a>
@@ -216,7 +214,6 @@ export function SettingsSidebar() {
 														className="text-primary"
 														href="https://tanstack.com/form/latest/docs/framework/react/guides/validation#asynchronous-functional-validation"
 														target="_blank"
-														rel="noopener noreferrer"
 													>
 														Form Validation
 													</a>
@@ -351,7 +348,6 @@ export function SettingsSidebar() {
 														className="text-primary"
 														href="https://tanstack.com/form/latest/docs/overview"
 														target="_blank"
-														rel="noopener noreferrer"
 													>
 														Tan Stack Form
 													</a>
