@@ -47,8 +47,7 @@ export function Image({
 					width: width,
 					height: height,
 					quality: quality,
-					format: "auto",
-					f:'auto',
+					format: "avif",
 					blur: blur,
 				},
 			}}
