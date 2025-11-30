@@ -21,6 +21,7 @@ import Loader from "@/components/loader";
 import { Button } from "@/components/ui/button";
 import { seo } from "@/utils/seo";
 import { SponsorsContributors } from "@/components/sponsors-contributors";
+import { ThemeImage } from "@/components/image";
 
 export const Route = createFileRoute("/")({
 	head: () => ({
@@ -348,7 +349,9 @@ function HomePage() {
 									className="w-32 rounded"
 									asChild
 								>
-									<Link to="/form-builder" preload='intent'>Start Building</Link>
+									<Link to="/form-builder" preload="intent">
+										Start Building
+									</Link>
 								</Button>
 								<Button
 									variant="default"
@@ -369,17 +372,16 @@ function HomePage() {
 														activeCard === 0 ? "opacity-100" : "opacity-0"
 													}`}
 												>
-													<picture>
-														<source
-															srcSet="/assets/slide-1-dark.avif"
-															media="(prefers-color-scheme: dark)"
-														/>
-														<img
-															src="/assets/slide-1-light.avif"
-															alt="Form Builder Interface"
-															className="w-full h-full object-cover"
-														/>
-													</picture>
+													<ThemeImage
+														lightSrc="/assets/slide-1-light.png"
+														darkSrc="/assets/slide-1-dark.png"
+														alt="Form Builder Interface"
+														width={960}
+														height={720}
+														priority={true}
+														blur={2}
+														className="w-full h-full object-cover"
+													/>
 												</div>
 
 												<div
@@ -387,17 +389,15 @@ function HomePage() {
 														activeCard === 1 ? "opacity-100" : "opacity-0"
 													}`}
 												>
-													<picture>
-														<source
-															srcSet="/assets/slide-2-dark.avif"
-															media="(prefers-color-scheme: dark)"
-														/>
-														<img
-															src="/assets/slide-2-light.avif"
-															alt="Analytics Dashboard"
-															className="w-full h-full object-cover"
-														/>
-													</picture>
+													<ThemeImage
+														lightSrc="/assets/slide-2-light.png"
+														darkSrc="/assets/slide-2-dark.png"
+														alt="Analytics Dashboard"
+														width={960}
+														height={720}
+														blur={3}
+														className="w-full h-full object-cover"
+													/>
 												</div>
 
 												<div
@@ -405,17 +405,15 @@ function HomePage() {
 														activeCard === 2 ? "opacity-100" : "opacity-0"
 													}`}
 												>
-													<picture>
-														<source
-															srcSet="/assets/slide-3-dark.avif"
-															media="(prefers-color-scheme: dark)"
-														/>
-														<img
-															src="/assets/slide-3-light.avif"
-															alt="Data Visualization Dashboard"
-															className="w-full h-full object-cover"
-														/>
-													</picture>
+													<ThemeImage
+														lightSrc="/assets/slide-3-light.png"
+														darkSrc="/assets/slide-3-dark.png"
+														alt="Data Visualization Dashboard"
+														width={960}
+														height={720}
+														blur={3}
+														className="w-full h-full object-cover"
+													/>
 												</div>
 											</div>
 										</div>
