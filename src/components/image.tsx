@@ -48,6 +48,7 @@ export function Image({
 					height: height,
 					quality: quality,
 					format: "avif",
+					f:'avif',
 					blur: blur,
 				},
 			}}
