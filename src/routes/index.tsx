@@ -379,7 +379,7 @@ function HomePage() {
 														width={960}
 														height={720}
 														priority={true}
-														blur={2}
+														loading="eager"
 														className="w-full h-full object-cover"
 													/>
 												</div>
@@ -395,7 +395,7 @@ function HomePage() {
 														alt="Analytics Dashboard"
 														width={960}
 														height={720}
-														blur={3}
+														loading="lazy"
 														className="w-full h-full object-cover"
 													/>
 												</div>
@@ -411,7 +411,7 @@ function HomePage() {
 														alt="Data Visualization Dashboard"
 														width={960}
 														height={720}
-														blur={3}
+														loading="lazy"
 														className="w-full h-full object-cover"
 													/>
 												</div>

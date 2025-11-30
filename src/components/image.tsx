@@ -1,3 +1,4 @@
+import { createIsomorphicFn } from "@tanstack/react-start";
 import { Image as UnImage } from "@unpic/react";
 import type { ImgHTMLAttributes } from "react";
 
@@ -31,7 +32,8 @@ export function Image({
 			alt={alt}
 			width={width}
 			height={height}
-			loading={priority ? "eager" : loading || "lazy"}
+			priority={priority}
+			loading={loading}
 			decoding={decoding}
 			className={className}
 			cdn="cloudflare"
@@ -46,6 +48,7 @@ export function Image({
 					height: height,
 					quality: quality,
 					format: "auto",
+					f:'auto',
 					blur: blur,
 				},
 			}}
@@ -59,8 +62,14 @@ interface ThemeImageProps extends Omit<ImageProps, "src"> {
 	darkSrc: string;
 }
 
+const getThemeMediaQuery = createIsomorphicFn().client(() => {
+	return window.matchMedia("(prefers-color-scheme: dark)").matches;
+}).server(() => {
+	return true; // Default to dark mode on server
+});
+
 export function ThemeImage({ lightSrc, darkSrc, ...props }: ThemeImageProps) {
-	const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+	const isDark = getThemeMediaQuery();
 	const src = isDark ? darkSrc : lightSrc;
 
 	return <Image src={src} {...props} />;
