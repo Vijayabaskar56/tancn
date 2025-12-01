@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "slider-field",
+  "type": "registry:block",
+  "title": "Slider Field",
+  "description": "A slider field form.",
+  "dependencies": [
+    "@tanstack/react-form",
+    "sonner",
+    "zod"
+  ],
+  "registryDependencies": [
+    "field",
+    "slider",
+    "https://tancn.dev/r/react/tanstack-form.json"
+  ],
+  "files": [
+    {
+      "path": "registry/react/slider-field.tsx",
+      "content": "import { revalidateLogic } from \"@tanstack/react-form\";\nimport * as z from \"zod\";\nimport { Slider } from \"@/components/ui/slider\";\nimport { useAppForm } from \"@/components/ui/tanstack-form\";\n\nconst sliderFormSchema = z.object({\n\tslider: z.number(),\n});\nexport function SliderForm() {\n\tconst sliderForm = useAppForm({\n\t\tdefaultValues: {\n\t\t\tslider: 50,\n\t\t} as z.input<typeof sliderFormSchema>,\n\t\tvalidationLogic: revalidateLogic(),\n\t\tvalidators: {\n\t\t\tonDynamic: sliderFormSchema,\n\t\t\tonDynamicAsyncDebounceMs: 300,\n\t\t},\n\t\tlisteners: {\n\t\t\tonChange: ({ fieldApi }) => {\n\t\t\t\tconsole.log(fieldApi.state.value);\n\t\t\t},\n\t\t},\n\t});\n\treturn (\n\t\t<div>\n\t\t\t<sliderForm.AppForm>\n\t\t\t\t<sliderForm.Form>\n\t\t\t\t\t<sliderForm.AppField name={\"slider\"}>\n\t\t\t\t\t\t{(field) => {\n\t\t\t\t\t\t\tconst min = 0;\n\t\t\t\t\t\t\tconst max = 100;\n\t\t\t\t\t\t\tconst step = 1;\n\t\t\t\t\t\t\tconst currentValue = field.state.value;\n\t\t\t\t\t\t\tconst sliderValue = Array.isArray(currentValue)\n\t\t\t\t\t\t\t\t? currentValue\n\t\t\t\t\t\t\t\t: [currentValue || 50];\n\n\t\t\t\t\t\t\treturn (\n\t\t\t\t\t\t\t\t<field.FieldSet className=\"w-full\">\n\t\t\t\t\t\t\t\t\t<field.Field>\n\t\t\t\t\t\t\t\t\t\t<field.FieldLabel\n\t\t\t\t\t\t\t\t\t\t\tclassName=\"flex justify-between items-center\"\n\t\t\t\t\t\t\t\t\t\t\thtmlFor={\"slider\"}\n\t\t\t\t\t\t\t\t\t\t>\n\t\t\t\t\t\t\t\t\t\t\tVolume *\n\t\t\t\t\t\t\t\t\t\t\t<span className=\"text-sm text-muted-foreground\">\n\t\t\t\t\t\t\t\t\t\t\t\t{sliderValue[0] || min} / {max}\n\t\t\t\t\t\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\t\t\t\t</field.FieldLabel>\n\t\t\t\t\t\t\t\t\t\t<Slider\n\t\t\t\t\t\t\t\t\t\t\tname={\"slider\"}\n\t\t\t\t\t\t\t\t\t\t\tmin={min}\n\t\t\t\t\t\t\t\t\t\t\tmax={max}\n\t\t\t\t\t\t\t\t\t\t\tdisabled={false}\n\t\t\t\t\t\t\t\t\t\t\tstep={step}\n\t\t\t\t\t\t\t\t\t\t\tvalue={sliderValue}\n\t\t\t\t\t\t\t\t\t\t\taria-invalid={!!field.state.meta.errors.length && field.state.meta.isTouched}\n\t\t\t\t\t\t\t\t\t\t\tonValueChange={(newValue) => {\n\t\t\t\t\t\t\t\t\t\t\t\tfield.handleChange(newValue[0]);\n\t\t\t\t\t\t\t\t\t\t\t\t// Trigger validation by simulating blur\n\t\t\t\t\t\t\t\t\t\t\t\tfield.handleBlur();\n\t\t\t\t\t\t\t\t\t\t\t}}\n\t\t\t\t\t\t\t\t\t\t/>\n\t\t\t\t\t\t\t\t\t</field.Field>\n\t\t\t\t\t\t\t\t\t<field.FieldDescription className=\"py-1\">\n\t\t\t\t\t\t\t\t\t\tA range slider.\n\t\t\t\t\t\t\t\t\t</field.FieldDescription>\n\t\t\t\t\t\t\t\t\t<field.FieldError />\n\t\t\t\t\t\t\t\t</field.FieldSet>\n\t\t\t\t\t\t\t);\n\t\t\t\t\t\t}}\n\t\t\t\t\t</sliderForm.AppField>\n\t\t\t\t</sliderForm.Form>\n\t\t\t</sliderForm.AppForm>\n\t\t</div>\n\t);\n}\n",
+      "type": "registry:component"
+    }
+  ]
+}

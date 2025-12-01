@@ -1,0 +1,400 @@
+{
+	"$schema": "https://ui.shadcn.com/schema/registry.json",
+	"name": "tan-form-builder-solid",
+	"homepage": "https://tancn.dev/",
+	"items": [
+		{
+			"name": "tanstack-form",
+			"title": "Tanstack Builder Form",
+			"type": "registry:ui",
+			"description": "TanStack Form for Solid",
+			"tags": ["form", "tanstack"],
+			"dependencies": ["@tanstack/solid-form", "class-variance-authority"],
+			"registryDependencies": [
+				"https://tancn.dev/r/solid/button.json",
+				"https://tancn.dev/r/solid/input-group.json",
+				"https://tancn.dev/r/solid/spinner.json",
+				"https://tancn.dev/r/solid/button-group.json"
+			],
+			"files": [
+				{
+					"path": "registry/solid/field.tsx",
+					"type": "registry:ui"
+				},
+				{
+					"path": "registry/solid/tanstack-form.tsx",
+					"type": "registry:ui"
+				},
+				{
+					"path": "registry/solid/tanstack-form-contexts.ts",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "badge",
+			"type": "registry:ui",
+			"title": "Badge",
+			"description": "A badge component for displaying labels or status.",
+			"tags": ["ui", "badge"],
+			"dependencies": ["class-variance-authority"],
+			"files": [
+				{
+					"path": "registry/solid/badge.tsx",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "button",
+			"type": "registry:ui",
+			"title": "Button",
+			"description": "A button component built with Kobalte.",
+			"tags": ["ui", "button"],
+			"dependencies": ["@kobalte/core", "class-variance-authority"],
+			"files": [
+				{
+					"path": "registry/solid/button.tsx",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "button-group",
+			"type": "registry:ui",
+			"title": "Button Group",
+			"description": "A group of buttons displayed together.",
+			"tags": ["ui", "button"],
+			"dependencies": ["@kobalte/core", "class-variance-authority"],
+			"files": [
+				{
+					"path": "registry/solid/button-group.tsx",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "calendar",
+			"type": "registry:ui",
+			"title": "Calendar",
+			"description": "A calendar component for date selection.",
+			"tags": ["ui", "calendar", "date"],
+			"dependencies": ["@corvu/calendar", "date-fns"],
+			"files": [
+				{
+					"path": "registry/solid/calender.tsx",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "checkbox",
+			"type": "registry:ui",
+			"title": "Checkbox",
+			"description": "A checkbox component built with Kobalte.",
+			"tags": ["ui", "checkbox", "form"],
+			"dependencies": ["@kobalte/core"],
+			"files": [
+				{
+					"path": "registry/solid/checkbox.tsx",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "command",
+			"type": "registry:ui",
+			"title": "Command",
+			"description": "A command palette component.",
+			"tags": ["ui", "command"],
+			"dependencies": [],
+			"files": [
+				{
+					"path": "registry/solid/command.tsx",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "empty",
+			"type": "registry:ui",
+			"title": "Empty",
+			"description": "An empty state component.",
+			"tags": ["ui", "empty"],
+			"dependencies": [],
+			"files": [
+				{
+					"path": "registry/solid/empty.tsx",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "field",
+			"type": "registry:ui",
+			"title": "Field",
+			"description": "A field component for form layouts.",
+			"tags": ["ui", "field", "form"],
+			"dependencies": ["class-variance-authority"],
+			"files": [
+				{
+					"path": "registry/solid/field.tsx",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "file-field",
+			"type": "registry:ui",
+			"title": "File Field",
+			"description": "A file input field component built with Kobalte.",
+			"tags": ["ui", "file", "form"],
+			"dependencies": ["@kobalte/core"],
+			"files": [
+				{
+					"path": "registry/solid/file-field.tsx",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "input",
+			"type": "registry:ui",
+			"title": "Input",
+			"description": "An input component built with Kobalte.",
+			"tags": ["ui", "input", "form"],
+			"dependencies": ["@kobalte/core"],
+			"files": [
+				{
+					"path": "registry/solid/input.tsx",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "input-group",
+			"type": "registry:ui",
+			"title": "Input Group",
+			"description": "A group of input elements displayed together.",
+			"tags": ["ui", "input", "form"],
+			"dependencies": [],
+			"files": [
+				{
+					"path": "registry/solid/input-group.tsx",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "input-otp",
+			"type": "registry:ui",
+			"title": "Input OTP",
+			"description": "An OTP (One-Time Password) input component.",
+			"tags": ["ui", "input", "otp", "form"],
+			"dependencies": ["@corvu/otp-field"],
+			"files": [
+				{
+					"path": "registry/solid/input-otp.tsx",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "label",
+			"type": "registry:ui",
+			"title": "Label",
+			"description": "A label component for form fields.",
+			"tags": ["ui", "label", "form"],
+			"dependencies": [],
+			"files": [
+				{
+					"path": "registry/solid/label.tsx",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "multi-select",
+			"type": "registry:ui",
+			"title": "Multi Select",
+			"description": "A multi-select component built with Kobalte.",
+			"tags": ["ui", "select", "form"],
+			"dependencies": ["@kobalte/core"],
+			"files": [
+				{
+					"path": "registry/solid/multi-select.tsx",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "number-field",
+			"type": "registry:ui",
+			"title": "Number Field",
+			"description": "A number input field component built with Kobalte.",
+			"tags": ["ui", "input", "number", "form"],
+			"dependencies": ["@kobalte/core"],
+			"files": [
+				{
+					"path": "registry/solid/number-field.tsx",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "popover",
+			"type": "registry:ui",
+			"title": "Popover",
+			"description": "A popover component built with Kobalte.",
+			"tags": ["ui", "popover"],
+			"dependencies": ["@kobalte/core"],
+			"files": [
+				{
+					"path": "registry/solid/popover.tsx",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "progress",
+			"type": "registry:ui",
+			"title": "Progress",
+			"description": "A progress indicator component built with Kobalte.",
+			"tags": ["ui", "progress"],
+			"dependencies": ["@kobalte/core"],
+			"files": [
+				{
+					"path": "registry/solid/progress.tsx",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "radio-group",
+			"type": "registry:ui",
+			"title": "Radio Group",
+			"description": "A radio group component built with Kobalte.",
+			"tags": ["ui", "radio", "form"],
+			"dependencies": ["@kobalte/core"],
+			"files": [
+				{
+					"path": "registry/solid/radio-group.tsx",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "select",
+			"type": "registry:ui",
+			"title": "Select",
+			"description": "A select component built with Kobalte.",
+			"tags": ["ui", "select", "form"],
+			"dependencies": ["@kobalte/core"],
+			"files": [
+				{
+					"path": "registry/solid/select.tsx",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "separator",
+			"type": "registry:ui",
+			"title": "Separator",
+			"description": "A separator component built with Kobalte.",
+			"tags": ["ui", "separator"],
+			"dependencies": ["@kobalte/core"],
+			"files": [
+				{
+					"path": "registry/solid/seperator.tsx",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "slider",
+			"type": "registry:ui",
+			"title": "Slider",
+			"description": "A slider component built with Kobalte.",
+			"tags": ["ui", "slider", "form"],
+			"dependencies": ["@kobalte/core"],
+			"files": [
+				{
+					"path": "registry/solid/slider.tsx",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "spinner",
+			"type": "registry:ui",
+			"title": "Spinner",
+			"description": "A loading spinner component.",
+			"tags": ["ui", "spinner", "loading"],
+			"dependencies": [],
+			"files": [
+				{
+					"path": "registry/solid/spinner.tsx",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "switch",
+			"type": "registry:ui",
+			"title": "Switch",
+			"description": "A switch component built with Kobalte.",
+			"tags": ["ui", "switch", "form"],
+			"dependencies": ["@kobalte/core"],
+			"files": [
+				{
+					"path": "registry/solid/switch.tsx",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "toggle-button",
+			"type": "registry:ui",
+			"title": "Toggle Button",
+			"description": "A toggle button component built with Kobalte.",
+			"tags": ["ui", "button", "toggle"],
+			"dependencies": ["@kobalte/core"],
+			"files": [
+				{
+					"path": "registry/solid/toggle-button.tsx",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "toggle-group",
+			"type": "registry:ui",
+			"title": "Toggle Group",
+			"description": "A toggle group component built with Kobalte.",
+			"tags": ["ui", "toggle", "form"],
+			"dependencies": ["@kobalte/core"],
+			"files": [
+				{
+					"path": "registry/solid/toggle-group.tsx",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
+			"name": "tooltip",
+			"type": "registry:ui",
+			"title": "Tooltip",
+			"description": "A tooltip component built with Kobalte.",
+			"tags": ["ui", "tooltip"],
+			"dependencies": ["@kobalte/core"],
+			"files": [
+				{
+					"path": "registry/solid/tooltip.tsx",
+					"type": "registry:ui"
+				}
+			]
+		}
+	]
+}
+

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "otp-field",
+  "type": "registry:block",
+  "title": "OTP Field",
+  "description": "An OTP field form.",
+  "dependencies": [
+    "@tanstack/react-form",
+    "sonner",
+    "zod"
+  ],
+  "registryDependencies": [
+    "field",
+    "input-otp",
+    "https://tancn.dev/r/react/tanstack-form.json"
+  ],
+  "files": [
+    {
+      "path": "registry/react/otp-field.tsx",
+      "content": "import { revalidateLogic } from \"@tanstack/react-form\";\nimport * as z from \"zod\";\nimport {\n\tInputOTP,\n\tInputOTPGroup,\n\tInputOTPSeparator,\n\tInputOTPSlot,\n} from \"@/components/ui/input-otp\";\nimport { useAppForm } from \"@/components/ui/tanstack-form\";\n\nconst otpFormSchema = z.object({\n\totp: z.string(),\n});\nexport function OTPForm() {\n\tconst otpForm = useAppForm({\n\t\tdefaultValues: {\n\t\t\totp: \"\",\n\t\t} as z.input<typeof otpFormSchema>,\n\t\tvalidationLogic: revalidateLogic(),\n\t\tvalidators: {\n\t\t\tonDynamic: otpFormSchema,\n\t\t\tonDynamicAsyncDebounceMs: 300,\n\t\t},\n\t\tlisteners: {\n\t\t\tonChange: ({ fieldApi }) => {\n\t\t\t\tconsole.log(fieldApi.state.value);\n\t\t\t},\n\t\t},\n\t});\n\treturn (\n\t\t<div>\n\t\t\t<otpForm.AppForm>\n\t\t\t\t<otpForm.Form>\n\t\t\t\t\t<otpForm.AppField name={\"otp\"}>\n\t\t\t\t\t\t{(field) => (\n\t\t\t\t\t\t\t<field.FieldSet className=\"w-full\">\n\t\t\t\t\t\t\t\t<field.Field>\n\t\t\t\t\t\t\t\t\t<field.FieldLabel htmlFor={\"otp\"}>OTP *</field.FieldLabel>\n\t\t\t\t\t\t\t\t\t<InputOTP\n\t\t\t\t\t\t\t\t\t\tmaxLength={6}\n\t\t\t\t\t\t\t\t\t\tname={\"otp\"}\n\t\t\t\t\t\t\t\t\t\tvalue={(field.state.value as string | undefined) ?? \"\"}\n\t\t\t\t\t\t\t\t\t\tonChange={field.handleChange}\n\t\t\t\t\t\t\t\t\t\trequired={true}\n\t\t\t\t\t\t\t\t\t\tdisabled={false}\n\t\t\t\t\t\t\t\t\t\taria-invalid={!!field.state.meta.errors.length && field.state.meta.isTouched}\n\t\t\t\t\t\t\t\t\t>\n\t\t\t\t\t\t\t\t\t\t<InputOTPGroup>\n\t\t\t\t\t\t\t\t\t\t\t<InputOTPSlot index={0} />\n\t\t\t\t\t\t\t\t\t\t\t<InputOTPSlot index={1} />\n\t\t\t\t\t\t\t\t\t\t\t<InputOTPSlot index={2} />\n\t\t\t\t\t\t\t\t\t\t</InputOTPGroup>\n\t\t\t\t\t\t\t\t\t\t<InputOTPSeparator />\n\t\t\t\t\t\t\t\t\t\t<InputOTPGroup>\n\t\t\t\t\t\t\t\t\t\t\t<InputOTPSlot index={3} />\n\t\t\t\t\t\t\t\t\t\t\t<InputOTPSlot index={4} />\n\t\t\t\t\t\t\t\t\t\t\t<InputOTPSlot index={5} />\n\t\t\t\t\t\t\t\t\t\t</InputOTPGroup>\n\t\t\t\t\t\t\t\t\t</InputOTP>\n\t\t\t\t\t\t\t\t</field.Field>\n\t\t\t\t\t\t\t\t<field.FieldDescription>\n\t\t\t\t\t\t\t\t\tOne-time password input.\n\t\t\t\t\t\t\t\t</field.FieldDescription>\n\t\t\t\t\t\t\t\t<field.FieldError />\n\t\t\t\t\t\t\t</field.FieldSet>\n\t\t\t\t\t\t)}\n\t\t\t\t\t</otpForm.AppField>\n\t\t\t\t</otpForm.Form>\n\t\t\t</otpForm.AppForm>\n\t\t</div>\n\t);\n}\n",
+      "type": "registry:component"
+    }
+  ]
+}

@@ -10,25 +10,34 @@ export const generateImports = (
 	const importSet = new Set([
 		`import { ${schemaName}${isMS ? `, ${schemaName}Steps` : ""} } from '@/lib/${schemaName}'`,
 		'import { useAppForm } from "@/components/ui/tanstack-form"',
-		'import { revalidateLogic, useStore } from "@tanstack/react-form"',
+		'import { revalidateLogic } from "@tanstack/solid-form"',
 		'import { toast } from "sonner"',
 	]);
 	const processField = (field: FormElement | FormArray) => {
 		switch (field.fieldType) {
 			case "DatePicker":
-				importSet.add('import { format } from "date-fns"');
 				importSet.add(
 					'import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"',
 				);
-				importSet.add('import { cn } from "@/lib/utils"');
-				importSet.add('import { Calendar } from "@/components/ui/calendar"');
+				importSet.add('import { cx } from "@/utils/utils"');
+				importSet.add('import { Calendar } from "@/components/ui/calender"');
 				importSet.add(
-					'import { Calendar as CalendarIcon } from "lucide-react"',
+					'import { Calendar as CalendarIcon } from "lucide-solid"',
+				);
+				importSet.add('import { Button } from "@/components/ui/button"');
+				importSet.add(
+					'\n// Simple date formatter (replacement for date-fns format)\nfunction formatDate(date: Date): string {\n  const months = [\n    "January", "February", "March", "April", "May", "June",\n    "July", "August", "September", "October", "November", "December"\n  ];\n  const month = months[date.getMonth()];\n  const day = date.getDate();\n  const year = date.getFullYear();\n  return `${month} ${day}, ${year}`;\n}',
 				);
 				break;
 			case "OTP":
 				importSet.add(
-					'import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot\n} from "@/components/ui/input-otp"',
+					`import {
+	OTPField,
+	OTPFieldGroup,
+	OTPFieldInput,
+	OTPFieldSeparator,
+	OTPFieldSlot,
+} from "@/components/ui/input-otp"`,
 				);
 				break;
 			case "Select":
@@ -39,34 +48,45 @@ export const generateImports = (
 			case "MultiSelect":
 				importSet.add(
 					`import {
-              MultiSelect,
-              MultiSelectContent,
-              MultiSelectItem,
-              MultiSelectList,
-              MultiSelectTrigger,
-              MultiSelectValue,
-            } from '@/components/ui/multi-select'`,
+	MultiSelect,
+	MultiSelectContent,
+	MultiSelectItem,
+	MultiSelectList,
+	MultiSelectSearch,
+	MultiSelectTrigger,
+	MultiSelectValue,
+} from "@/components/ui/multi-select"`,
 				);
 				importSet.add(
 					"\n // IMPORTANT: multi-select is not a shadcn component, so you need to copy it from the souce code and install dependencies. GitHub: https://github.com/Ali-Hussein-dev/formcn/blob/main/apps/web/src/components/ui/multi-select.tsx",
 				);
+				importSet.add("import { For } from 'solid-js'");
 				break;
 			case "Password":
 				importSet.add(
 					"import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group'",
 				);
-				importSet.add("import { EyeIcon, EyeOffIcon } from 'lucide-react'");
+				importSet.add("import { Eye, EyeOff } from 'lucide-solid'");
+				importSet.add("import { createSignal, Show } from 'solid-js'");
 				break;
 			case "RadioGroup":
 				importSet.add(
-					"import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'",
+					`import {
+	RadioGroup,
+	RadioGroupItem,
+	RadioGroupItemControl,
+	RadioGroupItemIndicator,
+	RadioGroupItemInput,
+	RadioGroupItemLabel,
+} from "@/components/ui/radio-group"`,
 				);
-				importSet.add("import { Label } from '@/components/ui/label'");
+				importSet.add("import { For } from 'solid-js'");
 				break;
 			case "ToggleGroup":
 				importSet.add(
 					"import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'",
 				);
+				importSet.add("import { For } from 'solid-js'");
 				break;
 			case "H1":
 			case "H2":
@@ -74,13 +94,11 @@ export const generateImports = (
 				break;
 			case "FormArray":
 				importSet.add('import { Separator } from "@/components/ui/separator"');
-				importSet.add('import { Plus, Trash2 } from "lucide-react"');
+				importSet.add('import { Plus, Trash2 } from "lucide-solid"');
+				importSet.add("import { For } from 'solid-js'");
 				break;
 			case "FieldDescription":
 			case "FieldLegend":
-				importSet.add(
-					'import { FieldDescription , FieldLegend} from "@/components/ui/field"',
-				);
 				break;
 			default:
 				if (field.fieldType) {
@@ -98,19 +116,19 @@ export const generateImports = (
 		} else if (validationSchema === "arktype") {
 			importSet.add('import { type } from "arktype"');
 		}
-
-		if (isMS) {
-			importSet.add(`import type { stepSchemas } from "./schema"`);
-			importSet.add(
-				'import { withFieldGroup } from "@/components/ui/tanstack-form"',
-			);
-			importSet.add(
-				'import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"',
-			);
-		}
 	};
 
 	formElements.flat().forEach(processField);
+
+	if (isMS) {
+		importSet.add(`import type { stepSchemas } from "./schema"`);
+		importSet.add(
+			'import { withFieldGroup } from "@/components/ui/tanstack-form"',
+		);
+		importSet.add("import { Progress } from '@/components/ui/progress'");
+		importSet.add("import { useFormStepper } from '@/hooks/use-stepper'");
+		importSet.add("import { Show } from 'solid-js'");
+	}
 
 	return importSet;
 };
@@ -136,7 +154,10 @@ export const extractImportDependencies = (
 				if (component) registry.add(component);
 			}
 		} else if (!modulePath.startsWith("./")) {
-			deps.add(modulePath);
+			// Skip function definitions and comments
+			if (!stmt.trim().startsWith("//") && !stmt.trim().startsWith("function")) {
+				deps.add(modulePath);
+			}
 		}
 	}
 
@@ -145,3 +166,4 @@ export const extractImportDependencies = (
 		dependencies: Array.from(deps),
 	};
 };
+

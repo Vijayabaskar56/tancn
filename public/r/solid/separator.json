@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "separator",
+  "type": "registry:ui",
+  "title": "Separator",
+  "description": "A separator component built with Kobalte.",
+  "dependencies": [
+    "@kobalte/core"
+  ],
+  "files": [
+    {
+      "path": "registry/solid/seperator.tsx",
+      "content": "import type { ComponentProps, ValidComponent } from \"solid-js\";\nimport { splitProps } from \"solid-js\";\nimport { Root as SeparatorPrimitive } from \"@kobalte/core/separator\";\n\nimport { cx } from \"@/utils/utils\";\n\nexport type SeparatorProps<T extends ValidComponent = \"hr\"> = ComponentProps<\n\ttypeof SeparatorPrimitive<T>\n>;\n\nexport const Separator = <T extends ValidComponent = \"hr\">(\n\tprops: SeparatorProps<T>,\n) => {\n\tconst [, rest] = splitProps(props as SeparatorProps, [\"class\"]);\n\n\treturn (\n\t\t<SeparatorPrimitive\n\t\t\tdata-slot=\"separator\"\n\t\t\tclass={cx(\n\t\t\t\t\"bg-border shrink-0 border-none data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px\",\n\t\t\t\tprops.class,\n\t\t\t)}\n\t\t\t{...rest}\n\t\t/>\n\t);\n};\n",
+      "type": "registry:ui"
+    }
+  ]
+}

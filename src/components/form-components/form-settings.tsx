@@ -108,6 +108,7 @@ export function SettingsSidebar() {
 														className="text-primary"
 														href="https://tanstack.com/form/latest/docs/framework/react/guides/focus-management"
 														target="_blank"
+														rel="noopener noreferrer"
 													>
 														Focus Management
 													</a>
@@ -171,6 +172,7 @@ export function SettingsSidebar() {
 														className="text-primary"
 														href="https://tanstack.com/form/latest/docs/framework/react/guides/dynamic-validation"
 														target="_blank"
+														rel="noopener noreferrer"
 													>
 														Dynamic Validation
 													</a>
@@ -214,6 +216,7 @@ export function SettingsSidebar() {
 														className="text-primary"
 														href="https://tanstack.com/form/latest/docs/framework/react/guides/validation#asynchronous-functional-validation"
 														target="_blank"
+														rel="noopener noreferrer"
 													>
 														Form Validation
 													</a>
@@ -287,9 +290,9 @@ export function SettingsSidebar() {
 												<div className="flex flex-wrap gap-2">
 													{[
 														{ value: "react", label: "React" },
+														{ value: "solid", label: "Solid" },
 														{ value: "vue", label: "Vue" },
 														{ value: "angular", label: "Angular" },
-														{ value: "solid", label: "Solid" },
 													].map((option) => (
 														<Badge
 															key={option.value}
@@ -305,8 +308,7 @@ export function SettingsSidebar() {
 															}
 															${
 																option.value === "angular" ||
-																option.value === "vue" ||
-																option.value === "solid"
+																option.value === "vue"
 																	? "opacity-35"
 																	: ""
 															}
@@ -314,8 +316,7 @@ export function SettingsSidebar() {
 															onClick={() => {
 																if (
 																	option.value === "angular" ||
-																	option.value === "vue" ||
-																	option.value === "solid"
+																	option.value === "vue"
 																) {
 																} else {
 																	field.handleChange(
@@ -348,6 +349,7 @@ export function SettingsSidebar() {
 														className="text-primary"
 														href="https://tanstack.com/form/latest/docs/overview"
 														target="_blank"
+														rel="noopener noreferrer"
 													>
 														Tan Stack Form
 													</a>

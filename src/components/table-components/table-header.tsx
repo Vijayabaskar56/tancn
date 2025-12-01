@@ -33,6 +33,8 @@ import { AnimatedIconButton } from "../ui/animated-icon-button";
 import { RotateCWIcon } from "../ui/rotate-cw";
 import TableCodeDialog from "./table-code-dialog";
 import DataUploadDialog from "./table-data-upload-dialog";
+import { Framework } from "../form-components/types";
+import { settingsCollection } from "@/db-collections/settings.collections";
 
 export default function TableHeader() {
 	const tableData = useTableStore();
@@ -59,6 +61,12 @@ export default function TableHeader() {
 				toast("Failed to save table");
 			}
 		}
+	};
+
+	const handleFrameworkChange = (framework: Framework) => {
+		settingsCollection.update("user-settings", (draft) => {
+			draft.preferredFramework = framework;
+		});
 	};
 
 	const _togglePagination = () => {
@@ -111,9 +119,9 @@ export default function TableHeader() {
 									<DropdownMenuItem
 										key={framework}
 										disabled={framework !== "react"}
-										// onClick={() =>
-										// 	actions.setFramework(framework as Framework)
-										// }
+										onClick={() =>
+											handleFrameworkChange(framework as Framework)
+										}
 									>
 										{framework.charAt(0).toUpperCase() + framework.slice(1)}
 										{framework !== "react" && (

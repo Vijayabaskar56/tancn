@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "progress",
+  "type": "registry:ui",
+  "title": "Progress",
+  "description": "A progress indicator component built with Kobalte.",
+  "dependencies": [
+    "@kobalte/core"
+  ],
+  "files": [
+    {
+      "path": "registry/solid/progress.tsx",
+      "content": "import type { ComponentProps, ValidComponent } from \"solid-js\";\nimport { splitProps } from \"solid-js\";\nimport { Progress } from \"@kobalte/core/progress\";\n\nimport { cx } from \"@/utils/utils\";\n\nexport type ProgressProps<T extends ValidComponent = \"div\"> = ComponentProps<\n\ttypeof Progress<T>\n>;\n\nexport const ProgressComponent = <T extends ValidComponent = \"div\">(\n\tprops: ProgressProps<T>,\n) => {\n\tconst [, rest] = splitProps(props as ProgressProps, [\"class\", \"value\"]);\n\n\treturn (\n\t\t<Progress\n\t\t\tdata-slot=\"progress\"\n\t\t\tclass={cx(\n\t\t\t\t\"bg-primary/20 relative h-2 w-full overflow-hidden rounded-full\",\n\t\t\t\tprops.class,\n\t\t\t)}\n\t\t\tvalue={props.value}\n\t\t\t{...rest}\n\t\t>\n\t\t\t<Progress.Fill\n\t\t\t\tdata-slot=\"progress-indicator\"\n\t\t\t\tclass=\"bg-primary h-full w-full flex-1 transition-all\"\n\t\t\t\tstyle={{\n\t\t\t\t\twidth: \"var(--kb-progress-fill-width)\",\n\t\t\t\t}}\n\t\t\t/>\n\t\t</Progress>\n\t);\n};\n\nexport { ProgressComponent as Progress };\n",
+      "type": "registry:ui"
+    }
+  ]
+}

@@ -1,25 +1,25 @@
-import { BookingForm as BookingFormComp } from "@/registry/default/booking-form";
-import { CheckboxForm } from "@/registry/default/checkbox-field";
-import { ContacUsForm } from "@/registry/default/contactu-form";
-import { DatePickerForm } from "@/registry/default/date-picker-field";
-import { EventRegistrationForm } from "@/registry/default/eventRegistration-form";
-import { FeedbackForm } from "@/registry/default/feedback-form";
-import { InputForm } from "@/registry/default/input-field";
-import { JobApplicationForm } from "@/registry/default/jobapplication-form";
-import { MultiSelectForm } from "@/registry/default/multi-select-field";
-import { OTPForm } from "@/registry/default/otp-field";
-import { PasswordForm } from "@/registry/default/password-field";
-import { PurchaseOrderForm } from "@/registry/default/purchase-order-form";
-import { RadioGroupForm } from "@/registry/default/radio-group-field";
-import { SelectForm } from "@/registry/default/select-field";
-import { SignUp } from "@/registry/default/signup-form";
-import { SliderForm } from "@/registry/default/slider-field";
-import { SurveyForm } from "@/registry/default/surve-formy";
-import { SwitchForm } from "@/registry/default/switch-field";
-import { TextareaForm } from "@/registry/default/textarea-field";
-import { ToggleGroupForm } from "@/registry/default/toggle-group-field";
-import { WaitlistForm } from "@/registry/default/waitlist-form";
-import { BookingForm as CustomerSupportForm } from "../../registry/default/customersupport-form";
+import { BookingForm as BookingFormComp } from "@/registry/react/booking-form";
+import { CheckboxForm } from "@/registry/react/checkbox-field";
+import { ContacUsForm } from "@/registry/react/contactu-form";
+import { DatePickerForm } from "@/registry/react/date-picker-field";
+import { EventRegistrationForm } from "@/registry/react/eventRegistration-form";
+import { FeedbackForm } from "@/registry/react/feedback-form";
+import { InputForm } from "@/registry/react/input-field";
+import { JobApplicationForm } from "@/registry/react/jobapplication-form";
+import { MultiSelectForm } from "@/registry/react/multi-select-field";
+import { OTPForm } from "@/registry/react/otp-field";
+import { PasswordForm } from "@/registry/react/password-field";
+import { PurchaseOrderForm } from "@/registry/react/purchase-order-form";
+import { RadioGroupForm } from "@/registry/react/radio-group-field";
+import { SelectForm } from "@/registry/react/select-field";
+import { SignUp } from "@/registry/react/signup-form";
+import { SliderForm } from "@/registry/react/slider-field";
+import { SurveyForm } from "@/registry/react/surve-formy";
+import { SwitchForm } from "@/registry/react/switch-field";
+import { TextareaForm } from "@/registry/react/textarea-field";
+import { ToggleGroupForm } from "@/registry/react/toggle-group-field";
+import { WaitlistForm } from "@/registry/react/waitlist-form";
+import { BookingForm as CustomerSupportForm } from "../../registry/react/customersupport-form";
 
 const fieldItems = [
 	{

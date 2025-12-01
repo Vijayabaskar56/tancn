@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "multi-select-field",
+  "type": "registry:block",
+  "title": "Multi Select Field",
+  "description": "A multi-select field form.",
+  "dependencies": [
+    "@tanstack/react-form",
+    "sonner",
+    "zod"
+  ],
+  "registryDependencies": [
+    "field",
+    "multi-select",
+    "https://tancn.dev/r/react/tanstack-form.json",
+    "@formcn/multi-select"
+  ],
+  "files": [
+    {
+      "path": "registry/react/multi-select-field.tsx",
+      "content": "import { revalidateLogic } from \"@tanstack/react-form\";\nimport * as z from \"zod\";\nimport {\n\tMultiSelect,\n\tMultiSelectContent,\n\tMultiSelectItem,\n\tMultiSelectList,\n\tMultiSelectTrigger,\n\tMultiSelectValue,\n} from \"@/components/ui/multi-select\";\nimport { useAppForm } from \"@/components/ui/tanstack-form\";\n\nconst multiSelectFormSchema = z.object({\n\tmultiselect: z.array(z.string()),\n});\nexport function MultiSelectForm() {\n\tconst multiSelectForm = useAppForm({\n\t\tdefaultValues: {\n\t\t\tmultiselect: [] as string[],\n\t\t} as z.input<typeof multiSelectFormSchema>,\n\t\tvalidationLogic: revalidateLogic(),\n\t\tvalidators: {\n\t\t\tonDynamic: multiSelectFormSchema,\n\t\t\tonDynamicAsyncDebounceMs: 300,\n\t\t},\n\t\tlisteners: {\n\t\t\tonChange: ({ fieldApi }) => {\n\t\t\t\tconsole.log(fieldApi.state.value);\n\t\t\t},\n\t\t},\n\t});\n\tconst options = [\n\t\t{ label: \"Item 1\", value: \"1\" },\n\t\t{ label: \"Item 2\", value: \"2\" },\n\t];\n\treturn (\n\t\t<div>\n\t\t\t<multiSelectForm.AppForm>\n\t\t\t\t<multiSelectForm.Form>\n\t\t\t\t\t<multiSelectForm.AppField name={\"multiselect\"}>\n\t\t\t\t\t\t{(field) => (\n\t\t\t\t\t\t\t<>\n\t\t\t\t\t\t\t\t<field.FieldSet className=\"w-full\">\n\t\t\t\t\t\t\t\t\t<field.Field>\n\t\t\t\t\t\t\t\t\t\t<field.FieldLabel htmlFor={\"multiselect\"}>\n\t\t\t\t\t\t\t\t\t\t\tSelect multiple *\n\t\t\t\t\t\t\t\t\t\t</field.FieldLabel>\n\t\t\t\t\t\t\t\t\t\t<MultiSelect\n\t\t\t\t\t\t\t\t\t\t\tdisabled={false}\n\t\t\t\t\t\t\t\t\t\t\tonValueChange={field.handleChange}\n\t\t\t\t\t\t\t\t\t\t\taria-invalid={!!field.state.meta.errors.length && field.state.meta.isTouched}\n\t\t\t\t\t\t\t\t\t\t>\n\t\t\t\t\t\t\t\t\t\t\t<MultiSelectTrigger\n\t\t\t\t\t\t\t\t\t\t\t\taria-invalid={!!field.state.meta.errors.length && field.state.meta.isTouched}\n\t\t\t\t\t\t\t\t\t\t\t>\n\t\t\t\t\t\t\t\t\t\t\t\t<MultiSelectValue placeholder=\"Select item\" />\n\t\t\t\t\t\t\t\t\t\t\t</MultiSelectTrigger>\n\t\t\t\t\t\t\t\t\t\t\t<MultiSelectContent>\n\t\t\t\t\t\t\t\t\t\t\t\t<MultiSelectList>\n\t\t\t\t\t\t\t\t\t\t\t\t\t{options.map(({ label, value }) => (\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<MultiSelectItem key={value} value={value}>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t{label}\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t</MultiSelectItem>\n\t\t\t\t\t\t\t\t\t\t\t\t\t))}\n\t\t\t\t\t\t\t\t\t\t\t\t</MultiSelectList>\n\t\t\t\t\t\t\t\t\t\t\t</MultiSelectContent>\n\t\t\t\t\t\t\t\t\t\t</MultiSelect>\n\t\t\t\t\t\t\t\t\t\t<field.FieldDescription>\n\t\t\t\t\t\t\t\t\t\t\tA multi-select dropdown.\n\t\t\t\t\t\t\t\t\t\t</field.FieldDescription>\n\t\t\t\t\t\t\t\t\t\t<field.FieldError />\n\t\t\t\t\t\t\t\t\t</field.Field>\n\t\t\t\t\t\t\t\t</field.FieldSet>\n\t\t\t\t\t\t\t</>\n\t\t\t\t\t\t)}\n\t\t\t\t\t</multiSelectForm.AppField>\n\t\t\t\t</multiSelectForm.Form>\n\t\t\t</multiSelectForm.AppForm>\n\t\t</div>\n\t);\n}\n",
+      "type": "registry:component"
+    }
+  ]
+}

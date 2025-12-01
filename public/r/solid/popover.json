@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "popover",
+  "type": "registry:ui",
+  "title": "Popover",
+  "description": "A popover component built with Kobalte.",
+  "dependencies": [
+    "@kobalte/core"
+  ],
+  "files": [
+    {
+      "path": "registry/solid/popover.tsx",
+      "content": "import { Popover as PopoverPrimitive } from \"@kobalte/core/popover\"\nimport {\n    type ComponentProps,\n    mergeProps,\n    splitProps,\n    type ValidComponent,\n  } from \"solid-js\"\n\n  import { cx } from \"@/utils/utils\"\n\n  export const PopoverPortal = PopoverPrimitive.Portal\n\n  export type PopoverProps = ComponentProps<typeof PopoverPrimitive>\n\n  export const Popover = (props: PopoverProps) => {\n    const merge = mergeProps<PopoverProps[]>(\n      {\n        gutter: 4,\n      },\n      props,\n    )\n\n    return <PopoverPrimitive data-slot=\"popover\" {...merge} />\n  }\n\n  export type PopoverTriggerProps<T extends ValidComponent = \"button\"> =\n    ComponentProps<typeof PopoverPrimitive.Trigger<T>>\n\n  export const PopoverTrigger = <T extends ValidComponent = \"button\">(\n    props: PopoverTriggerProps<T>,\n  ) => {\n    return <PopoverPrimitive.Trigger data-slot=\"popover-trigger\" {...props} />\n  }\n\n  export type PopoverContentProps<T extends ValidComponent = \"div\"> =\n    ComponentProps<typeof PopoverPrimitive.Content<T>>\n\n  export const PopoverContent = <T extends ValidComponent = \"div\">(\n    props: PopoverContentProps<T>,\n  ) => {\n    const [, rest] = splitProps(props as PopoverContentProps, [\"class\"])\n\n    return (\n      <PopoverPrimitive.Content\n        data-slot=\"popover-content\"\n        align=\"start\"\n        sideOffset={4}\n        class={cx(\n          \"bg-popover text-popover-foreground data-[expanded]:animate-in data-[closed]:animate-out data-[closed]:fade-out-0 data-[expanded]:fade-in-0 data-[closed]:zoom-out-95 data-[expanded]:zoom-in-95 z-50 w-72 origin-(--kb-popover-content-transform-origin) rounded-md border p-4 shadow-md outline-hidden\",\n          \"[[data-popper-positioner][style*='--kb-popper-content-transform-origin:_top']>[data-slot=popover-content]]:slide-in-from-top-2 [[data-popper-positioner][style*='--kb-popper-content-transform-origin:_bottom']>[data-slot=popover-content]]:slide-in-from-bottom-2 [[data-popper-positioner][style*='--kb-popper-content-transform-origin:_left']>[data-slot=popover-content]]:slide-in-from-left-2 [[data-popper-positioner][style*='--kb-popper-content-transform-origin:_right']>[data-slot=popover-content]]:slide-in-from-right-2\",\n          props.class,\n        )}\n        {...rest}\n      />\n    )\n  }",
+      "type": "registry:ui"
+    }
+  ]
+}

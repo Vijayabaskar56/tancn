@@ -5,13 +5,12 @@ import useSettings from "@/hooks/use-settings";
 import { updatePreferredPackageManager } from "@/utils/utils";
 
 export default function CliCommands({ name }: { name: string }) {
-	const { preferredPackageManager } = useSettings();
-
+	const { preferredPackageManager, preferredFramework } = useSettings();
 	const commands = {
-		pnpm: `pnpm dlx shadcn@latest add https://tancn.dev/r/${name}.json`,
-		npm: `npx shadcn@latest add https://tancn.dev/r/${name}.json`,
-		yarn: `yarn shadcn@latest add https://tancn.dev/r/${name}.json`,
-		bun: `bunx --bun shadcn@latest add https://tancn.dev/r/${name}.json`,
+		pnpm: `pnpm dlx shadcn@latest add https://tancn.dev/r/${preferredFramework}${name}.json`,
+		npm: `npx shadcn@latest add https://tancn.dev/r/${preferredFramework}${name}.json`,
+		yarn: `yarn shadcn@latest add https://tancn.dev/r/${preferredFramework}${name}.json`,
+		bun: `bunx --bun shadcn@latest add https://tancn.dev/r/${preferredFramework}${name}.json`,
 	};
 
 	return (

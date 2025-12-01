@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "button-group",
+  "type": "registry:ui",
+  "title": "Button Group",
+  "description": "A group of buttons displayed together.",
+  "dependencies": [
+    "@kobalte/core",
+    "class-variance-authority"
+  ],
+  "files": [
+    {
+      "path": "registry/solid/button-group.tsx",
+      "content": "import type { ValidComponent } from \"solid-js\";\nimport { mergeProps, splitProps, type ComponentProps } from \"solid-js\";\nimport {\n\tPolymorphic,\n\ttype ElementOf,\n\ttype PolymorphicProps,\n} from \"@kobalte/core\";\nimport type { VariantProps } from \"cva\";\n\nimport { cva, cx } from \"@/utils/utils\";\n\nimport { Separator, type SeparatorProps } from \"@/components/ui/seperator\";\n\nexport const buttonGroupVariants = cva({\n\tbase: [\n\t\t\"flex w-fit items-stretch [&>*]:focus-visible:z-10 [&>*]:focus-visible:relative [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1 has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-md has-[>[data-slot=button-group]]:gap-2\",\n\t],\n\tvariants: {\n\t\torientation: {\n\t\t\thorizontal:\n\t\t\t\t\"[&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none\",\n\t\t\tvertical:\n\t\t\t\t\"flex-col [&>*:not(:first-child)]:rounded-t-none [&>*:not(:first-child)]:border-t-0 [&>*:not(:last-child)]:rounded-b-none\",\n\t\t},\n\t},\n\tdefaultVariants: {\n\t\torientation: \"horizontal\",\n\t},\n});\n\nexport type ButtonGroupProps = ComponentProps<\"div\"> &\n\tVariantProps<typeof buttonGroupVariants>;\n\nexport const ButtonGroup = (props: ButtonGroupProps) => {\n\tconst [, rest] = splitProps(props, [\"class\", \"orientation\"]);\n\n\treturn (\n\t\t<div\n\t\t\trole=\"group\"\n\t\t\tdata-slot=\"button-group\"\n\t\t\tdata-orientation={props.orientation}\n\t\t\tclass={buttonGroupVariants({\n\t\t\t\torientation: props.orientation,\n\t\t\t\tclass: props.class,\n\t\t\t})}\n\t\t\t{...rest}\n\t\t/>\n\t);\n};\n\nexport type ButtonTextProps<T extends ValidComponent = \"div\"> = Partial<\n\tElementOf<T>\n>;\n\nexport const ButtonText = <T extends ValidComponent = \"div\">(\n\tprops: PolymorphicProps<T, ButtonTextProps<T>>,\n) => {\n\tconst merge = mergeProps({ as: \"div\" }, props);\n\tconst [, rest] = splitProps(merge, [\"as\", \"class\"]);\n\n\treturn (\n\t\t<Polymorphic\n\t\t\tas={merge.as}\n\t\t\tclass={cx(\n\t\t\t\t\"bg-muted flex items-center gap-2 rounded-md border px-4 text-sm font-medium shadow-xs [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4\",\n\t\t\t\tmerge.class,\n\t\t\t)}\n\t\t\t{...rest}\n\t\t/>\n\t);\n};\n\nexport type ButtonSeparatorProps<T extends ValidComponent = \"hr\"> =\n\tSeparatorProps<T>;\n\nexport const ButtonSeparator = <T extends ValidComponent = \"hr\">(\n\tprops: ButtonSeparatorProps<T>,\n) => {\n\tconst [, rest] = splitProps(props as ButtonSeparatorProps, [\"class\"]);\n\n\treturn (\n\t\t<Separator\n\t\t\tdata-slot=\"button-group-separator\"\n\t\t\tclass={cx(\n\t\t\t\t\"bg-input relative !m-0 self-stretch data-[orientation=vertical]:h-auto\",\n\t\t\t\tprops.class,\n\t\t\t)}\n\t\t\t{...rest}\n\t\t/>\n\t);\n};\n",
+      "type": "registry:ui"
+    }
+  ]
+}

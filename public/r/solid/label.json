@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "label",
+  "type": "registry:ui",
+  "title": "Label",
+  "description": "A label component for form fields.",
+  "dependencies": [],
+  "files": [
+    {
+      "path": "registry/solid/label.tsx",
+      "content": "import type { ComponentProps, ValidComponent } from \"solid-js\";\nimport { splitProps } from \"solid-js\";\n\nimport { cx } from \"@/utils/utils\";\n\nexport type LabelProps<T extends ValidComponent = \"label\"> = ComponentProps<T>;\n\nexport const Label = <T extends ValidComponent = \"label\">(\n\tprops: LabelProps<T>,\n) => {\n\tconst [, rest] = splitProps(props as LabelProps, [\"class\"]);\n\n\treturn (\n\t\t<label\n\t\t\tdata-slot=\"label\"\n\t\t\tclass={cx(\n\t\t\t\t\"flex items-center gap-2 text-sm font-medium leading-none select-none\",\n\t\t\t\t\"group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50\",\n\t\t\t\t\"peer-disabled:pointer-events-none peer-disabled:cursor-not-allowed peer-disabled:opacity-50\",\n\t\t\t\tprops.class,\n\t\t\t)}\n\t\t\t{...(rest as any)}\n\t\t/>\n\t);\n};\n",
+      "type": "registry:ui"
+    }
+  ]
+}

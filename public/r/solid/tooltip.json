@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tooltip",
+  "type": "registry:ui",
+  "title": "Tooltip",
+  "description": "A tooltip component built with Kobalte.",
+  "dependencies": [
+    "@kobalte/core"
+  ],
+  "files": [
+    {
+      "path": "registry/solid/tooltip.tsx",
+      "content": "import { Popover as PopoverPrimitive } from \"@kobalte/core/popover\";\nimport type { ComponentProps, JSX, ValidComponent } from \"solid-js\";\nimport { splitProps } from \"solid-js\";\n\nimport { cx } from \"@/utils/utils\";\n\nexport type TooltipProps = ComponentProps<typeof PopoverPrimitive> & {\n\tdelayDuration?: number;\n};\n\nexport const Tooltip = (props: TooltipProps) => {\n\tconst [, rest] = splitProps(props, [\"delayDuration\"]);\n\treturn <PopoverPrimitive data-slot=\"tooltip\" {...rest} />;\n};\n\nexport type TooltipTriggerProps<T extends ValidComponent = \"button\"> =\n\tComponentProps<typeof PopoverPrimitive.Trigger<T>>;\n\nexport const TooltipTrigger = <T extends ValidComponent = \"button\">(\n\tprops: TooltipTriggerProps<T>,\n) => {\n\treturn <PopoverPrimitive.Trigger data-slot=\"tooltip-trigger\" {...props} />;\n};\n\nexport type TooltipContentProps<T extends ValidComponent = \"div\"> =\n\tComponentProps<typeof PopoverPrimitive.Content<T>>;\n\nexport const TooltipContent = <T extends ValidComponent = \"div\">(\n\tprops: TooltipContentProps<T>,\n) => {\n\tconst [, rest] = splitProps(props as TooltipContentProps, [\"class\"]);\n\n\treturn (\n\t\t<PopoverPrimitive.Content\n\t\t\tdata-slot=\"tooltip-content\"\n\t\t\tclass={cx(\n\t\t\t\t\"z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95 data-[expanded]:animate-in data-[closed]:animate-out data-[closed]:fade-out-0 data-[closed]:zoom-out-95\",\n\t\t\t\tprops.class,\n\t\t\t)}\n\t\t\t{...rest}\n\t\t/>\n\t);\n};\n\nexport type TooltipProviderProps = {\n\tdelayDuration?: number;\n\tchildren?: JSX.Element;\n};\n\nexport const TooltipProvider = (props: TooltipProviderProps) => {\n\treturn <>{props.children}</>;\n};\n",
+      "type": "registry:ui"
+    }
+  ]
+}

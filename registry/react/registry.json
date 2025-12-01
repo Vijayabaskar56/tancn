@@ -1,0 +1,508 @@
+{
+	"$schema": "https://ui.shadcn.com/schema/registry.json",
+	"name": "tan-form-builder",
+	"homepage": "https://tancn.dev/",
+	"items": [
+		{
+			"name": "tanstack-form",
+			"title": "Tanstack Builder Form",
+			"type": "registry:ui",
+			"description": "TanStack Form",
+			"tags": ["form", "tanstack"],
+			"dependencies": ["@tanstack/react-form", "class-variance-authority"],
+			"registryDependencies": [
+				"button",
+				"input-group",
+				"spinner",
+				"button-group",
+				"https://tancn.dev/r/react/tanstack-form.json"
+			],
+			"files": [
+				{
+					"path": "src/components/ui/field.tsx",
+					"type": "registry:ui"
+				},
+				{
+					"path": "src/components/ui/tanstack-form.tsx",
+					"type": "registry:ui"
+				},
+				{
+					"path": "src/hooks/use-stepper.tsx",
+					"type": "registry:hook"
+				}
+			]
+		},
+		{
+			"name": "booking-form",
+			"type": "registry:block",
+			"title": "Booking Form",
+			"description": "A booking form for placing orders with product selection, personal details, and payment.",
+			"tags": ["form", "tanstack"],
+			"dependencies": ["@tanstack/react-form", "sonner", "zod"],
+			"registryDependencies": [
+				"checkbox",
+				"field",
+				"input",
+				"label",
+				"radio-group",
+				"select",
+				"textarea",
+				"https://tancn.dev/r/react/tanstack-form.json"
+			],
+			"files": [
+				{
+					"path": "registry/react/booking-form.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "contact-us-form",
+			"type": "registry:block",
+			"title": "Contact Us Form",
+			"description": "A contact form for users to send messages.",
+			"tags": ["form", "tanstack"],
+			"dependencies": ["@tanstack/react-form", "sonner", "zod"],
+			"registryDependencies": [
+				"checkbox",
+				"field",
+				"input",
+				"textarea",
+				"https://tancn.dev/r/react/tanstack-form.json"
+			],
+			"files": [
+				{
+					"path": "registry/react/contactu-form.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "customer-support-form",
+			"type": "registry:block",
+			"title": "Customer Support Form",
+			"description": "A form for submitting customer support requests.",
+			"tags": ["form", "tanstack"],
+			"dependencies": ["@tanstack/react-form", "sonner", "zod"],
+			"registryDependencies": [
+				"field",
+				"input",
+				"label",
+				"radio-group",
+				"select",
+				"textarea",
+				"https://tancn.dev/r/react/tanstack-form.json"
+			],
+			"files": [
+				{
+					"path": "registry/react/customersupport-form.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "event-registration-form",
+			"type": "registry:block",
+			"title": "Event Registration Form",
+			"description": "A form for registering for events.",
+			"tags": ["form", "tanstack"],
+			"dependencies": ["@tanstack/react-form", "sonner", "zod"],
+			"registryDependencies": [
+				"field",
+				"input",
+				"label",
+				"radio-group",
+				"textarea",
+				"https://tancn.dev/r/react/tanstack-form.json"
+			],
+			"files": [
+				{
+					"path": "registry/react/eventRegistration-form.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "feedback-form",
+			"type": "registry:block",
+			"title": "Feedback Form",
+			"description": "A simple feedback form.",
+			"tags": ["form", "tanstack"],
+			"dependencies": ["@tanstack/react-form", "sonner", "zod"],
+			"registryDependencies": [
+				"field",
+				"textarea",
+				"https://tancn.dev/r/react/tanstack-form.json"
+			],
+			"files": [
+				{
+					"path": "registry/react/feedback-form.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "job-application-form",
+			"type": "registry:block",
+			"title": "Job Application Form",
+			"description": "A form for job applications.",
+			"tags": ["form", "tanstack"],
+			"dependencies": ["@tanstack/react-form", "sonner", "zod"],
+			"registryDependencies": [
+				"field",
+				"input",
+				"label",
+				"radio-group",
+				"select",
+				"textarea",
+				"https://tancn.dev/r/react/tanstack-form.json"
+			],
+			"files": [
+				{
+					"path": "registry/react/jobapplication-form.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "login-form",
+			"type": "registry:block",
+			"title": "Login Form",
+			"description": "A login form with email and password.",
+			"tags": ["form", "tanstack"],
+			"dependencies": ["@tanstack/react-form", "sonner", "zod", "lucide-react"],
+			"registryDependencies": [
+				"field",
+				"input",
+				"https://tancn.dev/r/react/tanstack-form.json"
+			],
+			"files": [
+				{
+					"path": "registry/react/login-form.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "signup-form",
+			"type": "registry:block",
+			"title": "Signup Form",
+			"description": "A signup form with name, email, password, and confirmation.",
+			"tags": ["form", "tanstack"],
+			"dependencies": ["@tanstack/react-form", "sonner", "zod", "lucide-react"],
+			"registryDependencies": [
+				"checkbox",
+				"field",
+				"input",
+				"https://tancn.dev/r/react/tanstack-form.json"
+			],
+			"files": [
+				{
+					"path": "registry/react/signup-form.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "survey-form",
+			"type": "registry:block",
+			"title": "Survey Form",
+			"description": "A multi-step survey form.",
+			"tags": ["form", "tanstack"],
+			"dependencies": ["@tanstack/react-form", "sonner", "zod", "motion"],
+			"registryDependencies": [
+				"field",
+				"input",
+				"progress",
+				"textarea",
+				"toggle-group",
+				"https://tancn.dev/r/react/tanstack-form.json"
+			],
+			"files": [
+				{
+					"path": "registry/react/surve-formy.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "waitlist-form",
+			"type": "registry:block",
+			"title": "Waitlist Form",
+			"description": "A waitlist form for email signup.",
+			"tags": ["form", "tanstack"],
+			"dependencies": ["@tanstack/react-form", "sonner", "zod"],
+			"registryDependencies": [
+				"field",
+				"input",
+				"https://tancn.dev/r/react/tanstack-form.json"
+			],
+			"files": [
+				{
+					"path": "registry/react/waitlist-form.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "checkbox-field",
+			"type": "registry:block",
+			"title": "Checkbox Field",
+			"description": "A checkbox field form.",
+			"tags": ["form", "field", "tanstack"],
+			"dependencies": ["@tanstack/react-form", "sonner", "zod"],
+			"registryDependencies": [
+				"checkbox",
+				"field",
+				"https://tancn.dev/r/react/tanstack-form.json"
+			],
+			"files": [
+				{
+					"path": "registry/react/checkbox-field.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "input-field",
+			"type": "registry:block",
+			"title": "Input Field",
+			"description": "An input field form.",
+			"tags": ["form", "field", "tanstack"],
+			"dependencies": ["@tanstack/react-form", "sonner", "zod"],
+			"registryDependencies": [
+				"field",
+				"input",
+				"https://tancn.dev/r/react/tanstack-form.json"
+			],
+			"files": [
+				{
+					"path": "registry/react/input-field.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "password-field",
+			"type": "registry:block",
+			"title": "Password Field",
+			"description": "A password field form with visibility toggle.",
+			"tags": ["form", "field", "tanstack"],
+			"dependencies": ["@tanstack/react-form", "sonner", "zod", "lucide-react"],
+			"registryDependencies": [
+				"field",
+				"input-group",
+				"https://tancn.dev/r/react/tanstack-form.json"
+			],
+			"files": [
+				{
+					"path": "registry/react/password-field.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "otp-field",
+			"type": "registry:block",
+			"title": "OTP Field",
+			"description": "An OTP field form.",
+			"tags": ["form", "field", "tanstack"],
+			"dependencies": ["@tanstack/react-form", "sonner", "zod"],
+			"registryDependencies": [
+				"field",
+				"input-otp",
+				"https://tancn.dev/r/react/tanstack-form.json"
+			],
+			"files": [
+				{
+					"path": "registry/react/otp-field.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "textarea-field",
+			"type": "registry:block",
+			"title": "Textarea Field",
+			"description": "A textarea field form.",
+			"tags": ["form", "field", "tanstack"],
+			"dependencies": ["@tanstack/react-form", "sonner", "zod"],
+			"registryDependencies": [
+				"field",
+				"textarea",
+				"https://tancn.dev/r/react/tanstack-form.json"
+			],
+			"files": [
+				{
+					"path": "registry/react/textarea-field.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "radio-group-field",
+			"type": "registry:block",
+			"title": "Radio Group Field",
+			"description": "A radio group field form.",
+			"tags": ["form", "field", "tanstack"],
+			"dependencies": ["@tanstack/react-form", "sonner", "zod"],
+			"registryDependencies": [
+				"field",
+				"label",
+				"radio-group",
+				"https://tancn.dev/r/react/tanstack-form.json"
+			],
+			"files": [
+				{
+					"path": "registry/react/radio-group-field.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "toggle-group-field",
+			"type": "registry:block",
+			"title": "Toggle Group Field",
+			"description": "A toggle group field form.",
+			"tags": ["form", "field", "tanstack"],
+			"dependencies": ["@tanstack/react-form", "sonner", "zod"],
+			"registryDependencies": [
+				"field",
+				"toggle-group",
+				"https://tancn.dev/r/react/tanstack-form.json"
+			],
+			"files": [
+				{
+					"path": "registry/react/toggle-group-field.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "switch-field",
+			"type": "registry:block",
+			"title": "Switch Field",
+			"description": "A switch field form.",
+			"tags": ["form", "field", "tanstack"],
+			"dependencies": ["@tanstack/react-form", "sonner", "zod"],
+			"registryDependencies": [
+				"field",
+				"switch",
+				"https://tancn.dev/r/react/tanstack-form.json"
+			],
+			"files": [
+				{
+					"path": "registry/react/switch-field.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "slider-field",
+			"type": "registry:block",
+			"title": "Slider Field",
+			"description": "A slider field form.",
+			"tags": ["form", "field", "tanstack"],
+			"dependencies": ["@tanstack/react-form", "sonner", "zod"],
+			"registryDependencies": [
+				"field",
+				"slider",
+				"https://tancn.dev/r/react/tanstack-form.json"
+			],
+			"files": [
+				{
+					"path": "registry/react/slider-field.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "select-field",
+			"type": "registry:block",
+			"title": "Select Field",
+			"description": "A select field form.",
+			"tags": ["form", "field", "tanstack"],
+			"dependencies": ["@tanstack/react-form", "sonner", "zod"],
+			"registryDependencies": [
+				"field",
+				"select",
+				"https://tancn.dev/r/react/tanstack-form.json"
+			],
+			"files": [
+				{
+					"path": "registry/react/select-field.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "multi-select-field",
+			"type": "registry:block",
+			"title": "Multi Select Field",
+			"description": "A multi-select field form.",
+			"tags": ["form", "field", "tanstack"],
+			"dependencies": ["@tanstack/react-form", "sonner", "zod"],
+			"registryDependencies": [
+				"field",
+				"multi-select",
+				"https://tancn.dev/r/react/tanstack-form.json",
+				"@formcn/multi-select"
+			],
+			"files": [
+				{
+					"path": "registry/react/multi-select-field.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "date-picker-field",
+			"type": "registry:block",
+			"title": "Date Picker Field",
+			"description": "A date picker field form.",
+			"tags": ["form", "field", "tanstack"],
+			"dependencies": [
+				"@tanstack/react-form",
+				"sonner",
+				"zod",
+				"date-fns",
+				"lucide-react"
+			],
+			"registryDependencies": [
+				"field",
+				"button",
+				"calendar",
+				"popover",
+				"https://tancn.dev/r/react/tanstack-form.json"
+			],
+			"files": [
+				{
+					"path": "registry/react/date-picker-field.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "purchase-order-form",
+			"type": "registry:block",
+			"title": "Purchase Order Form",
+			"description": "A purchase order form with multiple items.",
+			"tags": ["form", "tanstack"],
+			"dependencies": ["@tanstack/react-form", "sonner", "zod", "lucide-react"],
+			"registryDependencies": [
+				"field",
+				"separator",
+				"input",
+				"button",
+				"slider",
+				"https://tancn.dev/r/react/tanstack-form.json"
+			],
+			"files": [
+				{
+					"path": "registry/react/purchase-order-form.tsx",
+					"type": "registry:component"
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "select-field",
+  "type": "registry:block",
+  "title": "Select Field",
+  "description": "A select field form.",
+  "dependencies": [
+    "@tanstack/react-form",
+    "sonner",
+    "zod"
+  ],
+  "registryDependencies": [
+    "field",
+    "select",
+    "https://tancn.dev/r/react/tanstack-form.json"
+  ],
+  "files": [
+    {
+      "path": "registry/react/select-field.tsx",
+      "content": "import { revalidateLogic } from \"@tanstack/react-form\";\nimport * as z from \"zod\";\nimport {\n\tSelect,\n\tSelectContent,\n\tSelectItem,\n\tSelectTrigger,\n\tSelectValue,\n} from \"@/components/ui/select\";\nimport { useAppForm } from \"@/components/ui/tanstack-form\";\n\nconst selectFormSchema = z.object({\n\tselect: z.string(),\n});\nexport function SelectForm() {\n\tconst selectForm = useAppForm({\n\t\tdefaultValues: {\n\t\t\tselect: \"\",\n\t\t} as z.input<typeof selectFormSchema>,\n\t\tvalidationLogic: revalidateLogic(),\n\t\tvalidators: {\n\t\t\tonDynamic: selectFormSchema,\n\t\t\tonDynamicAsyncDebounceMs: 300,\n\t\t},\n\t\tlisteners: {\n\t\t\tonChange: ({ fieldApi }) => {\n\t\t\t\tconsole.log(fieldApi.state.value);\n\t\t\t},\n\t\t},\n\t});\n\tconst options = [\n\t\t{ label: \"Option A\", value: \"a\" },\n\t\t{ label: \"Option B\", value: \"b\" },\n\t];\n\treturn (\n\t\t<div>\n\t\t\t<selectForm.AppForm>\n\t\t\t\t<selectForm.Form>\n\t\t\t\t\t<selectForm.AppField name={\"select\"}>\n\t\t\t\t\t\t{(field) => (\n\t\t\t\t\t\t\t<field.FieldSet className=\"w-full\">\n\t\t\t\t\t\t\t\t<field.Field>\n\t\t\t\t\t\t\t\t\t<field.FieldLabel\n\t\t\t\t\t\t\t\t\t\tclassName=\"flex justify-between items-center\"\n\t\t\t\t\t\t\t\t\t\thtmlFor={\"select\"}\n\t\t\t\t\t\t\t\t\t>\n\t\t\t\t\t\t\t\t\t\tSelect option *\n\t\t\t\t\t\t\t\t\t</field.FieldLabel>\n\t\t\t\t\t\t\t\t</field.Field>\n\t\t\t\t\t\t\t\t<Select\n\t\t\t\t\t\t\t\t\tname={\"select\"}\n\t\t\t\t\t\t\t\t\tvalue={(field.state.value as string | undefined) ?? \"\"}\n\t\t\t\t\t\t\t\t\tonValueChange={field.handleChange}\n\t\t\t\t\t\t\t\t\tdefaultValue={String(field?.state.value ?? \"\")}\n\t\t\t\t\t\t\t\t\tdisabled={false}\n\t\t\t\t\t\t\t\t\taria-invalid={!!field.state.meta.errors.length && field.state.meta.isTouched}\n\t\t\t\t\t\t\t\t>\n\t\t\t\t\t\t\t\t\t<field.Field>\n\t\t\t\t\t\t\t\t\t\t<SelectTrigger className=\"w-full\">\n\t\t\t\t\t\t\t\t\t\t\t<SelectValue placeholder=\"Select item\" />\n\t\t\t\t\t\t\t\t\t\t</SelectTrigger>\n\t\t\t\t\t\t\t\t\t</field.Field>\n\t\t\t\t\t\t\t\t\t<SelectContent>\n\t\t\t\t\t\t\t\t\t\t{options.map(({ label, value }) => (\n\t\t\t\t\t\t\t\t\t\t\t<SelectItem key={value} value={value}>\n\t\t\t\t\t\t\t\t\t\t\t\t{label}\n\t\t\t\t\t\t\t\t\t\t\t</SelectItem>\n\t\t\t\t\t\t\t\t\t\t))}\n\t\t\t\t\t\t\t\t\t</SelectContent>\n\t\t\t\t\t\t\t\t</Select>\n\t\t\t\t\t\t\t\t<field.FieldDescription>\n\t\t\t\t\t\t\t\t\tA dropdown select.\n\t\t\t\t\t\t\t\t</field.FieldDescription>\n\t\t\t\t\t\t\t\t<field.FieldError />\n\t\t\t\t\t\t\t</field.FieldSet>\n\t\t\t\t\t\t)}\n\t\t\t\t\t</selectForm.AppField>\n\t\t\t\t</selectForm.Form>\n\t\t\t</selectForm.AppForm>\n\t\t</div>\n\t);\n}\n",
+      "type": "registry:component"
+    }
+  ]
+}

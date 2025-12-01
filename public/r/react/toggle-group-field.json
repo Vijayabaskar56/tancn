@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "toggle-group-field",
+  "type": "registry:block",
+  "title": "Toggle Group Field",
+  "description": "A toggle group field form.",
+  "dependencies": [
+    "@tanstack/react-form",
+    "sonner",
+    "zod"
+  ],
+  "registryDependencies": [
+    "field",
+    "toggle-group",
+    "https://tancn.dev/r/react/tanstack-form.json"
+  ],
+  "files": [
+    {
+      "path": "registry/react/toggle-group-field.tsx",
+      "content": "import { revalidateLogic } from \"@tanstack/react-form\";\nimport * as z from \"zod\";\nimport { useAppForm } from \"@/components/ui/tanstack-form\";\nimport { ToggleGroup, ToggleGroupItem } from \"@/components/ui/toggle-group\";\n\nconst toggleGroupFormSchema = z.object({\n\ttoggle: z.array(z.string()),\n});\nexport function ToggleGroupForm() {\n\tconst toggleGroupForm = useAppForm({\n\t\tdefaultValues: {\n\t\t\ttoggle: [] as string[],\n\t\t} as z.input<typeof toggleGroupFormSchema>,\n\t\tvalidationLogic: revalidateLogic(),\n\t\tvalidators: {\n\t\t\tonDynamic: toggleGroupFormSchema,\n\t\t\tonDynamicAsyncDebounceMs: 300,\n\t\t},\n\t\tlisteners: {\n\t\t\tonChange: ({ fieldApi }) => {\n\t\t\t\tconsole.log(fieldApi.state.value);\n\t\t\t},\n\t\t},\n\t});\n\tconst options = [\n\t\t{ label: \"Tech\", value: \"tech\" },\n\t\t{ label: \"Design\", value: \"design\" },\n\t];\n\tconst toggleOptions = options.map(({ label, value }) => (\n\t\t<ToggleGroupItem\n\t\t\tname={\"toggle\"}\n\t\t\tvalue={value}\n\t\t\tkey={value}\n\t\t\tdisabled={false}\n\t\t\tclassName=\"flex items-center gap-x-2 px-1\"\n\t\t>\n\t\t\t{label}\n\t\t</ToggleGroupItem>\n\t));\n\treturn (\n\t\t<div>\n\t\t\t<toggleGroupForm.AppForm>\n\t\t\t\t<toggleGroupForm.Form>\n\t\t\t\t\t<toggleGroupForm.AppField name={\"toggle\"}>\n\t\t\t\t\t\t{(field) => (\n\t\t\t\t\t\t\t<field.FieldSet className=\"flex flex-col gap-2 w-full py-1\">\n\t\t\t\t\t\t\t\t<field.Field>\n\t\t\t\t\t\t\t\t\t<field.FieldLabel className=\"mt-0\" htmlFor={\"toggle\"}>\n\t\t\t\t\t\t\t\t\t\tSelect interests *\n\t\t\t\t\t\t\t\t\t</field.FieldLabel>\n\t\t\t\t\t\t\t\t\t<ToggleGroup\n\t\t\t\t\t\t\t\t\t\ttype=\"multiple\"\n\t\t\t\t\t\t\t\t\t\tvariant=\"outline\"\n\t\t\t\t\t\t\t\t\t\tonValueChange={field.handleChange}\n\t\t\t\t\t\t\t\t\t\tdefaultValue={[]}\n\t\t\t\t\t\t\t\t\t\tclassName=\"flex justify-start items-center w-full\"\n\t\t\t\t\t\t\t\t\t\taria-invalid={!!field.state.meta.errors.length && field.state.meta.isTouched}\n\t\t\t\t\t\t\t\t\t>\n\t\t\t\t\t\t\t\t\t\t{toggleOptions}\n\t\t\t\t\t\t\t\t\t</ToggleGroup>\n\t\t\t\t\t\t\t\t</field.Field>\n\t\t\t\t\t\t\t\t<field.FieldDescription>\n\t\t\t\t\t\t\t\t\tA group of toggle buttons.\n\t\t\t\t\t\t\t\t</field.FieldDescription>\n\t\t\t\t\t\t\t\t<field.FieldError />\n\t\t\t\t\t\t\t</field.FieldSet>\n\t\t\t\t\t\t)}\n\t\t\t\t\t</toggleGroupForm.AppField>\n\t\t\t\t</toggleGroupForm.Form>\n\t\t\t</toggleGroupForm.AppForm>\n\t\t</div>\n\t);\n}\n",
+      "type": "registry:component"
+    }
+  ]
+}

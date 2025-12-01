@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "spinner",
+  "type": "registry:ui",
+  "title": "Spinner",
+  "description": "A loading spinner component.",
+  "dependencies": [],
+  "files": [
+    {
+      "path": "registry/solid/spinner.tsx",
+      "content": "import type { ComponentProps, ValidComponent } from \"solid-js\";\nimport { splitProps } from \"solid-js\";\n\nimport { cx } from \"@/utils/utils\";\n\nexport type SpinnerProps<T extends ValidComponent = \"div\"> = ComponentProps<T>;\n\nexport const Spinner = <T extends ValidComponent = \"div\">(\n\tprops: SpinnerProps<T>,\n) => {\n\tconst [, rest] = splitProps(props as SpinnerProps, [\"class\"]);\n\n\treturn (\n\t\t<div\n\t\t\tdata-slot=\"spinner\"\n\t\t\tclass={cx(\n\t\t\t\t\"inline-block size-4 animate-spin rounded-full border-2 border-current border-t-transparent\",\n\t\t\t\tprops.class,\n\t\t\t)}\n\t\t\t{...(rest as any)}\n\t\t/>\n\t);\n};\n",
+      "type": "registry:ui"
+    }
+  ]
+}

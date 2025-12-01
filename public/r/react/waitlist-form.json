@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "waitlist-form",
+  "type": "registry:block",
+  "title": "Waitlist Form",
+  "description": "A waitlist form for email signup.",
+  "dependencies": [
+    "@tanstack/react-form",
+    "sonner",
+    "zod"
+  ],
+  "registryDependencies": [
+    "field",
+    "input",
+    "https://tancn.dev/r/react/tanstack-form.json"
+  ],
+  "files": [
+    {
+      "path": "registry/react/waitlist-form.tsx",
+      "content": "import { revalidateLogic } from \"@tanstack/react-form\";\nimport { toast } from \"sonner\";\nimport * as z from \"zod\";\n\nimport { Input } from \"@/components/ui/input\";\nimport { useAppForm } from \"@/components/ui/tanstack-form\";\n\nconst waitlistFormSchema = z.object({\n\temail: z.email(),\n});\n\nexport function WaitlistForm() {\n\tconst waitlistForm = useAppForm({\n\t\tdefaultValues: {\n\t\t\temail: \"\",\n\t\t} as z.input<typeof waitlistFormSchema>,\n\t\tvalidationLogic: revalidateLogic(),\n\t\tvalidators: {\n\t\t\tonDynamic: waitlistFormSchema,\n\t\t\tonDynamicAsyncDebounceMs: 300,\n\t\t},\n\t\tonSubmit: ({}) => {\n\t\t\ttoast.success(\"success\");\n\t\t},\n\t\tonSubmitInvalid({ formApi }) {\n\t\t\tconst errorMap = formApi.state.errorMap[\"onDynamic\"]!;\n\t\t\tconst inputs = Array.from(\n\t\t\t\tdocument.querySelectorAll(\"#previewForm input\"),\n\t\t\t) as HTMLInputElement[];\n\t\t\tlet firstInput: HTMLInputElement | undefined;\n\t\t\tfor (const input of inputs) {\n\t\t\t\tif (errorMap[input.name]) {\n\t\t\t\t\tfirstInput = input;\n\t\t\t\t\tbreak;\n\t\t\t\t}\n\t\t\t}\n\t\t\tfirstInput?.focus();\n\t\t},\n\t});\n\treturn (\n\t\t<div>\n\t\t\t<waitlistForm.AppForm>\n\t\t\t\t<waitlistForm.Form>\n\t\t\t\t\t<waitlistForm.FieldLegend className=\"text-3xl font-bold\">\n\t\t\t\t\t\tWaitlist\n\t\t\t\t\t</waitlistForm.FieldLegend>\n\t\t\t\t\t<waitlistForm.FieldDescription>\n\t\t\t\t\t\tJoin our waitlist to get early access\n\t\t\t\t\t</waitlistForm.FieldDescription>\n\t\t\t\t\t<waitlistForm.FieldSeparator />\n\t\t\t\t\t<waitlistForm.AppField name={\"email\"}>\n\t\t\t\t\t\t{(field) => (\n\t\t\t\t\t\t\t<field.FieldSet className=\"w-full\">\n\t\t\t\t\t\t\t\t<field.Field>\n\t\t\t\t\t\t\t\t\t<field.FieldLabel htmlFor={\"email\"}>\n\t\t\t\t\t\t\t\t\t\tYour Email *\n\t\t\t\t\t\t\t\t\t</field.FieldLabel>\n\t\t\t\t\t\t\t\t\t<Input\n\t\t\t\t\t\t\t\t\t\tname={\"email\"}\n\t\t\t\t\t\t\t\t\t\tplaceholder=\"Enter your Email\"\n\t\t\t\t\t\t\t\t\t\ttype=\"email\"\n\t\t\t\t\t\t\t\t\t\tvalue={(field.state.value as string | undefined) ?? \"\"}\n\t\t\t\t\t\t\t\t\t\tonBlur={field.handleBlur}\n\t\t\t\t\t\t\t\t\t\tonChange={(e) => field.handleChange(e.target.value)}\n\t\t\t\t\t\t\t\t\t\taria-invalid={!!field.state.meta.errors.length && field.state.meta.isTouched}\n\t\t\t\t\t\t\t\t\t/>\n\t\t\t\t\t\t\t\t</field.Field>\n\n\t\t\t\t\t\t\t\t<field.FieldError />\n\t\t\t\t\t\t\t</field.FieldSet>\n\t\t\t\t\t\t)}\n\t\t\t\t\t</waitlistForm.AppField>\n\t\t\t\t\t<div className=\"flex justify-end items-center w-full pt-3\">\n\t\t\t\t\t\t<waitlistForm.SubmitButton label=\"Submit\" />\n\t\t\t\t\t</div>\n\t\t\t\t</waitlistForm.Form>\n\t\t\t</waitlistForm.AppForm>\n\t\t</div>\n\t);\n}\n",
+      "type": "registry:component"
+    }
+  ]
+}

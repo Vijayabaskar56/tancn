@@ -44,7 +44,7 @@ import { ShareIcon } from "../ui/share";
 export default function FormHeader() {
 	const location = useLocation();
 	const { activeTab, preferredFramework, preferredSchema } = useSettings();
-	const frameworks = ["react", "vue", "angular", "solid"];
+	const frameworks = ["react", "solid","vue", "angular"];
 	const validationLibs = ["zod", "valibot", "arktype"];
 
 	const isFormBuilder = location.pathname.startsWith("/form-builder");
@@ -87,6 +87,13 @@ export default function FormHeader() {
 		}
 	};
 
+	const handleFrameworkChange = (framework: Framework) => {
+		actions.setFramework(framework as Framework);
+		settingsCollection.update("user-settings", (draft) => {
+			draft.preferredFramework = framework;
+		});
+	};
+
 	function handleShare() {
 		navigator.clipboard.writeText(
 			`https://tancn.dev/form-builder?share=${encodeURIComponent(JSON.stringify(formElements))}`,
@@ -95,11 +102,11 @@ export default function FormHeader() {
 	}
 
 	return (
-		<header className="w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+		<header className="w-full bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
 			<div className="flex h-auto lg:h-14 border-b items-center mx-3 flex-col lg:flex-row justify-between">
 				{/* Tabs section */}
 				{isFormBuilder && (
-					<div className="order-2 lg:order-1 flex-shrink-0 mr-4 w-full lg:w-auto py-3 border-t-1 md:border-0 mx-3">
+					<div className="order-2 lg:order-1 shrink-0 mr-4 w-full lg:w-auto py-3 border-t md:border-0 mx-3">
 						<div className="flex gap-2">
 							<AnimatedIconButton
 								icon={
@@ -154,13 +161,13 @@ export default function FormHeader() {
 									{frameworks.map((framework) => (
 										<DropdownMenuItem
 											key={framework}
-											disabled={framework !== "react"}
+											disabled={framework !== "react" && framework !== "solid"}
 											onClick={() =>
-												actions.setFramework(framework as Framework)
+												handleFrameworkChange(framework as Framework)
 											}
 										>
 											{framework.charAt(0).toUpperCase() + framework.slice(1)}
-											{framework !== "react" && (
+											{framework !== "react" && framework !== "solid" && (
 												<p className="text-primary">soon!</p>
 											)}
 										</DropdownMenuItem>

@@ -9,7 +9,6 @@ import { fieldItems, items } from "@/constants/registry";
 import type { SettingsCollection } from "@/db-collections/settings.collections";
 import useSettings from "@/hooks/use-settings";
 import { updatePreferredPackageManager } from "@/utils/utils";
-import { Image } from "@/components/image";
 import Loader from "@/components/loader";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { seo } from "@/utils/seo";
@@ -328,15 +327,13 @@ export {
 
 export const Route = createFileRoute("/form-registry")({
 	head: () => ({
-		meta: [
-			...seo({
-				title: "TanStack Form Registry | TanCN - Form and Table Builder",
-			}),
+		meta : [
+			...seo({title: "TanStack Form Registry | TanCN - Form and Table Builder"}),
 		],
 	}),
 	component: RouteComponent,
-	pendingComponent: Loader,
-	errorComponent: ErrorBoundary,
+	pendingComponent : Loader,
+	errorComponent : ErrorBoundary,
 });
 
 function RouteComponent() {
@@ -346,21 +343,22 @@ function RouteComponent() {
 		{
 			value: "pnpm",
 			registery:
-				"pnpm dlx shadcn@canary add https://tancn.dev/r/tanstack-form.json",
+				`pnpm dlx shadcn@canary add https://tancn.dev/r/${settings?.preferredFramework}/tanstack-form.json`,
 		},
 		{
 			value: "npm",
-			registery: "npx shadcn@canary add https://tancn.dev/r/tanstack-form.json",
+			registery:
+				`npx shadcn@canary add https://tancn.dev/r/${settings?.preferredFramework}/tanstack-form.json`,
 		},
 		{
 			value: "yarn",
 			registery:
-				"yarn shadcn@canary add https://tancn.dev/r/tanstack-form.json",
+				`yarn shadcn@canary add https://tancn.dev/r/${settings?.preferredFramework}/tanstack-form.json`,
 		},
 		{
 			value: "bun",
 			registery:
-				"bunx --bun shadcn@canary add https://tancn.dev/r/tanstack-form.json",
+				`bunx --bun shadcn@canary add https://tancn.dev/r/${settings?.preferredFramework}/tanstack-form.json`,
 		},
 	];
 
@@ -434,13 +432,7 @@ function RouteComponent() {
 				Form Composition + ShadCN Field Components to Allow Ultimate Flexibiity
 			</p>
 			<div className="flex lg:flex-row flex-col gap-3 content-center items-center">
-				<Image
-					src="/assets/anotomy-of-form.png"
-					alt="anotomy-of-form"
-					width={800}
-					height={600}
-					className="max-w-full h-auto"
-				/>
+				<img src="/assets/anotomy-of-form.avif" alt="anotomy-of-form" />
 				<ul className="list-disc list-inside mb-8 flex flex-col gap-1">
 					<li>
 						<strong>AppForm:</strong> The main form instance created with

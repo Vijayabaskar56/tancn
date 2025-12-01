@@ -11,10 +11,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { SettingsCollection } from "@/db-collections/settings.collections";
 import { useFormStore, useIsMultiStep } from "@/hooks/use-form-store";
 import useSettings from "@/hooks/use-settings";
-import { generateFormCode } from "@/lib/form-code-generators/react/generate-form-code";
+import { generateFormCode } from "@/lib/form-code-generators";
 import { flattenFormSteps } from "@/lib/form-elements-helpers";
 import { generateValidationCode } from "@/lib/schema-generators";
 import { formatCode, logger, updatePreferredPackageManager } from "@/utils/utils";
+import type { Settings } from "@/components/form-components/types";
 import type {
 	FormElement,
 	FormElementOrList,
@@ -98,10 +99,15 @@ export function CodeBlockPackagesInstallation({
 	const preferredPackageManager = settings?.preferredPackageManager || "pnpm";
 	const packagesSet = new Set(formElementTypes);
 	const packages = Array.from(packagesSet).join(" ");
-	const otherPackages = "@tanstack/react-form zod motion";
+	const preferredFramework = settings?.preferredFramework || "react";
+	const formPackage =
+		preferredFramework === "solid"
+			? "@tanstack/solid-form"
+			: "@tanstack/react-form";
+	const otherPackages = `${formPackage} zod${preferredFramework === "react" ? " motion" : ""}`;
 
 	const defaultRegistryUrl =
-		"https://tancn.dev/r/tanstack-form.json";
+		`https://tancn.dev/r/${settings?.preferredFramework}/tanstack-form.json`;
 	const registryUrl = customRegistryUrl || defaultRegistryUrl;
 
 	const tabsData = [
@@ -219,6 +225,8 @@ const CodeBlockTSX = () => {
 	const { formElements, validationSchema, formName } = useFormStore();
 	const isMS = useIsMultiStep();
 	const settings = useSettings();
+	const preferredFramework = (settings?.preferredFramework ||
+		"react") as "react" | "solid" | "vue" | "angular";
 
 	useEffect(() => {
 		logger("Form elements changed, regenerating TSX code:", formElements);
@@ -228,8 +236,9 @@ const CodeBlockTSX = () => {
 		formElements: formElements as FormElementOrList[],
 		isMS,
 		validationSchema,
-		settings,
+		settings: settings as Settings,
 		formName,
+		preferredFramework,
 	});
 	const formattedCode = generatedCode.map((item) => ({
 		...item,

@@ -3,13 +3,14 @@ import { useEffect, useId, useState } from "react";
 import * as z from "zod";
 import { useFormStore } from "@/hooks/use-form-store";
 import useSettings from "@/hooks/use-settings";
-import { generateFormCode } from "@/lib/form-code-generators/react/generate-form-code";
 import {
 	extractImportDependencies,
+	generateFormCode,
 	generateImports,
-} from "@/lib/form-code-generators/react/generate-imports";
+} from "@/lib/form-code-generators";
 import { generateValidationCode } from "@/lib/schema-generators";
 import { logger } from "@/utils/utils";
+import type { Settings } from "@/components/form-components/types";
 import type {
 	CreateRegistryResponse,
 	FormArray,
@@ -73,12 +74,15 @@ function CodeDialog() {
 			registery: `bunx --bun shadcn@canary add ${generatedId}`,
 		},
 	];
+	const preferredFramework = (settings?.preferredFramework ||
+		"react") as "react" | "solid" | "vue" | "angular";
 	const generatedCode = generateFormCode({
 		formElements: formElements as FormElementOrList[],
 		isMS,
 		validationSchema,
-		settings,
+		settings: settings as Settings,
 		formName,
+		preferredFramework,
 	});
 	const validationCode = generateValidationCode(
 		isMS,
@@ -91,6 +95,7 @@ function CodeDialog() {
 		validationSchema,
 		isMS,
 		schemaName,
+		preferredFramework,
 	);
 	const files = [
 		{
@@ -107,7 +112,7 @@ function CodeDialog() {
 		},
 	];
 	const payload = {
-		...extractImportDependencies(importDependencies),
+		...extractImportDependencies(importDependencies, preferredFramework),
 		files,
 		name: formName,
 	};
