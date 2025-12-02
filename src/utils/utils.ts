@@ -190,6 +190,6 @@ export const detectColumns = (data: JsonData[]) => detectColumnsConfig(data);
 
 
 export const getRegistryUrl = (framework?: SettingsCollection["preferredFramework"]) => {
-	if(!framework) return `${import.meta.env.MODE === "development" ? "http://localhost:3000" : `${import.meta.env.VITE_APP_URL}`}/r/react`;
+	if (!framework) return `${import.meta.env.MODE === "development" ? "http://localhost:3000" : `https://tancn.dev`}`;
 	return `${import.meta.env.MODE === "development" ? "http://localhost:3000" : `${import.meta.env.VITE_APP_URL}`}/r/${framework.toLowerCase()}`;
 };
