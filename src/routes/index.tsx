@@ -244,234 +244,139 @@ function HomePage() {
 	};
 
 	return (
-		<div className="w-full min-h-screen relative bg-background overflow-x-hidden flex flex-col justify-start items-center">
-			<div className="relative flex flex-col justify-start items-center w-full">
-				<div className="w-full max-w-none px-4 sm:px-6 md:px-8 lg:px-0 lg:max-w-[1060px] lg:w-[1060px] relative flex flex-col justify-start items-start min-h-screen">
-					<div className="self-stretch pt-[9px] overflow-hidden border-b border-border flex flex-col justify-center items-center gap-4 sm:gap-6 md:gap-8 lg:gap-[66px] relative z-10">
-						<div className="pt-16  md:pt-20 lg:pt-24 pb-8 sm:pb-12 md:pb-16 flex flex-col justify-start items-center px-2 sm:px-4 md:px-8 lg:px-0 w-full sm:pl-0 sm:pr-0 pl-0 pr-0">
-							<div className="w-full max-w-[937px] lg:w-[937px] flex flex-col justify-center items-center gap-3 sm:gap-4 md:gap-5 lg:gap-6">
-								<div className="self-stretch rounded-[3px] flex flex-col justify-center items-center gap-4 sm:gap-5 md:gap-6 lg:gap-8">
-									<div className="w-full flex justify-center items-center max-w-[748.71px] lg:w-[748.71px] text-center  text-foreground text-[24px] xs:text-[28px] sm:text-[36px] md:text-[52px] lg:text-[70px] font-normal leading-[1.1] sm:leading-[1.15] md:leading-[1.2] lg:leading-24 font-instrument-serif  px-2 sm:px-4 md:px-0">
-										<div className="relative">
-											<div className="absolute inset-0 bg-linear-to-br from-primary/20 via-primary/10 to-transparent dark:from-primary/10 dark:via-primary/5 rounded-full blur-3xl scale-150"></div>
-											<div className="flex justify-center items-center">
-												<svg
-													viewBox="0 0 473 473"
-													fill="none"
-													xmlns="http://www.w3.org/2000/svg"
-													className="text-accent-foreground"
-													style={{
-														width: "1em",
-														height: "1em",
-														display: "inline-block",
-													}}
-												>
-													<title>Logo</title>
-													<g clipPath="url(#clip0_38_23)">
-														<path
-															d="M226.646 413.875H98.5417C88.0877 413.875 78.0619 409.722 70.6699 402.33C63.2778 394.938 59.125 384.912 59.125 374.458V98.5417C59.125 88.0877 63.2778 78.0619 70.6699 70.6699C78.0619 63.2778 88.0877 59.125 98.5417 59.125H374.458C384.912 59.125 394.938 63.2778 402.33 70.6699C409.722 78.0619 413.875 88.0877 413.875 98.5417V216.792"
-															stroke="currentColor"
-															strokeWidth="10"
-															strokeLinecap="round"
-															strokeLinejoin="round"
-														/>
-														<path
-															d="M59.125 197.083H413.875"
-															stroke="currentColor"
-															strokeWidth="10"
-															strokeLinecap="round"
-															strokeLinejoin="round"
-														/>
-														<path
-															d="M197.083 59.125V413.875"
-															stroke="currentColor"
-															strokeWidth="10"
-															strokeLinecap="round"
-															strokeLinejoin="round"
-														/>
-														<g clipPath="url(#clip1_38_23)">
-															<path
-																d="M397.438 318.5L321.5 394.438"
-																stroke="currentColor"
-																strokeWidth="20"
-																strokeLinecap="round"
-																strokeLinejoin="round"
-															/>
-															<path
-																d="M382.25 234.969L237.969 379.25"
-																stroke="currentColor"
-																strokeWidth="20"
-																strokeLinecap="round"
-																strokeLinejoin="round"
-															/>
-														</g>
-													</g>
-													<defs>
-														<clipPath id="clip0_38_23">
-															<rect width="473" height="473" fill="white" />
-														</clipPath>
-														<clipPath id="clip1_38_23">
-															<rect
-																width="243"
-																height="243"
-																fill="white"
-																transform="translate(200 197)"
-															/>
-														</clipPath>
-													</defs>
-												</svg>
-												<h1 className="flex font-bold">TANCN</h1>
-											</div>
-										</div>
+		<div className="w-full min-h-screen relative bg-background md:px-8 px-4 overflow-x-hidden">
+			{/* Hero Section */}
+			<section className="w-full border-border">
+				<div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
+					<div className="pt-12 md:pt-16 lg:pt-20 pb-8 sm:pb-12 md:pb-16 lg:pb-20">
+						{/* Main Headline */}
+						<div className="w-full flex flex-col items-start gap-4 sm:gap-5 md:gap-6 mb-6 sm:mb-8 md:mb-10 lg:mb-12 max-w-2xl">
+							<h1 className="text-left text-foreground text-2xl sm:text-3xl md:text-4xl font-bold leading-tight">
+								<span className="text-primary">TANCN</span> is the best & Fastest way to{" "}
+								<span className="text-primary">build forms</span> and{" "}
+								<span className="text-primary">tables</span>
+							</h1>
+
+							{/* Subtitle */}
+							<p className="text-left text-muted-foreground text-base sm:text-lg md:text-xl leading-relaxed max-w-2xl font-medium">
+								Build powerful forms and tables with ease using TanStack technologies.
+								Code generation with 100% Type-Safe.
+							</p>
+						</div>
+
+						{/* CTA Button */}
+						<div className="flex flex-col sm:flex-row justify-start items-start sm:items-center gap-4 sm:gap-6 mb-12 sm:mb-16 md:mb-20 lg:mb-24">
+							<Button
+								variant="default"
+								size="lg"
+								asChild
+							>
+								<Link to="/form-builder" preload="intent">
+									Start Building
+								</Link>
+							</Button>
+							<Button
+								variant="outline"
+								size="lg"
+								asChild
+							>
+								<Link to="/form-registry">Form Registry</Link>
+							</Button>
+						</div>
+
+						{/* Product Visual */}
+						<div className="w-full relative mb-8 sm:mb-12 md:mb-16 lg:mb-20">
+							<div className="relative w-full h-[300px] sm:h-[400px] md:h-[550px] lg:h-[650px] bg-card border border-border shadow-2xl overflow-hidden rounded-xl sm:rounded-2xl lg:rounded-3xl">
+								<div className="absolute inset-0">
+									<div
+										className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+											activeCard === 0 ? "opacity-100" : "opacity-0"
+										}`}
+									>
+										<ThemeImage
+											lightSrc="/assets/slide-1-light.png"
+											darkSrc="/assets/slide-1-dark.png"
+											alt="Form Builder Interface"
+											width={1200}
+											height={800}
+											priority={true}
+											loading="eager"
+											className="w-full h-full object-cover"
+										/>
 									</div>
-									<div className="w-full max-w-[650px] text-center flex justify-center flex-col text-muted-foreground sm:text-lg md:text-xl leading-[1.4] sm:leading-[1.45]  lg:leading-7 font-sans px-2 sm:px-4 md:px-0 lg:text-lg font-medium text-sm">
-										<span>
-											Build powerful{" "}
-											<span className="text-[#c9952d] inline font-extrabold capitalize">
-												forms
-											</span>{" "}
-											and{" "}
-											<span className="text-[#c9952d] inline font-extrabold capitalize">
-												tables
-											</span>{" "}
-											with ease using TanStack technologies
-										</span>
-										<br className="hidden sm:block" />
-										Code generation with 100% Type-Safe.
+
+									<div
+										className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+											activeCard === 1 ? "opacity-100" : "opacity-0"
+										}`}
+									>
+										<ThemeImage
+											lightSrc="/assets/slide-2-light.png"
+											darkSrc="/assets/slide-2-dark.png"
+											alt="Analytics Dashboard"
+											width={1200}
+											height={800}
+											loading="lazy"
+											className="w-full h-full object-cover"
+										/>
 									</div>
-								</div>
-							</div>
 
-							<div className="w-full max-w-[497px] lg:w-[497px] flex justify-center items-center gap-6 sm:gap-8 md:gap-10 lg:gap-12 relative z-10 mt-6 sm:mt-8 md:mt-10 lg:mt-12">
-								<Button
-									variant="default"
-									size="lg"
-									className="w-32 rounded"
-									asChild
-								>
-									<Link to="/form-builder" preload="intent">
-										Start Building
-									</Link>
-								</Button>
-								<Button
-									variant="default"
-									size="lg"
-									className="w-32 rounded"
-									asChild
-								>
-									<Link to="/form-registry">Form Registry</Link>
-								</Button>
-							</div>
-							<div className="w-full max-w-[960px] lg:w-[960px] pt-2 sm:pt-4 pb-6 sm:pb-8 md:pb-10 px-2 sm:px-4 md:px-6 lg:px-11 flex flex-col justify-center items-center gap-2 relative z-5 my-8 sm:my-12 md:my-16 lg:my-16 mb-0 lg:pb-0">
-								<div className="w-full max-w-[960px] lg:w-[960px] h-[200px] sm:h-[280px] md:h-[450px] lg:h-[550px] bg-white shadow-[0px_0px_0px_0.9056603908538818px_rgba(0,0,0,0.08)] overflow-hidden rounded-[6px] sm:rounded-xl lg:rounded-[9.06px] flex flex-col justify-start items-start">
-									<div className="self-stretch flex-1 flex justify-start items-start">
-										<div className="w-full h-full flex items-center justify-center">
-											<div className="relative w-full h-full overflow-hidden">
-												<div
-													className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${
-														activeCard === 0 ? "opacity-100" : "opacity-0"
-													}`}
-												>
-													<ThemeImage
-														lightSrc="/assets/slide-1-light.png"
-														darkSrc="/assets/slide-1-dark.png"
-														alt="Form Builder Interface"
-														width={960}
-														height={720}
-														priority={true}
-														loading="eager"
-														className="w-full h-full object-cover"
-													/>
-												</div>
-
-												<div
-													className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${
-														activeCard === 1 ? "opacity-100" : "opacity-0"
-													}`}
-												>
-													<ThemeImage
-														lightSrc="/assets/slide-2-light.png"
-														darkSrc="/assets/slide-2-dark.png"
-														alt="Analytics Dashboard"
-														width={960}
-														height={720}
-														loading="lazy"
-														className="w-full h-full object-cover"
-													/>
-												</div>
-
-												<div
-													className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${
-														activeCard === 2 ? "opacity-100" : "opacity-0"
-													}`}
-												>
-													<ThemeImage
-														lightSrc="/assets/slide-3-light.png"
-														darkSrc="/assets/slide-3-dark.png"
-														alt="Data Visualization Dashboard"
-														width={960}
-														height={720}
-														loading="lazy"
-														className="w-full h-full object-cover"
-													/>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div className="self-stretch border-t border-b border-border flex justify-center items-start">
-								<div className="w-4 sm:w-6 md:w-8 lg:w-12 self-stretch relative overflow-hidden">
-									<div className="w-[120px] sm:w-[140px] md:w-[162px] -left-10 sm:left-[-50px] md:left-[-58px] top-[-120px] absolute flex flex-col justify-start items-start">
-										{Array.from({ length: 50 }).map((_, i) => (
-											<div
-												key={i}
-												className="self-stretch h-3 sm:h-4 -rotate-45 origin-top-left outline outline-border outline-offset-[-0.25px]"
-											/>
-										))}
-									</div>
-								</div>
-
-								<div className="flex-1 px-0 sm:px-2 md:px-0 flex flex-col md:flex-row justify-center items-stretch gap-0">
-									<FeatureCard
-										title="Drag & Drop Builder"
-										description="Intuitive drag-and-drop interface for building forms quickly. Add, rearrange, and configure form fields with ease."
-										isActive={activeCard === 0}
-										progress={activeCard === 0 ? progress : 0}
-										onClick={() => handleCardClick(0)}
-									/>
-									<FeatureCard
-										title="Save, Share & Export"
-										description="Save your form configurations, share them with team members, and export generated code for immediate use in your projects."
-										isActive={activeCard === 2}
-										progress={activeCard === 2 ? progress : 0}
-										onClick={() => handleCardClick(2)}
-									/>
-									<FeatureCard
-										title="Real-time Preview"
-										description="See your form changes instantly with live preview. Test form behavior and styling as you build."
-										isActive={activeCard === 1}
-										progress={activeCard === 1 ? progress : 0}
-										onClick={() => handleCardClick(1)}
-									/>
-								</div>
-
-								<div className="w-4 sm:w-6 md:w-8 lg:w-12 self-stretch relative overflow-hidden">
-									<div className="w-[120px] sm:w-[140px] md:w-[162px] -left-10 sm:left-[-50px] md:left-[-58px] top-[-120px] absolute flex flex-col justify-start items-start">
-										{Array.from({ length: 50 }).map((_, i) => (
-											<div
-												key={i}
-												className="self-stretch h-3 sm:h-4 -rotate-45 origin-top-left outline outline-border outline-offset-[-0.25px]"
-											/>
-										))}
+									<div
+										className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+											activeCard === 2 ? "opacity-100" : "opacity-0"
+										}`}
+									>
+										<ThemeImage
+											lightSrc="/assets/slide-3-light.png"
+											darkSrc="/assets/slide-3-dark.png"
+											alt="Data Visualization Dashboard"
+											width={1200}
+											height={800}
+											loading="lazy"
+											className="w-full h-full object-cover"
+										/>
 									</div>
 								</div>
 							</div>
 						</div>
+
+						{/* Feature Cards */}
+						<div className="w-full border-t border-b border-border">
+							<div className="flex flex-col md:flex-row justify-center items-stretch">
+								<FeatureCard
+									title="Drag & Drop Builder"
+									description="Intuitive drag-and-drop interface for building forms quickly. Add, rearrange, and configure form fields with ease."
+									isActive={activeCard === 0}
+									progress={activeCard === 0 ? progress : 0}
+									onClick={() => handleCardClick(0)}
+								/>
+								<FeatureCard
+									title="Save, Share & Export"
+									description="Save your form configurations, share them with team members, and export generated code for immediate use in your projects."
+									isActive={activeCard === 2}
+									progress={activeCard === 2 ? progress : 0}
+									onClick={() => handleCardClick(2)}
+								/>
+								<FeatureCard
+									title="Real-time Preview"
+									description="See your form changes instantly with live preview. Test form behavior and styling as you build."
+									isActive={activeCard === 1}
+									progress={activeCard === 1 ? progress : 0}
+									onClick={() => handleCardClick(1)}
+								/>
+							</div>
+						</div>
 					</div>
-					<div className="mt-16 text-center">
-						<h2 className="text-2xl font-semibold mb-8">Features</h2>
-						<div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-10">
+				</div>
+			</section>
+
+			{/* Features Section */}
+			<section className="w-full py-16">
+				<div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
+					<div className="text-center mb-12 md:mb-16">
+						<h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold mb-4">Features</h2>
+					</div>
+					<div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
 							{features.map((feature) => {
 								const IconComponent = feature.icon;
 								return (
@@ -497,116 +402,140 @@ function HomePage() {
 									</div>
 								);
 							})}
-						</div>
 					</div>
+				</div>
+			</section>
 
+			{/* Sponsors & Contributors */}
+			<section className="w-full py-16 ">
+				<div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
 					<SponsorsContributors />
+				</div>
+			</section>
 
-					<div className="mt-16 text-center">
-						<h2 className="text-2xl font-semibold mb-8">Development Roadmap</h2>
-						<div className="grid gap-6 max-w-6xl mx-4 sm:mx-6 md:mx-8 lg:mx-10">
-							<div className="text-left">
-								<div className="flex items-center gap-3 mb-4">
-									<CheckCircle className="w-6 h-6 text-green-500" />
-									<h3 className="text-xl font-semibold text-foreground">
-										Completed Features
-									</h3>
-								</div>
-								<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-									{roadmapItems
-										.filter((item) => item.status === "completed")
-										.map((item) => (
-											<div
-												key={item.title}
-												className="p-4 rounded-lg border bg-card border-border"
-											>
-												<div className="flex items-start gap-3">
-													<CheckCircle className="w-5 h-5 text-green-500 mt-0.5 shrink-0" />
-													<div className="flex-1">
-														<h4 className="font-medium text-foreground mb-1">
-															{item.title}
-														</h4>
-														<p className="text-sm text-muted-foreground">
-															{item.description}
-														</p>
-													</div>
-												</div>
-											</div>
-										))}
-								</div>
+			{/* Development Roadmap */}
+			<section className="w-full py-16 ">
+				<div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
+					<div className="text-center mb-12 md:mb-16">
+						<h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold mb-4">Development Roadmap</h2>
+					</div>
+					<div className="space-y-12">
+						<div className="text-left">
+							<div className="flex items-center gap-3 mb-6">
+								<CheckCircle className="w-6 h-6 text-green-500" />
+								<h3 className="text-xl sm:text-2xl font-semibold text-foreground">
+									Completed Features
+								</h3>
 							</div>
-
-							<div className="text-left">
-								<div className="flex items-center gap-3 mb-4">
-									<Clock className="w-6 h-6 text-yellow-500" />
-									<h3 className="text-xl font-semibold text-foreground">
-										In Progress
-									</h3>
-								</div>
-								<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-									{roadmapItems
-										.filter((item) => item.status === "in-progress")
-										.map((item) => (
-											<div
-												key={item.title}
-												className="p-4 rounded-lg border bg-card border-border"
-											>
-												<div className="flex items-start gap-3">
-													<Clock className="w-5 h-5 text-yellow-500 mt-0.5 shrink-0" />
-													<div className="flex-1">
-														<h4 className="font-medium text-foreground mb-1">
-															{item.title}
-														</h4>
-														<p className="text-sm text-muted-foreground">
-															{item.description}
-														</p>
-													</div>
+							<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+								{roadmapItems
+									.filter((item) => item.status === "completed")
+									.map((item) => (
+										<div
+											key={item.title}
+											className="p-4 md:p-5 rounded-lg border bg-card border-border"
+										>
+											<div className="flex items-start gap-3">
+												<CheckCircle className="w-5 h-5 text-green-500 mt-0.5 shrink-0" />
+												<div className="flex-1">
+													<h4 className="font-medium text-foreground mb-1">
+														{item.title}
+													</h4>
+													<p className="text-sm text-muted-foreground">
+														{item.description}
+													</p>
 												</div>
 											</div>
-										))}
-								</div>
+										</div>
+									))}
 							</div>
+						</div>
 
-							<div className="text-left">
-								<div className="flex items-center gap-3 mb-4">
-									<Circle className="w-6 h-6 text-blue-500" />
-									<h3 className="text-xl font-semibold text-foreground">
-										Planned Features
-									</h3>
-								</div>
-								<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-									{roadmapItems
-										.filter((item) => item.status === "planned")
-										.map((item) => (
-											<div
-												key={item.title}
-												className="p-4 rounded-lg border bg-card border-border"
-											>
-												<div className="flex items-start gap-3">
-													<Circle className="w-5 h-5 text-blue-500 mt-0.5 shrink-0" />
-													<div className="flex-1">
-														<h4 className="font-medium text-foreground mb-1">
-															{item.title}
-														</h4>
-														<p className="text-sm text-muted-foreground">
-															{item.description}
-														</p>
-													</div>
+						<div className="text-left">
+							<div className="flex items-center gap-3 mb-6">
+								<Clock className="w-6 h-6 text-yellow-500" />
+								<h3 className="text-xl sm:text-2xl font-semibold text-foreground">
+									In Progress
+								</h3>
+							</div>
+							<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+								{roadmapItems
+									.filter((item) => item.status === "in-progress")
+									.map((item) => (
+										<div
+											key={item.title}
+											className="p-4 md:p-5 rounded-lg border bg-card border-border"
+										>
+											<div className="flex items-start gap-3">
+												<Clock className="w-5 h-5 text-yellow-500 mt-0.5 shrink-0" />
+												<div className="flex-1">
+													<h4 className="font-medium text-foreground mb-1">
+														{item.title}
+													</h4>
+													<p className="text-sm text-muted-foreground">
+														{item.description}
+													</p>
 												</div>
 											</div>
-										))}
-								</div>
+										</div>
+									))}
+							</div>
+						</div>
+
+						<div className="text-left">
+							<div className="flex items-center gap-3 mb-6">
+								<Circle className="w-6 h-6 text-blue-500" />
+								<h3 className="text-xl sm:text-2xl font-semibold text-foreground">
+									Planned Features
+								</h3>
+							</div>
+							<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+								{roadmapItems
+									.filter((item) => item.status === "planned")
+									.map((item) => (
+										<div
+											key={item.title}
+											className="p-4 md:p-5 rounded-lg border bg-card border-border"
+										>
+											<div className="flex items-start gap-3">
+												<Circle className="w-5 h-5 text-blue-500 mt-0.5 shrink-0" />
+												<div className="flex-1">
+													<h4 className="font-medium text-foreground mb-1">
+														{item.title}
+													</h4>
+													<p className="text-sm text-muted-foreground">
+														{item.description}
+													</p>
+												</div>
+											</div>
+										</div>
+									))}
 							</div>
 						</div>
 					</div>
+				</div>
+			</section>
 
+			{/* FAQ Section */}
+			<section className="w-full py-16">
+				<div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
 					<FAQSection />
+				</div>
+			</section>
 
+			{/* CTA Section */}
+			<section className="w-full py-16">
+				<div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
 					<CTASection />
+				</div>
+			</section>
 
+			{/* Footer */}
+			<footer className="w-full">
+				<div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
 					<FooterSection />
 				</div>
-			</div>
+			</footer>
 		</div>
 	);
 }
@@ -626,16 +555,22 @@ function FeatureCard({
 }) {
 	return (
 		<div
-			className={`w-full md:flex-1 self-stretch px-6 py-5 overflow-hidden flex flex-col justify-start items-start gap-2 cursor-pointer relative border-b md:border-b-0 last:border-b-0 ${
+			className={`w-full md:flex-1 px-6 py-5 md:py-6 flex flex-col justify-start items-start gap-2 cursor-pointer relative border-b md:border-b-0 md:border-r last:border-r-0 last:border-b-0 transition-colors ${
 				isActive
 					? "bg-card shadow-[0px_0px_0px_0.75px_var(--color-border)_inset]"
-					: "border-l-0 border-r-0 md:border border-border"
+					: "border-border hover:bg-muted/50"
 			}`}
 			onClick={onClick}
-			onKeyUp={onClick}
+			onKeyUp={(e) => {
+				if (e.key === "Enter" || e.key === " ") {
+					onClick();
+				}
+			}}
+			role="button"
+			tabIndex={0}
 		>
 			{isActive && (
-				<div className="absolute top-0 left-0 w-full h-0.5 bg-(--color-border)">
+				<div className="absolute top-0 left-0 w-full h-0.5 bg-border">
 					<div
 						className="h-full bg-foreground transition-all duration-100 ease-linear"
 						style={{ width: `${progress}%` }}
@@ -643,10 +578,10 @@ function FeatureCard({
 				</div>
 			)}
 
-			<div className="self-stretch flex justify-center flex-col text-foreground text-sm md:text-sm font-semibold leading-6 md:leading-6 font-sans">
+			<div className="text-foreground text-sm md:text-base font-semibold leading-6">
 				{title}
 			</div>
-			<div className="self-stretch text-muted-foreground text-[13px] md:text-[13px] font-normal leading-[22px] md:leading-[22px] font-sans">
+			<div className="text-muted-foreground text-xs md:text-sm font-normal leading-relaxed">
 				{description}
 			</div>
 		</div>

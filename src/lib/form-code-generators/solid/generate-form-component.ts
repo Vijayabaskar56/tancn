@@ -261,7 +261,7 @@ export const getFormElementCode = (
                     >
                       <MultiSelectTrigger>
                         <MultiSelectValue
-                          placeholder="${field.placeholder === "" ? "Select frameworks..." : field.placeholder}"
+                          placeholder="${field.placeholder === "" || field.placeholder !== undefined ? "Select Multiple Options..." : field.placeholder}"
                           maxDisplay={3}
                           maxItemLength={15}
                         />

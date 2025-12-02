@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { fieldItems, items } from "@/constants/registry";
 import type { SettingsCollection } from "@/db-collections/settings.collections";
 import useSettings from "@/hooks/use-settings";
-import { updatePreferredPackageManager } from "@/utils/utils";
+import { getRegistryUrl, updatePreferredPackageManager } from "@/utils/utils";
 import Loader from "@/components/loader";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { seo } from "@/utils/seo";
@@ -343,22 +343,22 @@ function RouteComponent() {
 		{
 			value: "pnpm",
 			registery:
-				`pnpm dlx shadcn@canary add https://tancn.dev/r/${settings?.preferredFramework}/tanstack-form.json`,
+				`pnpm dlx shadcn@canary add ${getRegistryUrl(settings?.preferredFramework)}/tanstack-form.json`,
 		},
 		{
 			value: "npm",
 			registery:
-				`npx shadcn@canary add https://tancn.dev/r/${settings?.preferredFramework}/tanstack-form.json`,
+				`npx shadcn@canary add ${getRegistryUrl(settings?.preferredFramework)}/tanstack-form.json`,
 		},
 		{
 			value: "yarn",
 			registery:
-				`yarn shadcn@canary add https://tancn.dev/r/${settings?.preferredFramework}/tanstack-form.json`,
+				`yarn shadcn@canary add ${getRegistryUrl(settings?.preferredFramework)}/tanstack-form.json`,
 		},
 		{
 			value: "bun",
 			registery:
-				`bunx --bun shadcn@canary add https://tancn.dev/r/${settings?.preferredFramework}/tanstack-form.json`,
+				`bunx --bun shadcn@canary add ${getRegistryUrl(settings?.preferredFramework)}/tanstack-form.json`,
 		},
 	];
 

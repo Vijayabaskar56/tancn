@@ -1,13 +1,16 @@
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Link } from "@tanstack/react-router";
+import { Link, useLocation } from "@tanstack/react-router";
 import { Suspense } from "react";
 import AppToggle from "./app-toggle";
 import { GithubButton } from "./ui/github-button";
 import { Skeleton } from "./ui/skeleton";
 
 export default function NavBar() {
+	const location = useLocation();
+	const isLandingPage = location.pathname === "/";
+
 	const { data: stars } = useSuspenseQuery({
 		queryKey: ["github-stars"],
 		queryFn: async () => {
@@ -33,13 +36,13 @@ export default function NavBar() {
 		},
 	});
 	return (
-		<header className=" z-100 bg-background border-b px-4 md:px-6">
+		<header className="fixed left-0 right-0 z-40 bg-background  px-4 md:px-6 transition-top duration-200" id="navbar" style={{ top: 'var(--banner-height, 0px)' }}>
 			<div className="flex h-12 items-center justify-between gap-4">
 				{/* Left side */}
-				<div className="flex flex-1 items-center gap-2">
+				<div className={`flex ${isLandingPage ? "" : "flex-1"} items-center gap-2`}>
 					<div className="mr-4 flex">
 						<Link to="/">
-							<div className="flex text-2xl justify-center items-center">
+							<div className="flex  text-2xl justify-center items-center">
 								<svg
 									viewBox="0 0 473 473"
 									fill="none"
@@ -109,6 +112,35 @@ export default function NavBar() {
 							</div>
 						</Link>
 					</div>
+					{/* Navigation Links - Only show on landing page */}
+					{isLandingPage && (
+						<nav className="hidden sm:flex items-center lg:gap-6 text-accent md:gap-2 gap-0 md:ml-6 ml-0">
+							<Link
+								to="/"
+								className="text-sm font-medium text-accent-foreground hover:text-foreground/80 transition-colors"
+							>
+								Home
+							</Link>
+							<Link
+								to="/form-builder"
+								className="text-sm font-medium text-foreground hover:text-foreground/80 transition-colors"
+							>
+								Form Builder
+							</Link>
+							<Link
+								to="/table-builder"
+								className="text-sm font-medium text-foreground hover:text-foreground/80 transition-colors"
+							>
+								Table Builder
+							</Link>
+							<Link
+								to="/form-registry"
+								className="text-sm font-medium text-foreground hover:text-foreground/80 transition-colors"
+							>
+								Form Registry
+							</Link>
+						</nav>
+					)}
 				</div>
 				{/* Middle area */}
 				<AppToggle />
@@ -125,6 +157,7 @@ export default function NavBar() {
 							variant="outline"
 						/>
 					</Suspense>
+					<div className="hidden md:flex items-center gap-2">
 					<Button
 						size="sm"
 						variant="ghost"
@@ -177,6 +210,7 @@ export default function NavBar() {
 							</svg>
 						</a>
 					</Button>
+					</div>
 					<ModeToggle />
 				</div>
 			</div>

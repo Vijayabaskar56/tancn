@@ -1,6 +1,7 @@
 import { useLiveQuery } from "@tanstack/react-db";
 import { tableBuilderCollection } from "@/db-collections/table-builder.collections";
 import { createIsomorphicFn } from "@tanstack/react-start";
+import { DEFAULT_TABLE_COLUMNS, DEFAULT_TABLE_DATA } from "@/constants/default-table-data";
 
 const defaultTableState = {
 	tableName: "draft",
@@ -29,8 +30,8 @@ const defaultTableState = {
 		},
 	},
 	table: {
-		columns: [],
-		data: [],
+		columns: DEFAULT_TABLE_COLUMNS,
+		data: DEFAULT_TABLE_DATA,
 	},
 };
 

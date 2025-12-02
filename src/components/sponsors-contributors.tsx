@@ -40,7 +40,7 @@ export function SponsorsContributors() {
 	const remainingContributors = contributors.length - 15;
 
 	return (
-		<div className="mt-16 w-full max-w-6xl mx-auto px-4 sm:px-6 md:px-8">
+		<div className="mt-16 w-full max-w-full mx-auto">
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 				{/* Sponsors Card */}
 				<Card className="bg-none border-border h-full flex flex-col overflow-hidden relative">

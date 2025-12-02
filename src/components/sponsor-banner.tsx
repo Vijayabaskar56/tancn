@@ -1,27 +1,25 @@
 import { ArrowRightIcon, X } from "lucide-react";
-import { useState } from "react";
 
 const STORAGE_KEY = "sponsor-banner-closed-at";
-const BANNER_HIDE_DURATION = 2 * 24 * 60 * 60 * 1000; // 2 days in milliseconds
 
 export default function SponsorBanner() {
-	const [isClosed, setIsClosed] = useState(false);
-
 	const handleClose = () => {
-		setIsClosed(true);
+		// Hide the banner visually by adding the banner-hidden class
+		const banner = document.getElementById("sponsor-banner");
+		if (banner) {
+			banner.classList.add("banner-hidden");
+		}
+
+		// Persist the close action so we don't show the banner again for 2 days
 		localStorage.setItem(STORAGE_KEY, new Date().toISOString());
 	};
-
-	if (isClosed) {
-		return null;
-	}
 
 	return (
 		<>
 			<style>{`.banner-hidden { display: none !important; }`}</style>
 			<div
 				id="sponsor-banner"
-				className="bg-primary px-4 py-1.5 text-primary-foreground relative banner-hidden"
+				className="fixed top-0 left-0 right-0 z-50 bg-primary px-4 py-1.5 text-primary-foreground banner-hidden"
 				suppressHydrationWarning={true}
 			>
 				<button
@@ -71,7 +69,7 @@ export default function SponsorBanner() {
 							/>
 						</svg>
 						<span className="text-base leading-5 md:leading-none">
-							The ultimate block set for Shadcn UI & Tailwind - Try{" "}
+							The ultimate <span className="inline md:hidden">Shadcn</span> block set <span className="hidden md:inline">for Shadcn UI & Tailwind - Try</span> {" "}
 							<span className="font-bold">Shadcnblocks.com</span>
 						</span>
 						<ArrowRightIcon

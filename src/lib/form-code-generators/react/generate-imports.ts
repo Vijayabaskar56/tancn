@@ -1,5 +1,6 @@
 import type { FormArray, FormElement } from "@/types/form-types";
 import useSettings from "@/hooks/use-settings";
+import { getRegistryUrl } from "@/utils/utils";
 
 export const generateImports = (
 	formElements: (FormElement | FormArray)[],
@@ -122,7 +123,6 @@ export const extractImportDependencies = (
 	const registry = new Set<string>();
 	const deps = new Set<string>();
 	const settings = useSettings();
-	const preferredFramework = settings?.preferredFramework || "react";
 	for (const stmt of importSet) {
 		const fromMatch = stmt.match(/from\s+["']([^"']+)["']/);
 		if (!fromMatch) continue;
@@ -131,7 +131,7 @@ export const extractImportDependencies = (
 		if (modulePath.startsWith("@/components/")) {
 			const component = modulePath.split("/").pop();
 			if (component && component === "tanstack-form") {
-				registry.add(`https://tancn.dev/r/${preferredFramework}tanstack-form.json`);
+				registry.add(`${getRegistryUrl(settings.preferredFramework)}/tanstack-form.json`);
 			} else {
 				if (component) registry.add(component);
 			}

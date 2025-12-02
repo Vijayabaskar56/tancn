@@ -1,4 +1,5 @@
 /** biome-ignore-all lint/complexity/noStaticOnlyClass: it's alright */
+import { DEFAULT_TABLE_COLUMNS, DEFAULT_TABLE_DATA } from "@/constants/default-table-data";
 import { getStaticData } from "@/constants/static-dummy-data";
 import { tableTemplates } from "@/constants/table-templates";
 import {
@@ -587,8 +588,8 @@ export class TableBuilderService {
 					tableName : 'draft',
 					settings: defaultSettings,
 					table: {
-						columns: [],
-						data: [],
+						columns: DEFAULT_TABLE_COLUMNS,
+						data: DEFAULT_TABLE_DATA,
 					},
 				},
 			]);

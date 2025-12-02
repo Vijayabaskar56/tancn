@@ -70,22 +70,22 @@ export default function FAQSection() {
 	};
 
 	return (
-		<div className="w-full flex justify-center items-start">
-			<div className="flex-1 px-4 md:px-12 py-16 md:py-20 flex flex-col lg:flex-row justify-start items-start gap-6 lg:gap-12">
+		<div className="w-full">
+			<div className="flex flex-col lg:flex-row justify-start items-start gap-8 lg:gap-12">
 				{/* Left Column - Header */}
-				<div className="w-full lg:flex-1 flex flex-col justify-center items-start gap-4 lg:py-5">
-					<div className="w-full flex flex-col justify-center text-foreground font-semibold leading-tight md:leading-[44px] font-sans text-4xl tracking-tight">
+				<div className="w-full lg:w-1/2 flex flex-col justify-center items-start gap-4 lg:sticky lg:top-24 lg:self-start">
+					<h2 className="w-full text-foreground font-semibold leading-tight text-2xl sm:text-3xl md:text-4xl tracking-tight">
 						Frequently Asked Questions
-					</div>
-					<div className="w-full text-muted-foreground text-base font-normal leading-7 font-sans">
+					</h2>
+					<p className="w-full text-muted-foreground text-sm sm:text-base font-normal leading-relaxed">
 						Build powerful forms with ease, generate type-safe code,
 						<br className="hidden md:block" />
 						and integrate seamlessly with your projects.
-					</div>
+					</p>
 				</div>
 
 				{/* Right Column - FAQ Items */}
-				<div className="w-full lg:flex-1 flex flex-col justify-center items-center">
+				<div className="w-full lg:w-1/2 flex flex-col">
 					<div className="w-full flex flex-col">
 						{faqData.map((item, index) => {
 							const isOpen = openItems === index;
@@ -97,17 +97,17 @@ export default function FAQSection() {
 								>
 									<Button
 										onClick={() => toggleItem(index)}
-										className="w-full px-5 py-[18px] flex justify-between items-center gap-5 text-left hover:bg-muted/20 transition-colors duration-200"
+										className="w-full px-0 sm:px-2 py-4 sm:py-[18px] flex justify-between items-start sm:items-center gap-3 sm:gap-5 text-left hover:bg-muted/20 transition-colors duration-200"
 										type="button"
 										variant="ghost"
 										aria-expanded={isOpen}
 									>
-										<div className="flex-1 text-foreground text-base font-medium leading-6 font-sans">
+										<span className="flex-1 min-w-0 text-foreground text-sm sm:text-base font-medium leading-relaxed pr-2">
 											{item.question}
-										</div>
-										<div className="flex justify-center items-center">
+										</span>
+										<div className="shrink-0 flex justify-center items-center">
 											<ChevronDownIcon
-												className={`w-6 h-6 text-muted-foreground transition-transform duration-300 ease-in-out ${
+												className={`w-5 h-5 sm:w-6 sm:h-6 text-muted-foreground transition-transform duration-300 ease-in-out ${
 													isOpen ? "rotate-180" : "rotate-0"
 												}`}
 											/>
@@ -119,7 +119,7 @@ export default function FAQSection() {
 											isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
 										}`}
 									>
-										<div className="px-5 pb-[18px] text-muted-foreground text-sm font-normal leading-6 font-sans">
+										<div className="px-0 sm:px-2 pb-4 sm:pb-[18px] text-muted-foreground text-xs sm:text-sm font-normal leading-relaxed">
 											{item.answer}
 										</div>
 									</div>

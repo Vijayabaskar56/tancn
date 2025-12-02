@@ -1,17 +1,16 @@
+import { ErrorBoundary } from "@/components/error-boundary";
+import NavBar from "@/components/nav-bar";
+import { NotFound } from "@/components/not-found";
+import SponsorBanner from "@/components/sponsor-banner";
+import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
+import { seo } from "@/utils/seo";
 import type { QueryClient } from "@tanstack/react-query";
 import {
 	createRootRouteWithContext,
 	HeadContent,
 	Scripts,
 } from "@tanstack/react-router";
-import { ErrorBoundary } from "@/components/error-boundary";
-import NavBar from "@/components/nav-bar";
-import { NotFound } from "@/components/not-found";
-import { ThemeProvider } from "@/components/theme-provider";
-import { Toaster } from "@/components/ui/sonner";
-import DevTools from "@/integrations/tanstack-query/devtools";
-import { seo } from "@/utils/seo";
-import SponsorBanner from "@/components/sponsor-banner";
 import appCss from "../styles.css?url";
 
 interface MyRouterContext {
@@ -47,28 +46,109 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 	scripts: () => [
 		{
 			children: `
-				const STORAGE_KEY = "sponsor-banner-closed-at";
-				const BANNER_HIDE_DURATION = 2 * 24 * 60 * 60 * 1000; // 2 days in milliseconds
-				
-				const closedAt = localStorage.getItem(STORAGE_KEY);
-				let shouldHideBanner = false;
-				
-				if (closedAt) {
-					const closedTime = new Date(closedAt).getTime();
-					const currentTime = new Date().getTime();
-					shouldHideBanner = (currentTime - closedTime) < BANNER_HIDE_DURATION;
-				}
-				
-				window.__SPONSOR_BANNER_CLOSED__ = shouldHideBanner;
-				
-				const banner = document.getElementById("sponsor-banner");
-				if (banner) {
-					if (shouldHideBanner) {
-						banner.classList.add("banner-hidden");
-					} else {
-						banner.classList.remove("banner-hidden");
+				(function() {
+					const STORAGE_KEY = "sponsor-banner-closed-at";
+					const BANNER_HIDE_DURATION = 2 * 24 * 60 * 60 * 1000; // 2 days in milliseconds
+
+					function shouldShowBanner() {
+						const closedAt = localStorage.getItem(STORAGE_KEY);
+						if (!closedAt) {
+							// No record means banner should be shown
+							return true;
+						}
+
+						const closedTime = new Date(closedAt).getTime();
+						const currentTime = new Date().getTime();
+						const timeSinceClosed = currentTime - closedTime;
+
+						// Show banner if more than 2 days have passed
+						return timeSinceClosed >= BANNER_HIDE_DURATION;
 					}
-				}
+
+					function updateBannerVisibility() {
+						const banner = document.getElementById("sponsor-banner");
+						if (!banner) return;
+
+						if (shouldShowBanner()) {
+							// Remove banner-hidden class to show the banner
+							banner.classList.remove("banner-hidden");
+						} else {
+							// Add banner-hidden class to hide the banner
+							banner.classList.add("banner-hidden");
+						}
+					}
+
+					function updateLayout() {
+						const banner = document.getElementById("sponsor-banner");
+
+						if (banner && !banner.classList.contains("banner-hidden")) {
+							const bannerHeight = banner.offsetHeight;
+							document.documentElement.style.setProperty("--banner-height", bannerHeight + "px");
+							document.documentElement.style.setProperty("--main-padding-top", (bannerHeight + 48) + "px"); // banner + navbar height
+						} else {
+							// Banner is hidden or doesn't exist
+							document.documentElement.style.setProperty("--banner-height", "0px");
+							document.documentElement.style.setProperty("--main-padding-top", "48px"); // navbar height only
+						}
+					}
+
+					function init() {
+						// First, update banner visibility based on localStorage
+						updateBannerVisibility();
+						// Then update layout
+						updateLayout();
+					}
+
+					// Run after DOM is ready
+					if (document.readyState === "loading") {
+						document.addEventListener("DOMContentLoaded", init);
+					} else {
+						// DOM already loaded
+						setTimeout(init, 0);
+					}
+
+					// Update on resize
+					window.addEventListener("resize", updateLayout);
+
+					// Watch for banner visibility changes
+					const observer = new MutationObserver(function() {
+						updateLayout();
+					});
+
+					// Watch for banner element to be added to DOM
+					const bodyObserver = new MutationObserver(function(mutations) {
+						mutations.forEach(function(mutation) {
+							if (mutation.type === "childList") {
+								const banner = document.getElementById("sponsor-banner");
+								if (banner) {
+									updateBannerVisibility();
+									updateLayout();
+									observer.observe(banner, {
+										attributes: true,
+										attributeFilter: ["class"],
+										childList: false,
+										subtree: false
+									});
+								}
+							}
+						});
+					});
+
+					if (document.body) {
+						bodyObserver.observe(document.body, {
+							childList: true,
+							subtree: true
+						});
+					}
+
+					// Also watch for localStorage changes (in case banner is closed in another tab)
+					window.addEventListener("storage", function(e) {
+						if (e.key === STORAGE_KEY) {
+							updateBannerVisibility();
+							updateLayout();
+						}
+					});
+				})();
 			`,
 		},
 	],
@@ -88,16 +168,14 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 					storageKey="theme"
 				>
 					<SponsorBanner />
-					<div className="h-screen overflow-hidden flex flex-col">
-						<NavBar />
-						<main className="h-screen pt-12 overflow-auto">
-							<div className="[view-transition-name:main-content] min-h-full">
-								{/* {isFetching ? <Loader /> : <Outlet />} */}
-								{children}
-							</div>
-						</main>
-					</div>
-					{import.meta.env.DEV && <DevTools />}
+					<NavBar />
+					<main id="main-content" style={{ paddingTop: 'var(--main-padding-top, 48px)' }}>
+						<div className="[view-transition-name:main-content] min-h-full">
+							{/* {isFetching ? <Loader /> : <Outlet />} */}
+							{children}
+						</div>
+					</main>
+					{/* {import.meta.env.DEV && <DevTools />} */}
 					<Toaster richColors />
 				</ThemeProvider>
 				<Scripts />

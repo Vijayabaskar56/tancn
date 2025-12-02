@@ -98,7 +98,6 @@ export const defaultFormElements: DefaultFormElements = {
 		content: "Heading 3",
 		static: true,
 	},
-
 	Separator: {
 		static: true,
 	},

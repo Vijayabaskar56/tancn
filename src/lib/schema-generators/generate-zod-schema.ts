@@ -428,7 +428,7 @@ export const getZodSchemaString = (
 
 	let code = `
   import * as z from "zod"
-  export const ${schemaName} = z.object({\n${schemaEntries}\n});`;
+  export const ${schemaName}Schema = z.object({\n${schemaEntries}\n});`;
 
 	if (isMultiStep) {
 		const stepFields = getStepFields(formElements as FormStep[]);
@@ -450,7 +450,7 @@ export const getZodSchemaString = (
 
 		code += `
 
-export const ${schemaName}Steps = [
+export const ${schemaName}SchemaSteps = [
 ${stepSchemasStr}
 ];`;
 	}

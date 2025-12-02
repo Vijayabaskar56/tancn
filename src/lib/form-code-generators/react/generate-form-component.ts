@@ -242,7 +242,7 @@ export const getFormElementCode = (
                     >
                       <MultiSelectTrigger aria-invalid={!!field.state.meta.errors.length && field.state.meta.isTouched}>
                         <MultiSelectValue
-                          placeholder="${field.placeholder === "" ? "Select item" : field.placeholder}"
+                          placeholder="${field.placeholder === "" ? "Select Multiple Options..." : field.placeholder}"
                         />
                       </MultiSelectTrigger>
                       <MultiSelectContent>

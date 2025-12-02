@@ -21,6 +21,8 @@ import {
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
 import CopyButton from "./ui/copy-button";
+import useSettings from "@/hooks/use-settings";
+import { getRegistryUrl } from "@/utils/utils";
 
 export default function ComponentDetails({
 	component,
@@ -33,7 +35,7 @@ export default function ComponentDetails({
 }) {
 	const [code, setCode] = useState<string | null>(null);
 	// Removed pre-highlighting state; CodeBlockCode handles rendering
-
+	const { preferredFramework } = useSettings();
 	useEffect(() => {
 		let isMounted = true;
 		const controller = new AbortController();
@@ -45,7 +47,7 @@ export default function ComponentDetails({
 
 		const loadCode = async () => {
 			try {
-				const response = await fetch(`/r/${component.name}.json`, {
+				const response = await fetch(`/r/${preferredFramework.toLowerCase()}/${component.name}.json`, {
 					signal: controller.signal,
 				});
 				if (!response.ok) {
@@ -82,12 +84,12 @@ export default function ComponentDetails({
 		<div className="absolute top-2 right-2 flex gap-1 peer-data-comp-loading:hidden">
 			{showRegistry && (
 				<CopyRegistry
-					url={`https://tancn.dev/r/${component.name}.json`}
+					url={`${getRegistryUrl(preferredFramework)}/${component.name}.json`}
 				/>
 			)}
 			{showV0 && (
 				<OpenInV0
-					componentSource={`https://tancn.dev/r/${component.name}.json`}
+					componentSource={`${getRegistryUrl(preferredFramework)}/${component.name}.json`}
 				/>
 			)}
 			<Dialog>

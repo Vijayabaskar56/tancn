@@ -1,5 +1,6 @@
 import type { FormArray, FormElement } from "@/types/form-types";
 import useSettings from "@/hooks/use-settings";
+import { getRegistryUrl } from "@/utils/utils";
 
 export const generateImports = (
 	formElements: (FormElement | FormArray)[],
@@ -88,17 +89,47 @@ export const generateImports = (
 				);
 				importSet.add("import { For } from 'solid-js'");
 				break;
+			case "Textarea":
+				importSet.add(
+					'import { TextFieldTextArea } from "@/components/ui/input"',
+				);
+				break;
+			case "Checkbox":
+				importSet.add(
+					'import { Checkbox } from "@/components/ui/checkbox"',
+				);
+				break;
+			case "Slider" :
+				importSet.add(
+					'import { Slider, SliderGroup, SliderLabel, SliderValueLabel, SliderTrack, SliderFill, SliderThumb } from "@/components/ui/slider"',
+				);
+				break;
+			case "Switch" :
+				importSet.add(
+					'import { Switch, SwitchInput, SwitchControl, SwitchThumb } from "@/components/ui/switch"',
+				);
+				break;
+			case "Separator":
 			case "H1":
 			case "H2":
 			case "H3":
+			case "FieldDescription": {
+				// For any of these field types, accumulate the used components
+				const fieldComponents = new Set<string>();
+				if (field.fieldType === "Separator") fieldComponents.add("FieldSeparator");
+				if (["H1", "H2", "H3"].includes(field.fieldType)) fieldComponents.add("FieldLegend");
+				if (field.fieldType === "FieldDescription") fieldComponents.add("FieldDescription");
+				if (fieldComponents.size) {
+					importSet.add(
+						`import { ${Array.from(fieldComponents).join(", ")} } from "@/components/ui/field"`
+					);
+				}
 				break;
+			}
 			case "FormArray":
 				importSet.add('import { Separator } from "@/components/ui/separator"');
 				importSet.add('import { Plus, Trash2 } from "lucide-solid"');
 				importSet.add("import { For } from 'solid-js'");
-				break;
-			case "FieldDescription":
-			case "FieldLegend":
 				break;
 			default:
 				if (field.fieldType) {
@@ -140,7 +171,6 @@ export const extractImportDependencies = (
 	const registry = new Set<string>();
 	const deps = new Set<string>();
 	const settings = useSettings();
-	const preferredFramework = settings?.preferredFramework || "react";
 	for (const stmt of importSet) {
 		const fromMatch = stmt.match(/from\s+["']([^"']+)["']/);
 		if (!fromMatch) continue;
@@ -149,13 +179,18 @@ export const extractImportDependencies = (
 		if (modulePath.startsWith("@/components/")) {
 			const component = modulePath.split("/").pop();
 			if (component && component === "tanstack-form") {
-				registry.add(`https://tancn.dev/r/${preferredFramework}tanstack-form.json`);
+				registry.add(
+					`${getRegistryUrl(settings.preferredFramework)}/tanstack-form.json`,
+				);
 			} else {
 				if (component) registry.add(component);
 			}
 		} else if (!modulePath.startsWith("./")) {
 			// Skip function definitions and comments
-			if (!stmt.trim().startsWith("//") && !stmt.trim().startsWith("function")) {
+			if (
+				!stmt.trim().startsWith("//") &&
+				!stmt.trim().startsWith("function")
+			) {
 				deps.add(modulePath);
 			}
 		}
@@ -166,4 +201,3 @@ export const extractImportDependencies = (
 		dependencies: Array.from(deps),
 	};
 };
-

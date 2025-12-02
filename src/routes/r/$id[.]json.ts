@@ -1,4 +1,5 @@
 import { headerRateLimiter } from "@/lib/header-rate-limiter";
+import { getRegistryUrl } from "@/utils/utils";
 import { createFileRoute } from "@tanstack/react-router";
 import { env } from "cloudflare:workers";
 import { v4 as uuid } from "uuid";
@@ -85,7 +86,7 @@ export const Route = createFileRoute("/r/$id.json")({
 					return new Response(
 						JSON.stringify({
 							data: {
-								id: `https://tancn.dev/r/${id}.json`,
+								id: `${getRegistryUrl()}/r/${id}.json`,
 							},
 							error: null,
 						}),

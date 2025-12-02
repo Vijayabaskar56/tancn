@@ -2,15 +2,15 @@ import CopyButton from "@/components/ui/copy-button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { SettingsCollection } from "@/db-collections/settings.collections";
 import useSettings from "@/hooks/use-settings";
-import { updatePreferredPackageManager } from "@/utils/utils";
+import { getRegistryUrl, updatePreferredPackageManager } from "@/utils/utils";
 
 export default function CliCommands({ name }: { name: string }) {
 	const { preferredPackageManager, preferredFramework } = useSettings();
 	const commands = {
-		pnpm: `pnpm dlx shadcn@latest add https://tancn.dev/r/${preferredFramework}${name}.json`,
-		npm: `npx shadcn@latest add https://tancn.dev/r/${preferredFramework}${name}.json`,
-		yarn: `yarn shadcn@latest add https://tancn.dev/r/${preferredFramework}${name}.json`,
-		bun: `bunx --bun shadcn@latest add https://tancn.dev/r/${preferredFramework}${name}.json`,
+		pnpm: `pnpm dlx shadcn@latest add ${getRegistryUrl(preferredFramework)}/${name}.json`,
+		npm: `npx shadcn@latest add ${getRegistryUrl(preferredFramework)}/${name}.json`,
+		yarn: `yarn shadcn@latest add ${getRegistryUrl(preferredFramework)}/${name}.json`,
+		bun: `bunx --bun shadcn@latest add ${getRegistryUrl(preferredFramework)}/${name}.json`,
 	};
 
 	return (

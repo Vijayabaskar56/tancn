@@ -599,7 +599,7 @@ export const getArkTypeSchemaString = (
 
 	let code = `import { type } from "arktype"
 
-export const ${schemaName} = type({
+export const ${schemaName}Schema = type({
 ${schemaEntries}
 });`;
 
@@ -613,7 +613,7 @@ ${schemaEntries}
 
 		code += `
 
-export const ${schemaName}Steps = [
+export const ${schemaName}SchemaSteps = [
 ${stepSchemasStr}
 ];`;
 	}

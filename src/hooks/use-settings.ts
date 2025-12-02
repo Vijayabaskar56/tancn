@@ -1,8 +1,8 @@
+import { SettingsCollection, settingsCollection } from "@/db-collections/settings.collections";
 import { useLiveQuery } from "@tanstack/react-db";
-import { settingsCollection } from "@/db-collections/settings.collections";
 import { createIsomorphicFn } from "@tanstack/react-start";
 
-const defaultSettings =  {
+const defaultSettings: SettingsCollection = {
 		activeTab: "builder",
 		defaultRequiredValidation: true,
 		numericInput: false,
@@ -18,9 +18,9 @@ const defaultSettings =  {
 	};
 
 
-const useSettings = createIsomorphicFn().server(() => {
+const useSettings= createIsomorphicFn().server(() : SettingsCollection => {
 	return defaultSettings;
-}).client(() => {
+}).client(() : SettingsCollection => {
 	const { data } = useLiveQuery((q) =>
 		q.from({ settings: settingsCollection }).select(({ settings }) => ({
 			activeTab: settings.activeTab,
@@ -39,7 +39,7 @@ const useSettings = createIsomorphicFn().server(() => {
 	);
 
 	// Return the first (and only) settings object, or null if no settings exist
-	return data?.[0] || defaultSettings;
+	return data?.[0] || defaultSettings
 })
 
 export default useSettings;

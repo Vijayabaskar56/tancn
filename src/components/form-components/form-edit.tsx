@@ -555,11 +555,13 @@ const EditFormItem = (props: EditFormItemProps) => {
 	const { actions } = useFormStore();
 	const isNested = typeof props?.j === "number";
 	const DisplayName =
-		"label" in element
-			? element?.label
-			: "content" in element
-				? element.content
-				: element.name;
+	"label" in element && element?.label !== null && element?.label !== ""
+	? element?.label
+	: ("content" in element && element?.content !== null && element?.content !== ""
+		? element?.content
+		: "name" in element && element?.name !== null && element?.name !== ""
+			? element?.name
+			: "");
 
 	return (
 		<div className="w-full group">

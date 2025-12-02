@@ -103,9 +103,8 @@ export default function FormHeader() {
 
 	return (
 		<header className="w-full bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
-			<div className="flex h-auto lg:h-14 border-b items-center mx-3 flex-col lg:flex-row justify-between">
+			<div className="flex h-auto lg:h-14 border-y items-center mx-3 flex-col lg:flex-row justify-between">
 				{/* Tabs section */}
-				{isFormBuilder && (
 					<div className="order-2 lg:order-1 shrink-0 mr-4 w-full lg:w-auto py-3 border-t md:border-0 mx-3">
 						<div className="flex gap-2">
 							<AnimatedIconButton
@@ -140,7 +139,6 @@ export default function FormHeader() {
 							/>
 						</div>
 					</div>
-				)}
 				{/* Actions section */}
 				<ScrollArea className="md:w-fit w-full py-2 order-1 lg:order-2">
 					<div className="flex items-center gap-2">

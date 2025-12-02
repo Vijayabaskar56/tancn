@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/revola";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
+import { settingsCollection } from "@/db-collections/settings.collections";
 import useTableStore from "@/hooks/use-table-store";
 import { TableBuilderService } from "@/services/table-builder.service";
 import {
@@ -29,12 +30,11 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Framework } from "../form-components/types";
 import { AnimatedIconButton } from "../ui/animated-icon-button";
 import { RotateCWIcon } from "../ui/rotate-cw";
 import TableCodeDialog from "./table-code-dialog";
 import DataUploadDialog from "./table-data-upload-dialog";
-import { Framework } from "../form-components/types";
-import { settingsCollection } from "@/db-collections/settings.collections";
 
 export default function TableHeader() {
 	const tableData = useTableStore();
@@ -97,7 +97,7 @@ export default function TableHeader() {
 
 	return (
 		<header className="w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-			<div className="flex h-auto lg:h-14 border-b items-center mx-3 flex-col lg:flex-row md:justify-end justify-center">
+			<div className="flex h-auto lg:h-14 border-y items-center mx-3 flex-col lg:flex-row md:justify-end justify-center">
 				{/* Actions section */}
 				<ScrollArea className="md:w-fit w-full py-2 order-1 lg:order-2">
 					<div className="flex items-center gap-2 justify-center">

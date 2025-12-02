@@ -14,7 +14,7 @@ import useSettings from "@/hooks/use-settings";
 import { generateFormCode } from "@/lib/form-code-generators";
 import { flattenFormSteps } from "@/lib/form-elements-helpers";
 import { generateValidationCode } from "@/lib/schema-generators";
-import { formatCode, logger, updatePreferredPackageManager } from "@/utils/utils";
+import { formatCode, getRegistryUrl, logger, updatePreferredPackageManager } from "@/utils/utils";
 import type { Settings } from "@/components/form-components/types";
 import type {
 	FormElement,
@@ -99,15 +99,14 @@ export function CodeBlockPackagesInstallation({
 	const preferredPackageManager = settings?.preferredPackageManager || "pnpm";
 	const packagesSet = new Set(formElementTypes);
 	const packages = Array.from(packagesSet).join(" ");
-	const preferredFramework = settings?.preferredFramework || "react";
 	const formPackage =
-		preferredFramework === "solid"
+		settings?.preferredFramework === "solid"
 			? "@tanstack/solid-form"
 			: "@tanstack/react-form";
-	const otherPackages = `${formPackage} zod${preferredFramework === "react" ? " motion" : ""}`;
+	const otherPackages = `${formPackage} zod${settings?.preferredFramework === "react" ? " motion" : ""}`;
 
 	const defaultRegistryUrl =
-		`https://tancn.dev/r/${settings?.preferredFramework}/tanstack-form.json`;
+		`${getRegistryUrl(settings?.preferredFramework)}/tanstack-form.json`;
 	const registryUrl = customRegistryUrl || defaultRegistryUrl;
 
 	const tabsData = [
@@ -255,14 +254,13 @@ const CodeBlockTSX = () => {
 	);
 };
 const CodeBlockSchema = () => {
-	const { formElements, validationSchema } = useFormStore();
-
+	const { formName, formElements, validationSchema } = useFormStore();
 	useEffect(() => {
 		logger("Form elements changed, regenerating schema code:", formElements);
 	}, [formElements]);
 	const validationCode = generateValidationCode(
 		false,
-		"schema",
+		formName.toLowerCase(),
 		validationSchema,
 		formElements,
 	);
