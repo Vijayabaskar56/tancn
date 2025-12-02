@@ -15,13 +15,14 @@ import {
 	Palette,
 	Share2,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+
 
 import Loader from "@/components/loader";
 import { Button } from "@/components/ui/button";
 import { seo } from "@/utils/seo";
 import { SponsorsContributors } from "@/components/sponsors-contributors";
-import { ThemeImage } from "@/components/image";
+
+import { MiniFormBuilder } from "@/components/mini-form-builder";
 
 export const Route = createFileRoute("/")({
 	head: () => ({
@@ -220,28 +221,8 @@ const roadmapItems = [
 ];
 
 function HomePage() {
-	const [activeCard, setActiveCard] = useState(0);
-	const [progress, setProgress] = useState(0);
-	useEffect(() => {
-		const progressInterval = setInterval(() => {
-			setProgress((prev) => {
-				if (prev >= 100) {
-					setActiveCard((current) => (current + 1) % 3);
-					return 0;
-				}
-				return prev + 2; // 2% every 100ms = 5 seconds total
-			});
-		}, 100);
+	// Carousel logic removed
 
-		return () => {
-			clearInterval(progressInterval);
-		};
-	}, []);
-
-	const handleCardClick = (index: number) => {
-		setActiveCard(index);
-		setProgress(0);
-	};
 
 	return (
 		<div className="w-full min-h-screen relative bg-background md:px-8 px-4 overflow-x-hidden">
@@ -286,57 +267,8 @@ function HomePage() {
 
 						{/* Product Visual */}
 						<div className="w-full relative mb-8 sm:mb-12 md:mb-16 lg:mb-20">
-							<div className="relative w-full h-[300px] sm:h-[400px] md:h-[550px] lg:h-[650px] bg-card border border-border shadow-2xl overflow-hidden rounded-xl sm:rounded-2xl lg:rounded-3xl">
-								<div className="absolute inset-0">
-									<div
-										className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-											activeCard === 0 ? "opacity-100" : "opacity-0"
-										}`}
-									>
-										<ThemeImage
-											lightSrc="/assets/slide-1-light.png"
-											darkSrc="/assets/slide-1-dark.png"
-											alt="Form Builder Interface"
-											width={1200}
-											height={800}
-											priority={true}
-											loading="eager"
-											className="w-full h-full object-cover"
-										/>
-									</div>
-
-									<div
-										className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-											activeCard === 1 ? "opacity-100" : "opacity-0"
-										}`}
-									>
-										<ThemeImage
-											lightSrc="/assets/slide-2-light.png"
-											darkSrc="/assets/slide-2-dark.png"
-											alt="Analytics Dashboard"
-											width={1200}
-											height={800}
-											loading="lazy"
-											className="w-full h-full object-cover"
-										/>
-									</div>
-
-									<div
-										className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-											activeCard === 2 ? "opacity-100" : "opacity-0"
-										}`}
-									>
-										<ThemeImage
-											lightSrc="/assets/slide-3-light.png"
-											darkSrc="/assets/slide-3-dark.png"
-											alt="Data Visualization Dashboard"
-											width={1200}
-											height={800}
-											loading="lazy"
-											className="w-full h-full object-cover"
-										/>
-									</div>
-								</div>
+							<div className="relative w-full h-[600px] md:h-[700px] lg:h-[800px] bg-transparent overflow-hidden">
+								<MiniFormBuilder />
 							</div>
 						</div>
 
@@ -346,23 +278,14 @@ function HomePage() {
 								<FeatureCard
 									title="Drag & Drop Builder"
 									description="Intuitive drag-and-drop interface for building forms quickly. Add, rearrange, and configure form fields with ease."
-									isActive={activeCard === 0}
-									progress={activeCard === 0 ? progress : 0}
-									onClick={() => handleCardClick(0)}
 								/>
 								<FeatureCard
 									title="Save, Share & Export"
 									description="Save your form configurations, share them with team members, and export generated code for immediate use in your projects."
-									isActive={activeCard === 2}
-									progress={activeCard === 2 ? progress : 0}
-									onClick={() => handleCardClick(2)}
 								/>
 								<FeatureCard
 									title="Real-time Preview"
 									description="See your form changes instantly with live preview. Test form behavior and styling as you build."
-									isActive={activeCard === 1}
-									progress={activeCard === 1 ? progress : 0}
-									onClick={() => handleCardClick(1)}
 								/>
 							</div>
 						</div>
@@ -543,40 +466,25 @@ function HomePage() {
 function FeatureCard({
 	title,
 	description,
-	isActive,
-	progress,
 	onClick,
 }: {
 	title: string;
 	description: string;
-	isActive: boolean;
-	progress: number;
-	onClick: () => void;
+	onClick?: () => void;
 }) {
 	return (
 		<div
-			className={`w-full md:flex-1 px-6 py-5 md:py-6 flex flex-col justify-start items-start gap-2 cursor-pointer relative border-b md:border-b-0 md:border-r last:border-r-0 last:border-b-0 transition-colors ${
-				isActive
-					? "bg-card shadow-[0px_0px_0px_0.75px_var(--color-border)_inset]"
-					: "border-border hover:bg-muted/50"
-			}`}
+			className={`w-full md:flex-1 px-6 py-5 md:py-6 flex flex-col justify-start items-start gap-2 cursor-pointer relative border-b md:border-b-0 md:border-r last:border-r-0 last:border-b-0 transition-colors border-border hover:bg-muted/50`}
 			onClick={onClick}
 			onKeyUp={(e) => {
 				if (e.key === "Enter" || e.key === " ") {
-					onClick();
+					onClick?.();
 				}
 			}}
 			role="button"
 			tabIndex={0}
 		>
-			{isActive && (
-				<div className="absolute top-0 left-0 w-full h-0.5 bg-border">
-					<div
-						className="h-full bg-foreground transition-all duration-100 ease-linear"
-						style={{ width: `${progress}%` }}
-					/>
-				</div>
-			)}
+
 
 			<div className="text-foreground text-sm md:text-base font-semibold leading-6">
 				{title}
