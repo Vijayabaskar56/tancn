@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect } from "react";
+import type { Settings } from "@/components/form-components/types";
 import {
 	CodeBlock,
 	CodeBlockCode,
@@ -14,13 +15,29 @@ import useSettings from "@/hooks/use-settings";
 import { generateFormCode } from "@/lib/form-code-generators";
 import { flattenFormSteps } from "@/lib/form-elements-helpers";
 import { generateValidationCode } from "@/lib/schema-generators";
-import { formatCode, getRegistryUrl, logger, updatePreferredPackageManager } from "@/utils/utils";
-import type { Settings } from "@/components/form-components/types";
+import {
+	setPreferredFramework,
+	setPreferredSchema,
+} from "@/services/settings.service";
 import type {
 	FormElement,
 	FormElementOrList,
 	FormStep,
 } from "@/types/form-types";
+import {
+	formatCode,
+	getRegistryUrl,
+	logger,
+	updatePreferredPackageManager,
+} from "@/utils/utils";
+import { AnimatedIconButton } from "../ui/animated-icon-button";
+import { ChevronDownIcon } from "../ui/chevron-down";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 export const Wrapper = ({
 	children,
@@ -40,7 +57,7 @@ export const Wrapper = ({
 				<CopyButton text={children} />
 			</CodeBlockGroup>
 			<div className="*:mt-0 [&_pre]:p-3 w-full bg-background dark:bg-background/95">
-				<CodeBlockCode code={children} language={language} />
+				<CodeBlockCode code={children} language={language} copyButton={false} />
 			</div>
 		</CodeBlock>
 	);
@@ -105,8 +122,7 @@ export function CodeBlockPackagesInstallation({
 			: "@tanstack/react-form";
 	const otherPackages = `${formPackage} zod${settings?.preferredFramework === "react" ? " motion" : ""}`;
 
-	const defaultRegistryUrl =
-		`${getRegistryUrl(settings?.preferredFramework)}/tanstack-form.json`;
+	const defaultRegistryUrl = `${getRegistryUrl(settings?.preferredFramework)}/tanstack-form.json`;
 	const registryUrl = customRegistryUrl || defaultRegistryUrl;
 
 	const tabsData = [
@@ -224,8 +240,11 @@ const CodeBlockTSX = () => {
 	const { formElements, validationSchema, formName } = useFormStore();
 	const isMS = useIsMultiStep();
 	const settings = useSettings();
-	const preferredFramework = (settings?.preferredFramework ||
-		"react") as "react" | "solid" | "vue" | "angular";
+	const preferredFramework = (settings?.preferredFramework || "react") as
+		| "react"
+		| "solid"
+		| "vue"
+		| "angular";
 
 	useEffect(() => {
 		logger("Form elements changed, regenerating TSX code:", formElements);
@@ -254,12 +273,12 @@ const CodeBlockTSX = () => {
 	);
 };
 const CodeBlockSchema = () => {
-	const { formName, formElements, validationSchema } = useFormStore();
+	const { formName, formElements, validationSchema, isMS } = useFormStore();
 	useEffect(() => {
 		logger("Form elements changed, regenerating schema code:", formElements);
 	}, [formElements]);
 	const validationCode = generateValidationCode(
-		false,
+		isMS,
 		formName.toLowerCase(),
 		validationSchema,
 		formElements,
@@ -284,6 +303,9 @@ export function GeneratedFormCodeViewer({
 	tabsData: { value: string; registery: string }[];
 }) {
 	const settings = useSettings();
+	const { actions, validationSchema } = useFormStore();
+	const frameworks = ["react", "solid", "vue", "angular"] as const;
+	const validationLibs = ["zod", "valibot", "arktype"] as const;
 	return (
 		<Tabs defaultValue="tsx" className="w-full min-w-full flex">
 			<div className="flex justify-between">
@@ -291,6 +313,71 @@ export function GeneratedFormCodeViewer({
 					<TabsTrigger value="tsx">TSX</TabsTrigger>
 					<TabsTrigger value="schema">Schema</TabsTrigger>
 				</TabsList>
+				<div className="flex items-center gap-2">
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild>
+							<AnimatedIconButton
+								icon={<ChevronDownIcon className="w-4 h-4 ml-1" />}
+								text={
+									settings?.preferredFramework
+										? settings.preferredFramework.charAt(0).toUpperCase() +
+											settings.preferredFramework.slice(1)
+										: "React"
+								}
+								variant="ghost"
+								size="sm"
+								iconPosition="end"
+							/>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent className="z-[2000]">
+							{frameworks.map((framework) => (
+								<DropdownMenuItem
+									key={framework}
+									disabled={framework !== "react" && framework !== "solid"}
+									onClick={() =>
+										setPreferredFramework(
+											framework as "react" | "vue" | "angular" | "solid",
+										)
+									}
+								>
+									{framework.charAt(0).toUpperCase() + framework.slice(1)}
+									{framework !== "react" && framework !== "solid" && (
+										<p className="text-primary">soon!</p>
+									)}
+								</DropdownMenuItem>
+							))}
+						</DropdownMenuContent>
+					</DropdownMenu>
+					<div className="h-4 w-px bg-border" />
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild>
+							<AnimatedIconButton
+								icon={<ChevronDownIcon className="w-4 h-4 ml-1" />}
+								text={
+									validationSchema.charAt(0).toUpperCase() +
+									validationSchema.slice(1)
+								}
+								variant="ghost"
+								size="sm"
+								iconPosition="end"
+							/>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent>
+							{validationLibs.map((lib) => (
+								<DropdownMenuItem
+									key={lib}
+									onClick={() => {
+										actions.setValidationSchema(lib);
+										setPreferredSchema(lib as "zod" | "valibot" | "arktype");
+									}}
+								>
+									{lib.charAt(0).toUpperCase() + lib.slice(1)}
+								</DropdownMenuItem>
+							))}
+						</DropdownMenuContent>
+					</DropdownMenu>
+				</div>
+
 				{/* <GeneratedCodeInfoCard /> */}
 			</div>
 			<TabsContent value="tsx" tabIndex={-1}>

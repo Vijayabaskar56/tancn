@@ -43,14 +43,15 @@
 				"noArrayIndexKey": "off"
 			},
 			"correctness": {
-				"useUniqueElementIds": "off"
+				"useUniqueElementIds": "off",
+				"noChildrenProp": "off"
 			},
 			"a11y": {
 				"useSemanticElements": "off",
 				"useAriaPropsForRole": "off",
 				"useFocusableInteractive": "off",
 				"useKeyWithClickEvents": "off",
-				"noStaticElementInteractions" : "off"
+				"noStaticElementInteractions": "off"
 			}
 		},
 		"includes": ["src/**/*", ".vscode/*", "index.html", "vite.config.js"]
@@ -59,5 +60,18 @@
 		"formatter": {
 			"quoteStyle": "double"
 		}
+	},
+	"css": {
+		"parser": {
+			"allowWrongLineComments": true,
+			"cssModules": true
+		},
+		"linter": {
+			"enabled": false
+		},
+		"assist": {
+			"enabled": false
+		},
+		"formatter": null
 	}
 }

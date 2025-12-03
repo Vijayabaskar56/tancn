@@ -1,17 +1,17 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import ComponentCard from "@/components/component-card";
 import ComponentDetails from "@/components/component-details";
+import { ErrorBoundary } from "@/components/error-boundary";
 import { Wrapper } from "@/components/form-components/form-code-viewer";
+import Loader from "@/components/loader";
 import { Button } from "@/components/ui/button";
 import { CodeBlock, CodeBlockCode } from "@/components/ui/code-block";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { fieldItems, items } from "@/constants/registry";
 import type { SettingsCollection } from "@/db-collections/settings.collections";
 import useSettings from "@/hooks/use-settings";
-import { getRegistryUrl, updatePreferredPackageManager } from "@/utils/utils";
-import Loader from "@/components/loader";
-import { ErrorBoundary } from "@/components/error-boundary";
 import { seo } from "@/utils/seo";
+import { getRegistryUrl, updatePreferredPackageManager } from "@/utils/utils";
 
 const registryItems = items.map((item) => ({
 	name: item.name,
@@ -327,13 +327,15 @@ export {
 
 export const Route = createFileRoute("/form-registry")({
 	head: () => ({
-		meta : [
-			...seo({title: "TanStack Form Registry | TanCN - Form and Table Builder"}),
+		meta: [
+			...seo({
+				title: "TanStack Form Registry | TanCN - Form and Table Builder",
+			}),
 		],
 	}),
 	component: RouteComponent,
-	pendingComponent : Loader,
-	errorComponent : ErrorBoundary,
+	pendingComponent: Loader,
+	errorComponent: ErrorBoundary,
 });
 
 function RouteComponent() {
@@ -342,23 +344,19 @@ function RouteComponent() {
 	const tabsData = [
 		{
 			value: "pnpm",
-			registery:
-				`pnpm dlx shadcn@canary add ${getRegistryUrl(settings?.preferredFramework)}/tanstack-form.json`,
+			registery: `pnpm dlx shadcn@canary add ${getRegistryUrl(settings?.preferredFramework)}/tanstack-form.json`,
 		},
 		{
 			value: "npm",
-			registery:
-				`npx shadcn@canary add ${getRegistryUrl(settings?.preferredFramework)}/tanstack-form.json`,
+			registery: `npx shadcn@canary add ${getRegistryUrl(settings?.preferredFramework)}/tanstack-form.json`,
 		},
 		{
 			value: "yarn",
-			registery:
-				`yarn shadcn@canary add ${getRegistryUrl(settings?.preferredFramework)}/tanstack-form.json`,
+			registery: `yarn shadcn@canary add ${getRegistryUrl(settings?.preferredFramework)}/tanstack-form.json`,
 		},
 		{
 			value: "bun",
-			registery:
-				`bunx --bun shadcn@canary add ${getRegistryUrl(settings?.preferredFramework)}/tanstack-form.json`,
+			registery: `bunx --bun shadcn@canary add ${getRegistryUrl(settings?.preferredFramework)}/tanstack-form.json`,
 		},
 	];
 

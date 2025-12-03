@@ -2,7 +2,6 @@ import type { TableBuilder } from "@/db-collections/table-builder.collections";
 import type { ColumnConfig } from "@/types/table-types";
 import { toCamelCase } from "@/utils/utils";
 
-
 // Generate cell content as string for code generation
 export function renderCellString(
 	valueExpr: string,
@@ -33,9 +32,8 @@ export function renderCellString(
 	}
 }
 
-
 export const generateRowActionCode = () => {
-  return `// Row actions component
+	return `// Row actions component
 function RowActions({ row: _row }: { row: any }) {
 	return (
 		<DropdownMenu>
@@ -78,8 +76,7 @@ function RowActions({ row: _row }: { row: any }) {
 		</DropdownMenu>
 	);
 }`;
-}
-
+};
 
 /**
  * Generates the columns array as a string, similar to getDefaultValuesString for forms
@@ -200,7 +197,14 @@ const getOperatorsForColumnType = (type: ColumnConfig["type"]): string[] => {
 		date: ["before", "after", "is", "is_not", "empty", "not_empty"],
 		boolean: ["is", "is_not", "empty", "not_empty"],
 		enum: ["is", "is_not", "empty", "not_empty"],
-		array: ["is_any_of", "is_not_any_of", "includes_all", "excludes_all", "empty", "not_empty"],
+		array: [
+			"is_any_of",
+			"is_not_any_of",
+			"includes_all",
+			"excludes_all",
+			"empty",
+			"not_empty",
+		],
 		object: ["empty", "not_empty"],
 	};
 	return operatorMap[type] || operatorMap.string;
@@ -209,7 +213,10 @@ const getOperatorsForColumnType = (type: ColumnConfig["type"]): string[] => {
 /**
  * Generates the filtering logic as a string, similar to getDefaultValuesString for forms
  */
-export const getFilteredDataString = (columns: ColumnConfig[], typeName?: string): string => {
+export const getFilteredDataString = (
+	columns: ColumnConfig[],
+	typeName?: string,
+): string => {
 	// Build a set of all operators needed for this table based on column types
 	const allOperators = new Set<string>();
 	const columnTypeMap = new Map<string, ColumnConfig["type"]>();

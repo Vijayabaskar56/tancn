@@ -1,3 +1,4 @@
+import { useStore } from "@tanstack/react-store";
 import { useMemo } from "react";
 import { toast } from "sonner";
 import type * as v from "valibot";
@@ -8,7 +9,6 @@ import { flattenFormSteps } from "@/lib/form-elements-helpers";
 import { generateValiSchemaObject } from "@/lib/schema-generators/generate-valibot-schema";
 import type { FormElement, FormStep } from "@/types/form-types";
 import useSettings from "./use-settings";
-import { useStore } from "@tanstack/react-store";
 
 interface DefaultValues {
 	[key: string]: unknown;
@@ -123,11 +123,11 @@ export const useFormBuilder = (): {
 			} catch (_error) {}
 		},
 	});
-	const { reset ,} = form;
-	const isDefault = useStore(form.store,(state) => state.isDefaultValue);
+	const { reset } = form;
+	const isDefault = useStore(form.store, (state) => state.isDefaultValue);
 	const resetForm = () => {
 		actions.resetFormElements();
 		reset();
 	};
-	return { form: form as unknown as AppForm, resetForm , isDefault };
+	return { form: form as unknown as AppForm, resetForm, isDefault };
 };

@@ -30,6 +30,7 @@ export type CodeBlockCodeProps = {
 	language?: string;
 	theme?: string;
 	className?: string;
+	copyButton?: boolean;
 } & React.HTMLProps<HTMLDivElement>;
 
 function CodeBlockCode({
@@ -37,6 +38,7 @@ function CodeBlockCode({
 	language = "tsx",
 	theme: themeProp,
 	className,
+	copyButton = true,
 	...props
 }: CodeBlockCodeProps) {
 	const [highlightedHtml, setHighlightedHtml] = useState<string | null>(null);
@@ -75,9 +77,11 @@ function CodeBlockCode({
 	return (
 		<div className={cn("relative group", classNames)} {...props}>
 			{/* Copy button */}
-			<div className="absolute top-2 right-2 opacity-0 transition-opacity group-hover:opacity-100">
-				<CopyButton text={code} />
-			</div>
+			{copyButton && (
+				<div className="absolute top-2 right-2 opacity-0 transition-opacity group-hover:opacity-100">
+					<CopyButton text={code} />
+				</div>
+			)}
 
 			{/* Highlighted or fallback content */}
 			{highlightedHtml ? (

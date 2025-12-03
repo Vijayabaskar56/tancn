@@ -2,7 +2,14 @@
 // This worker handles parsing, validation, and column type detection
 
 export interface DataRow {
-	[key: string]: string | number | boolean | null | undefined | object | unknown[];
+	[key: string]:
+		| string
+		| number
+		| boolean
+		| null
+		| undefined
+		| object
+		| unknown[];
 }
 
 export interface Column {

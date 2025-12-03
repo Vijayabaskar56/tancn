@@ -1,7 +1,7 @@
 import { type ZodType, z } from "zod";
 import { flattenFormSteps, getStepFields } from "@/lib/form-elements-helpers";
-import { isStatic } from "@/utils/utils";
 import type { FormArray, FormElement, FormStep } from "@/types/form-types";
+import { isStatic } from "@/utils/utils";
 
 // Type guard to check if an element is a FormArray
 const isFormArray = (element: unknown): element is FormArray => {
@@ -450,10 +450,9 @@ export const getZodSchemaString = (
 
 		code += `
 
-export const ${schemaName}SchemaSteps = [
-${stepSchemasStr}
-];`;
+		export const ${schemaName}SchemaSteps = [
+			${stepSchemasStr}
+			];`;
 	}
-
 	return code;
 };

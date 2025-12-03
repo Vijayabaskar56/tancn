@@ -17,5 +17,12 @@ export interface ColumnConfig {
 }
 
 export interface DataRow {
-	[key: string]: string | number | boolean | null | undefined | object | unknown[];
+	[key: string]:
+		| string
+		| number
+		| boolean
+		| null
+		| undefined
+		| object
+		| unknown[];
 }

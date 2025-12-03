@@ -11,11 +11,9 @@ import type {
 	PreferredSchema,
 	ValidationMethod,
 } from "@/db-collections/settings.collections";
-import {
-	SettingsSchema,
-	settingsCollection,
-} from "@/db-collections/settings.collections";
+import { SettingsSchema } from "@/db-collections/settings.collections";
 import useSettings from "@/hooks/use-settings";
+import { setValidationSettings } from "@/services/settings.service";
 import { Separator } from "../ui/separator";
 export function SettingsSidebar() {
 	const focusOnErrorId = useId();
@@ -40,19 +38,15 @@ export function SettingsSidebar() {
 		listeners: {
 			onChangeDebounceMs: 1000,
 			onChange: ({ formApi }) => {
-				settingsCollection?.update("user-settings", (draft) => {
-					draft.defaultRequiredValidation =
-						formApi.baseStore.state.values.defaultRequiredValidation;
-					draft.numericInput = formApi.baseStore.state.values.numericInput;
-					draft.focusOnError = formApi.baseStore.state.values.focusOnError;
-					draft.validationMethod =
-						formApi.baseStore.state.values.validationMethod;
-					draft.asyncValidation =
-						formApi.baseStore.state.values.asyncValidation;
-					draft.preferredSchema =
-						formApi.baseStore.state.values.preferredSchema;
-					draft.preferredFramework =
-						formApi.baseStore.state.values.preferredFramework;
+				setValidationSettings({
+					defaultRequiredValidation:
+						formApi.baseStore.state.values.defaultRequiredValidation,
+					numericInput: formApi.baseStore.state.values.numericInput,
+					focusOnError: formApi.baseStore.state.values.focusOnError,
+					validationMethod: formApi.baseStore.state.values.validationMethod,
+					asyncValidation: formApi.baseStore.state.values.asyncValidation,
+					preferredSchema: formApi.baseStore.state.values.preferredSchema,
+					preferredFramework: formApi.baseStore.state.values.preferredFramework,
 				});
 
 				//  actions.setSettings(formApi.baseStore.state.values)

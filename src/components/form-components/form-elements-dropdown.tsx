@@ -12,8 +12,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { formElementsList } from "@/constants/form-elements-list";
 import { useFormStore } from "@/hooks/use-form-store";
 import type { FormArray, FormElement } from "@/types/form-types";
-import { PlusIcon } from "../ui/plus";
 import { logger } from "@/utils/utils";
+import { PlusIcon } from "../ui/plus";
 
 type DropdownContext = "nested" | "multistep" | "formarray";
 
@@ -245,7 +245,7 @@ export function UnifiedFormElementsDropdown({
 							...formArrayElement.arrayField,
 							newElement,
 						];
-						logger('updatedArrayField',updatedArrayField);
+						logger("updatedArrayField", updatedArrayField);
 						actions.updateFormArray(formArrayId, updatedArrayField);
 					}
 				}

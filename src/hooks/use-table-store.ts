@@ -1,7 +1,10 @@
 import { useLiveQuery } from "@tanstack/react-db";
-import { tableBuilderCollection } from "@/db-collections/table-builder.collections";
 import { createIsomorphicFn } from "@tanstack/react-start";
-import { DEFAULT_TABLE_COLUMNS, DEFAULT_TABLE_DATA } from "@/constants/default-table-data";
+import {
+	DEFAULT_TABLE_COLUMNS,
+	DEFAULT_TABLE_DATA,
+} from "@/constants/default-table-data";
+import { tableBuilderCollection } from "@/db-collections/table-builder.collections";
 
 const defaultTableState = {
 	tableName: "draft",
@@ -16,7 +19,7 @@ const defaultTableState = {
 		enableColumnDragging: false,
 		enableRowDragging: false,
 		enablePagination: false,
-		enableColumnMovable : false,
+		enableColumnMovable: false,
 		enableUrlFiltering: false,
 		tableLayout: {
 			dense: false,
@@ -35,22 +38,21 @@ const defaultTableState = {
 	},
 };
 
-const useTableStore = createIsomorphicFn().server(() => {
-	return defaultTableState;
-}).client(() => {
+const useTableStore = createIsomorphicFn()
+	.server(() => {
+		return defaultTableState;
+	})
+	.client(() => {
+		const { data } = useLiveQuery((q) =>
+			q
+				.from({ tableBuilder: tableBuilderCollection })
+				.select(({ tableBuilder }) => ({
+					tableName: tableBuilder.tableName,
+					settings: tableBuilder.settings,
+					table: tableBuilder.table,
+				})),
+		);
 
-	const { data } = useLiveQuery((q) =>
-		q
-			.from({ tableBuilder: tableBuilderCollection })
-			.select(({ tableBuilder }) => ({
-				tableName: tableBuilder.tableName,
-				settings: tableBuilder.settings,
-				table: tableBuilder.table,
-			})),
-	);
-
-	return (
-		data?.[0] || defaultTableState
-	);
-})
+		return data?.[0] || defaultTableState;
+	});
 export default useTableStore;

@@ -1,3 +1,6 @@
+import { format } from "date-fns";
+import { CalendarIcon, EyeIcon, EyeOffIcon } from "lucide-react";
+import type * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -36,9 +39,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import type { FormElement } from "@/types/form-types";
 import { cn } from "@/utils/utils";
-import { format } from "date-fns";
-import { CalendarIcon, EyeIcon, EyeOffIcon } from "lucide-react";
-import type * as React from "react";
 import type { AppForm } from "../../hooks/use-form-builder";
 import { FieldDescription, FieldLegend, FieldSeparator } from "../ui/field";
 export const RenderFormElement = ({
@@ -46,7 +46,7 @@ export const RenderFormElement = ({
 	form,
 }: {
 	formElement: FormElement;
-	form: AppForm
+	form: AppForm;
 }): React.ReactElement => {
 	switch (formElement.fieldType) {
 		case "Input":
@@ -73,7 +73,10 @@ export const RenderFormElement = ({
 										field.handleChange(e.target.value);
 									}}
 									onBlur={field.handleBlur}
-									aria-invalid={!!field.state.meta.errors.length && field.state.meta.isTouched}
+									aria-invalid={
+										!!field.state.meta.errors.length &&
+										field.state.meta.isTouched
+									}
 								/>
 							</field.Field>
 							<field.FieldDescription>
@@ -106,7 +109,10 @@ export const RenderFormElement = ({
 										value={(field.state.value as string | undefined) ?? ""}
 										onChange={(e) => field.handleChange(e.target.value)}
 										onBlur={field.handleBlur}
-										aria-invalid={!!field.state.meta.errors.length && field.state.meta.isTouched}
+										aria-invalid={
+											!!field.state.meta.errors.length &&
+											field.state.meta.isTouched
+										}
 									/>
 									<field.InputGroupAddon align="inline-end">
 										<button
@@ -163,7 +169,10 @@ export const RenderFormElement = ({
 									onChange={field.handleChange}
 									required={formElement.required}
 									disabled={formElement.disabled}
-									aria-invalid={!!field.state.meta.errors.length && field.state.meta.isTouched}
+									aria-invalid={
+										!!field.state.meta.errors.length &&
+										field.state.meta.isTouched
+									}
 								>
 									<InputOTPGroup>
 										<InputOTPSlot index={0} />
@@ -207,7 +216,10 @@ export const RenderFormElement = ({
 									onChange={(e) => field.handleChange(e.target.value)}
 									onBlur={field.handleBlur}
 									className="resize-none"
-									aria-invalid={!!field.state.meta.errors.length && field.state.meta.isTouched}
+									aria-invalid={
+										!!field.state.meta.errors.length &&
+										field.state.meta.isTouched
+									}
 								/>
 								<field.FieldDescription>
 									{formElement.description}
@@ -228,7 +240,10 @@ export const RenderFormElement = ({
 									checked={Boolean(field.state.value)}
 									onCheckedChange={field.handleChange}
 									disabled={formElement.disabled}
-									aria-invalid={!!field.state.meta.errors.length && field.state.meta.isTouched}
+									aria-invalid={
+										!!field.state.meta.errors.length &&
+										field.state.meta.isTouched
+									}
 								/>
 								<field.FieldContent>
 									<field.FieldLabel
@@ -274,7 +289,10 @@ export const RenderFormElement = ({
 									name={formElement.name}
 									value={(field.state.value as string | undefined) ?? ""}
 									disabled={formElement.disabled}
-									aria-invalid={!!field.state.meta.errors.length && field.state.meta.isTouched}
+									aria-invalid={
+										!!field.state.meta.errors.length &&
+										field.state.meta.isTouched
+									}
 								>
 									{formElement.options.map(({ label, value }) => (
 										<div key={value} className="flex items-center gap-x-2">
@@ -323,7 +341,10 @@ export const RenderFormElement = ({
 										onValueChange={field.handleChange}
 										defaultValue={formElement.defaultValue || ""}
 										className="flex justify-start items-center w-full"
-										aria-invalid={!!field.state.meta.errors.length && field.state.meta.isTouched}
+										aria-invalid={
+											!!field.state.meta.errors.length &&
+											field.state.meta.isTouched
+										}
 									>
 										{options}
 									</ToggleGroup>
@@ -342,7 +363,10 @@ export const RenderFormElement = ({
 													: []
 										}
 										className="flex justify-start items-center w-full"
-										aria-invalid={!!field.state.meta.errors.length && field.state.meta.isTouched}
+										aria-invalid={
+											!!field.state.meta.errors.length &&
+											field.state.meta.isTouched
+										}
 									>
 										{options}
 									</ToggleGroup>
@@ -384,7 +408,10 @@ export const RenderFormElement = ({
 										field.handleBlur();
 									}}
 									disabled={formElement.disabled}
-									aria-invalid={!!field.state.meta.errors.length && field.state.meta.isTouched}
+									aria-invalid={
+										!!field.state.meta.errors.length &&
+										field.state.meta.isTouched
+									}
 								/>
 							</field.Field>
 						</field.FieldSet>
@@ -428,7 +455,10 @@ export const RenderFormElement = ({
 										disabled={formElement.disabled}
 										step={step}
 										value={sliderValue}
-										aria-invalid={!!field.state.meta.errors.length && field.state.meta.isTouched}
+										aria-invalid={
+											!!field.state.meta.errors.length &&
+											field.state.meta.isTouched
+										}
 										onValueChange={(newValue) => {
 											field.handleChange(newValue[0]);
 											// Trigger validation by simulating blur
@@ -467,7 +497,9 @@ export const RenderFormElement = ({
 								onValueChange={field.handleChange}
 								defaultValue={String(field?.state.value ?? "")}
 								disabled={formElement.disabled}
-								aria-invalid={!!field.state.meta.errors.length && field.state.meta.isTouched}
+								aria-invalid={
+									!!field.state.meta.errors.length && field.state.meta.isTouched
+								}
 							>
 								<field.Field>
 									<SelectTrigger className="w-full">
@@ -511,10 +543,16 @@ export const RenderFormElement = ({
 										// value={field.state.value as string[]}
 										disabled={formElement.disabled}
 										onValueChange={field.handleChange}
-										aria-invalid={!!field.state.meta.errors.length && field.state.meta.isTouched}
+										aria-invalid={
+											!!field.state.meta.errors.length &&
+											field.state.meta.isTouched
+										}
 									>
 										<MultiSelectTrigger
-											aria-invalid={!!field.state.meta.errors.length && field.state.meta.isTouched}
+											aria-invalid={
+												!!field.state.meta.errors.length &&
+												field.state.meta.isTouched
+											}
 										>
 											<MultiSelectValue
 												placeholder={formElement.placeholder || "Select item"}
@@ -560,7 +598,10 @@ export const RenderFormElement = ({
 										<PopoverTrigger
 											asChild
 											disabled={formElement.disabled}
-											aria-invalid={!!field.state.meta.errors.length && field.state.meta.isTouched}
+											aria-invalid={
+												!!field.state.meta.errors.length &&
+												field.state.meta.isTouched
+											}
 										>
 											<Button
 												variant={"outline"}
@@ -584,7 +625,10 @@ export const RenderFormElement = ({
 												onSelect={(newDate) => {
 													field.handleChange(newDate?.toISOString());
 												}}
-												aria-invalid={!!field.state.meta.errors.length && field.state.meta.isTouched}
+												aria-invalid={
+													!!field.state.meta.errors.length &&
+													field.state.meta.isTouched
+												}
 											/>
 										</PopoverContent>
 									</Popover>

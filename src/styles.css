@@ -28,7 +28,7 @@ body {
   --card-foreground: oklch(0.3214 0.0503 84.8490);
   --popover: oklch(0.9904 0.0148 94.1935);
   --popover-foreground: oklch(0.3214 0.0503 84.8490);
-  --primary: oklch(0.7212 0.1205 80.3500);
+  --primary: oklch(0.7647 0.1365 78.7837);
   --primary-foreground: oklch(0.3214 0.0503 84.8490);
   --secondary: oklch(0.9610 0.0205 91.5836);
   --secondary-foreground: oklch(0.3214 0.0503 84.8490);
@@ -59,20 +59,20 @@ body {
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
 		"Courier New", monospace;
   --radius: 0.625rem;
-  --shadow-x: 0px;
-  --shadow-y: 4px;
+  --shadow-x: 0;
+  --shadow-y: 1px;
   --shadow-blur: 3px;
   --shadow-spread: 0px;
   --shadow-opacity: 0.1;
   --shadow-color: #000000;
-  --shadow-2xs: 0px 4px 3px 0px hsl(0 0% 0% / 0.05);
-  --shadow-xs: 0px 4px 3px 0px hsl(0 0% 0% / 0.05);
-  --shadow-sm: 0px 4px 3px 0px hsl(0 0% 0% / 0.10), 0px 1px 2px -1px hsl(0 0% 0% / 0.10);
-  --shadow: 0px 4px 3px 0px hsl(0 0% 0% / 0.10), 0px 1px 2px -1px hsl(0 0% 0% / 0.10);
-  --shadow-md: 0px 4px 3px 0px hsl(0 0% 0% / 0.10), 0px 2px 4px -1px hsl(0 0% 0% / 0.10);
-  --shadow-lg: 0px 4px 3px 0px hsl(0 0% 0% / 0.10), 0px 4px 6px -1px hsl(0 0% 0% / 0.10);
-  --shadow-xl: 0px 4px 3px 0px hsl(0 0% 0% / 0.10), 0px 8px 10px -1px hsl(0 0% 0% / 0.10);
-  --shadow-2xl: 0px 4px 3px 0px hsl(0 0% 0% / 0.25);
+  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+  --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 2px 4px -1px hsl(0 0% 0% / 0.10);
+  --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 4px 6px -1px hsl(0 0% 0% / 0.10);
+  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 8px 10px -1px hsl(0 0% 0% / 0.10);
+  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
   --tracking-normal: 0em;
   --spacing: 0.25rem;
 }
@@ -115,20 +115,20 @@ body {
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
 		"Courier New", monospace;
   --radius: 0.625rem;
-  --shadow-x: 0px;
-  --shadow-y: 4px;
+  --shadow-x: 0;
+  --shadow-y: 1px;
   --shadow-blur: 3px;
   --shadow-spread: 0px;
   --shadow-opacity: 0.1;
   --shadow-color: #000000;
-  --shadow-2xs: 0px 4px 3px 0px hsl(0 0% 0% / 0.05);
-  --shadow-xs: 0px 4px 3px 0px hsl(0 0% 0% / 0.05);
-  --shadow-sm: 0px 4px 3px 0px hsl(0 0% 0% / 0.10), 0px 1px 2px -1px hsl(0 0% 0% / 0.10);
-  --shadow: 0px 4px 3px 0px hsl(0 0% 0% / 0.10), 0px 1px 2px -1px hsl(0 0% 0% / 0.10);
-  --shadow-md: 0px 4px 3px 0px hsl(0 0% 0% / 0.10), 0px 2px 4px -1px hsl(0 0% 0% / 0.10);
-  --shadow-lg: 0px 4px 3px 0px hsl(0 0% 0% / 0.10), 0px 4px 6px -1px hsl(0 0% 0% / 0.10);
-  --shadow-xl: 0px 4px 3px 0px hsl(0 0% 0% / 0.10), 0px 8px 10px -1px hsl(0 0% 0% / 0.10);
-  --shadow-2xl: 0px 4px 3px 0px hsl(0 0% 0% / 0.25);
+  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+  --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 2px 4px -1px hsl(0 0% 0% / 0.10);
+  --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 4px 6px -1px hsl(0 0% 0% / 0.10);
+  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 8px 10px -1px hsl(0 0% 0% / 0.10);
+  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
 }
 
 @theme inline {
@@ -183,7 +183,6 @@ body {
   --shadow-xl: var(--shadow-xl);
   --shadow-2xl: var(--shadow-2xl);
 }
-
 @layer base {
 	* {
 		@apply border-border outline-ring/50;
@@ -267,4 +266,37 @@ input[type="number"]::-webkit-inner-spin-button {
 
 input[type="number"] {
 	-moz-appearance: textfield;
+}
+
+/* Custom Scrollbar Styles - Matching ScrollArea component */
+* {
+	/* Firefox */
+	scrollbar-width: thin;
+	scrollbar-color: var(--border) transparent;
+}
+
+*::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+	background: transparent;
+	border-radius: 0;
+}
+
+*::-webkit-scrollbar-thumb {
+	background-color: var(--border);
+	border-radius: 9999px;
+	border: 1px solid transparent;
+	background-clip: padding-box;
+	transition: background-color 150ms ease-out, opacity 150ms ease-out;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+	background-color: var(--muted);
+}
+
+*::-webkit-scrollbar-corner {
+	background: transparent;
 }

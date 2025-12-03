@@ -1,6 +1,6 @@
 /** biome-ignore-all lint/a11y/noLabelWithoutControl: no needed */
 
-import { createFileRoute, Outlet, useSearch } from "@tanstack/react-router";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { createClientOnlyFn } from "@tanstack/react-start";
 import { Database, Settings } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -33,12 +33,12 @@ import {
 } from "@/db-collections/table-builder.collections";
 import { useScreenSize } from "@/hooks/use-screen-size";
 import useTableStore from "@/hooks/use-table-store";
-import { TableBuilderService } from "@/services/table-builder.service";
+
 import { seo } from "@/utils/seo";
 import { cn } from "@/utils/utils";
 
 const initializeTableStore = createClientOnlyFn(async () => {
-	TableBuilderService.initializeTable();
+	// initializeTable is already called via createIsomorphicFn
 });
 
 export const Route = createFileRoute("/table-builder")({
@@ -61,7 +61,7 @@ function RouteComponent() {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const screenSize = useScreenSize();
 	const isMdUp = screenSize.greaterThanOrEqual("md");
-	const tableBuilder = useTableStore();
+	const _tableBuilder = useTableStore();
 	// const { share } = useSearch({ from: "/table-builder" });
 
 	const [isTableBuilderInitialized, setIsTableBuilderInitialized] =

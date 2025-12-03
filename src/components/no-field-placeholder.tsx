@@ -1,3 +1,4 @@
+import { FormElementsDropdown } from "@/components/form-components/form-elements-dropdown";
 import {
 	Empty,
 	EmptyContent,
@@ -7,7 +8,6 @@ import {
 	EmptyTitle,
 } from "@/components/ui/empty";
 import { FrownIcon } from "@/components/ui/frown";
-import { FormElementsDropdown } from "@/components/form-components/form-elements-dropdown";
 
 type NoFieldPlaceholderProps = {
 	title?: string;

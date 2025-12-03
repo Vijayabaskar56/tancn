@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { ArrowRightIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { GithubButton } from "@/components/ui/github-button";
-import { ArrowRightIcon } from "lucide-react";
 
 interface Contributor {
 	login: string;
@@ -13,28 +13,30 @@ interface Contributor {
 }
 
 export function SponsorsContributors() {
-	const [contributors, setContributors] = useState<Contributor[]>([]);
-	const [loading, setLoading] = useState(true);
-
-	useEffect(() => {
-		const fetchContributors = async () => {
-			try {
-				const response = await fetch(
+	const { data: contributors = [] } = useSuspenseQuery({
+		queryKey: ["github-contributors"],
+		queryFn: async () => {
+			if (import.meta.env.PROD) {
+				const res = await fetch(
 					"https://api.github.com/repos/Vijayabaskar56/tancn/contributors",
+					{
+						headers: {
+							"User-Agent": "TanCN-App",
+						},
+					},
 				);
-				if (response.ok) {
-					const data = await response.json();
-					setContributors(data as Contributor[]);
+				if (!res.ok) {
+					throw new Error(
+						`Failed to fetch GitHub contributors: ${res.status} ${res.statusText}`,
+					);
 				}
-			} catch (error) {
-				console.error("Failed to fetch contributors", error);
-			} finally {
-				setLoading(false);
+				const data = (await res.json()) as Contributor[];
+				return data;
+			} else {
+				return [] as Contributor[];
 			}
-		};
-
-		fetchContributors();
-	}, []);
+		},
+	});
 
 	const displayedContributors = contributors.slice(0, 15);
 	const remainingContributors = contributors.length - 15;
@@ -75,6 +77,7 @@ export function SponsorsContributors() {
 								<a
 									href="https://www.shadcnblocks.com"
 									target="_blank"
+									rel="noopener noreferrer"
 									className="group relative flex items-center justify-center p-4 rounded-xl border bg-background hover:border-primary/50 transition-colors"
 								>
 									<div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl" />
@@ -122,6 +125,7 @@ export function SponsorsContributors() {
 								<a
 									href="https://github.com/sponsors/Vijayabaskar56"
 									target="_blank"
+									rel="noopener noreferrer"
 								>
 									Become a Sponsor
 									<ArrowRightIcon className="ml-2 h-4 w-4" />
@@ -156,42 +160,37 @@ export function SponsorsContributors() {
 					<CardContent className="flex-1 flex flex-col justify-between pt-4 relative z-10">
 						<div>
 							<p className="text-muted-foreground mb-6">
-								A big thank you to all the contributors who have helped make this
-                project better.
+								A big thank you to all the contributors who have helped make
+								this project better.
 							</p>
 
 							<div className="flex flex-wrap items-center gap-2">
-								{loading ? (
-									<div className="text-sm text-muted-foreground">
-										Loading contributors...
-									</div>
-								) : (
-									<div className="flex -space-x-3 overflow-hidden py-2">
-										{displayedContributors.map((contributor) => (
-											<a
-												key={contributor.login}
-												href={contributor.html_url}
-												target="_blank"
-												className="inline-block transition-transform hover:scale-110 hover:z-10 relative z-0"
-											>
-												<Avatar className="h-10 w-10 border-2 border-background ring-2 ring-background/50">
-													<AvatarImage
-														src={contributor.avatar_url}
-														alt={contributor.login}
-													/>
-													<AvatarFallback>
-														{contributor.login.slice(0, 2).toUpperCase()}
-													</AvatarFallback>
-												</Avatar>
-											</a>
-										))}
-										{remainingContributors > 0 && (
-											<div className="flex items-center justify-center h-10 w-10 rounded-full border-2 border-background bg-muted text-xs font-medium text-muted-foreground ring-2 ring-background/50 relative z-0">
-												+{remainingContributors}
-											</div>
-										)}
-									</div>
-								)}
+								<div className="flex -space-x-3 overflow-hidden py-2">
+									{displayedContributors.map((contributor) => (
+										<a
+											key={contributor.login}
+											href={contributor.html_url}
+											target="_blank"
+											rel="noopener noreferrer"
+											className="inline-block transition-transform hover:scale-110 hover:z-10 relative z-0"
+										>
+											<Avatar className="h-10 w-10 border-2 border-background ring-2 ring-background/50">
+												<AvatarImage
+													src={contributor.avatar_url}
+													alt={contributor.login}
+												/>
+												<AvatarFallback>
+													{contributor.login.slice(0, 2).toUpperCase()}
+												</AvatarFallback>
+											</Avatar>
+										</a>
+									))}
+									{remainingContributors > 0 && (
+										<div className="flex items-center justify-center h-10 w-10 rounded-full border-2 border-background bg-muted text-xs font-medium text-muted-foreground ring-2 ring-background/50 relative z-0">
+											+{remainingContributors}
+										</div>
+									)}
+								</div>
 							</div>
 						</div>
 

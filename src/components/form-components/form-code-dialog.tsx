@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useId, useState } from "react";
 import * as z from "zod";
+import type { Settings } from "@/components/form-components/types";
 import { useFormStore } from "@/hooks/use-form-store";
 import useSettings from "@/hooks/use-settings";
 import {
@@ -9,15 +10,13 @@ import {
 	generateImports,
 } from "@/lib/form-code-generators";
 import { generateValidationCode } from "@/lib/schema-generators";
-import { logger } from "@/utils/utils";
-import type { Settings } from "@/components/form-components/types";
 import type {
 	CreateRegistryResponse,
 	FormArray,
 	FormElement,
 	FormElementOrList,
 } from "@/types/form-types";
-import { GeneratedFormCodeViewer } from "./form-code-viewer";
+import { logger } from "@/utils/utils";
 import { AnimatedIconButton } from "../ui/animated-icon-button";
 import {
 	InputGroup,
@@ -38,6 +37,7 @@ import { Separator } from "../ui/separator";
 import { Spinner } from "../ui/spinner";
 import { revalidateLogic, useAppForm } from "../ui/tanstack-form";
 import { TerminalIcon } from "../ui/terminal";
+import { GeneratedFormCodeViewer } from "./form-code-viewer";
 
 const formSchema = z.object({
 	formName: z.string().min(1, { message: "Form name is required" }),
@@ -74,8 +74,11 @@ function CodeDialog() {
 			registery: `bunx --bun shadcn@canary add ${generatedId}`,
 		},
 	];
-	const preferredFramework = (settings?.preferredFramework ||
-		"react") as "react" | "solid" | "vue" | "angular";
+	const preferredFramework = (settings?.preferredFramework || "react") as
+		| "react"
+		| "solid"
+		| "vue"
+		| "angular";
 	const generatedCode = generateFormCode({
 		formElements: formElements as FormElementOrList[],
 		isMS,
@@ -119,7 +122,7 @@ function CodeDialog() {
 	const url =
 		import.meta.env.MODE === "development"
 			? "http://localhost:3000"
-			: "https://tancn.dev/";
+			: "https://tancn.dev";
 
 	const mutation = useMutation<CreateRegistryResponse, Error, void>({
 		mutationKey: ["/create-command", formName],
@@ -231,7 +234,10 @@ function CodeDialog() {
 								{(field) => (
 									<field.FieldSet className="w-full">
 										<field.Field
-											aria-invalid={!!field.state.meta.errors.length && field.state.meta.isTouched}
+											aria-invalid={
+												!!field.state.meta.errors.length &&
+												field.state.meta.isTouched
+											}
 										>
 											<field.FieldLabel htmlFor={"formName"}>
 												Form Name
@@ -239,7 +245,10 @@ function CodeDialog() {
 											<InputGroup>
 												<InputGroupInput
 													name={"formName"}
-													aria-invalid={!!field.state.meta.errors.length && field.state.meta.isTouched}
+													aria-invalid={
+														!!field.state.meta.errors.length &&
+														field.state.meta.isTouched
+													}
 													placeholder="Enter your form name eg:- ContactUs"
 													type="string"
 													value={field.state.value as string}

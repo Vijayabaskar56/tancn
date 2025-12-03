@@ -1,3 +1,18 @@
+import type { DragEndEvent } from "@dnd-kit/core";
+import { arrayMove } from "@dnd-kit/sortable";
+import { createFileRoute } from "@tanstack/react-router";
+import {
+	getCoreRowModel,
+	getFilteredRowModel,
+	getPaginationRowModel,
+	getSortedRowModel,
+	type PaginationState,
+	type SortingState,
+	useReactTable,
+	type VisibilityState,
+} from "@tanstack/react-table";
+import { CircleX, ListFilter, Settings2 } from "lucide-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Loader from "@/components/loader";
 import { Button } from "@/components/ui/button";
 import { DataGrid, DataGridContainer } from "@/components/ui/data-grid";
@@ -18,31 +33,16 @@ import {
 	generateColumns,
 	generateFilterFields,
 } from "@/lib/table-generator/generate-columns";
-import { TableBuilderService } from "@/services/table-builder.service";
+import { updateData } from "@/services/table-builder.service";
 import type { JsonData } from "@/types/table-types";
 import { cn } from "@/utils/utils";
-import type { DragEndEvent } from "@dnd-kit/core";
-import { arrayMove } from "@dnd-kit/sortable";
-import { createFileRoute } from "@tanstack/react-router";
-import {
-	getCoreRowModel,
-	getFilteredRowModel,
-	getPaginationRowModel,
-	getSortedRowModel,
-	type PaginationState,
-	type SortingState,
-	useReactTable,
-	type VisibilityState,
-} from "@tanstack/react-table";
-import { CircleX, ListFilter, Settings2 } from "lucide-react";
-import { useCallback, useEffect, useMemo, useState } from "react";
 export const Route = createFileRoute("/table-builder/")({
 	head: () => ({
-		meta : [],
+		meta: [],
 	}),
-	validateSearch : () => ({
+	validateSearch: () => ({
 		//TODO: add url filtering validation
-	 }),
+	}),
 	component: RouteComponent,
 	pendingComponent: Loader,
 });
@@ -228,7 +228,7 @@ function RouteComponent() {
 					oldIndex,
 					newIndex,
 				);
-				TableBuilderService.updateData(newData);
+				updateData(newData);
 			}
 		},
 		[dataIds, tableData.table.data],
@@ -240,31 +240,33 @@ function RouteComponent() {
 
 				<div className="flex flex-wrap items-start gap-2.5 mb-3.5">
 					<div>
-						{tableData.settings.isGlobalSearch &&
-						<Input
-						// id={`${id}-input`}
-						// ref={inputRef}
-						className={cn(
-							"peer min-w-60 h-8",
-							Boolean(table.getState().globalFilter) && "pe-9",
+						{tableData.settings.isGlobalSearch && (
+							<Input
+								// id={`${id}-input`}
+								// ref={inputRef}
+								className={cn(
+									"peer min-w-60 h-8",
+									Boolean(table.getState().globalFilter) && "pe-9",
+								)}
+								value={(table.getState().globalFilter ?? "") as string}
+								onChange={(e) => table.setGlobalFilter(e.target.value)}
+								placeholder="Search all columns..."
+								type="text"
+								aria-label="Search all columns"
+							/>
 						)}
-						value={(table.getState().globalFilter ?? "") as string}
-						onChange={(e) => table.setGlobalFilter(e.target.value)}
-						placeholder="Search all columns..."
-						type="text"
-						aria-label="Search all columns"
-						/>
-					}
 					</div>
 					<div className="flex items-center gap-3">
 						{tableData.settings.enableHiding &&
 							tableData.table.columns.length > 0 && (
 								<DataGridColumnVisibility
 									table={table}
-									trigger={<Button variant="outline" size='sm'>
-										<Settings2 />
-										View
-										</Button>}
+									trigger={
+										<Button variant="outline" size="sm">
+											<Settings2 />
+											View
+										</Button>
+									}
 								/>
 							)}
 					</div>
@@ -274,11 +276,11 @@ function RouteComponent() {
 							fields={filterFields}
 							onChange={handleFiltersChange}
 							variant="outline"
-							addButton={<Button variant="outline" size='sm'>
-										<ListFilter />
-										Filter
-										</Button>
-
+							addButton={
+								<Button variant="outline" size="sm">
+									<ListFilter />
+									Filter
+								</Button>
 							}
 						/>
 					</div>
@@ -328,7 +330,7 @@ function RouteComponent() {
 							</ScrollArea>
 						</DataGridContainer>
 						{tableData.settings.enablePagination &&
-							tableData.table.data.length > 0 && <DataGridPagination  />}
+							tableData.table.data.length > 0 && <DataGridPagination />}
 					</div>
 				</DataGrid>
 				<div className="text-center text-sm text-muted-foreground mt-4">
@@ -337,19 +339,25 @@ function RouteComponent() {
 						href="https://www.reui.io/docs/data-grid"
 						target="_blank"
 						className="underline hover:no-underline"
-					>DataGrid</a>
-					{" "}&{" "}
+						rel="noopener"
+					>
+						DataGrid
+					</a>{" "}
+					&{" "}
 					<a
 						href="https://www.reui.io/docs/filters"
 						target="_blank"
 						className="underline hover:no-underline"
-					>Filter
-					</a>
-					{" "}Components from {" "}
+						rel="noopener"
+					>
+						Filter
+					</a>{" "}
+					Components from{" "}
 					<a
 						href="https://www.reui.io/"
 						target="_blank"
 						className="underline hover:no-underline"
+						rel="noopener"
 					>
 						ReUI Components
 					</a>

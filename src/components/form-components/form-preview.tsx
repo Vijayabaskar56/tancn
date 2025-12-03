@@ -9,7 +9,7 @@ import type { FormArray, FormElement } from "@/types/form-types";
 
 export function SingleStepFormPreview() {
 	const { formElements, formName } = useFormStore();
-	const { form  , isDefault } = useFormBuilder();
+	const { form, isDefault } = useFormBuilder();
 	const isMS = useIsMultiStep();
 	if (formElements.length < 1)
 		return (
@@ -75,11 +75,17 @@ export function SingleStepFormPreview() {
 					)}
 					{!isMS && (
 						<div className="flex items-center justify-end w-full pt-3 gap-3">
-						{!isDefault &&
-							<Button type="button" onClick={() => form.reset()} className="rounded-lg" variant='outline' size="sm">
-										Reset
-							</Button>
-						}
+							{!isDefault && (
+								<Button
+									type="button"
+									onClick={() => form.reset()}
+									className="rounded-lg"
+									variant="outline"
+									size="sm"
+								>
+									Reset
+								</Button>
+							)}
 							<Button type="submit" className="rounded-lg" size="sm">
 								{form.baseStore.state.isSubmitting
 									? "Submitting..."

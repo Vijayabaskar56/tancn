@@ -317,4 +317,3 @@ export const getDefaultValuesString = (
 			return `${defaultsString} as z.input<typeof ${schemaName}>`;
 	}
 };
-

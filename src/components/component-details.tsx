@@ -20,9 +20,9 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
-import CopyButton from "./ui/copy-button";
 import useSettings from "@/hooks/use-settings";
 import { getRegistryUrl } from "@/utils/utils";
+import CopyButton from "./ui/copy-button";
 
 export default function ComponentDetails({
 	component,
@@ -47,9 +47,12 @@ export default function ComponentDetails({
 
 		const loadCode = async () => {
 			try {
-				const response = await fetch(`/r/${preferredFramework.toLowerCase()}/${component.name}.json`, {
-					signal: controller.signal,
-				});
+				const response = await fetch(
+					`/r/${preferredFramework.toLowerCase()}/${component.name}.json`,
+					{
+						signal: controller.signal,
+					},
+				);
 				if (!response.ok) {
 					handleEmptyCode();
 					return;
@@ -78,7 +81,7 @@ export default function ComponentDetails({
 			isMounted = false;
 			controller.abort();
 		};
-	}, [component.name]);
+	}, [component.name, preferredFramework.toLowerCase]);
 
 	return (
 		<div className="absolute top-2 right-2 flex gap-1 peer-data-comp-loading:hidden">
@@ -135,6 +138,7 @@ export default function ComponentDetails({
 											href="https://github.com/Vijayabaskar56/tancn/issues"
 											target="_blank"
 											className="text-foreground font-medium underline hover:no-underline"
+											rel="noopener"
 										>
 											open an issue
 										</a>

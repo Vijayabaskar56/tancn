@@ -74,7 +74,11 @@ ${error.stack || "No stack trace available"}
 						<RefreshCw className="h-4 w-4" />
 						Reset and Try Again
 					</Button>
-					<Button onClick={createGithubIssue} variant="outline" className="gap-2">
+					<Button
+						onClick={createGithubIssue}
+						variant="outline"
+						className="gap-2"
+					>
 						<svg
 							className="h-4 w-4"
 							fill="currentColor"

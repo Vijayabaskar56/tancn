@@ -3,6 +3,7 @@ import {
 	localOnlyCollectionOptions,
 	localStorageCollectionOptions,
 } from "@tanstack/react-db";
+import { createIsomorphicFn } from "@tanstack/react-start";
 import * as v from "valibot";
 
 export const SettingsSchema = v.object({
@@ -49,19 +50,21 @@ export type {
 	ValidationMethod,
 };
 
-export const settingsCollection =
-	typeof window !== "undefined"
-		? createCollection(
-				localStorageCollectionOptions({
-					storageKey: "settings",
-					getKey: (settings) => settings.id,
-					schema: SettingsSchema,
-					storage: window.localStorage,
-				}),
-			)
-		: createCollection(
-				localOnlyCollectionOptions({
-					schema: SettingsSchema,
-					getKey: (settings) => settings.id,
-				}),
-			);
+export const settingsCollection = createIsomorphicFn()
+	.client(() =>
+		createCollection(
+			localStorageCollectionOptions({
+				storageKey: "settings",
+				getKey: (settings) => settings.id,
+				schema: SettingsSchema,
+			}),
+		),
+	)
+	.server(() =>
+		createCollection(
+			localOnlyCollectionOptions({
+				schema: SettingsSchema,
+				getKey: (settings) => settings.id,
+			}),
+		),
+	)();

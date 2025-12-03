@@ -8,7 +8,6 @@ import {
 import { getFormElementCode } from "@/lib/form-code-generators/solid/generate-form-component";
 import { generateImports } from "@/lib/form-code-generators/solid/generate-imports";
 import { flattenFormSteps } from "@/lib/form-elements-helpers";
-import { generateFormNames } from "@/utils/utils";
 // generate-form-code.ts
 import type {
 	FormArray,
@@ -16,6 +15,7 @@ import type {
 	FormElementOrList,
 	FormStep,
 } from "@/types/form-types";
+import { generateFormNames } from "@/utils/utils";
 
 const generateValidationLogic = (settings: Settings): string => {
 	if (settings.validationMethod === "onDynamic") {
@@ -85,12 +85,12 @@ const renderFields = (
           <div class="space-y-3 p-4 relative">
             <Separator />
             ${renderFields(
-						(actualFields as FormElementOrList[]).map((el) =>
-							modifyElement(el, `\`${formArray.name}[\${index()}].`),
-						),
-						isInGroup, // Pass the correct group context
-						formVariableName,
-					)}
+							(actualFields as FormElementOrList[]).map((el) =>
+								modifyElement(el, `\`${formArray.name}[\${index()}].`),
+							),
+							isInGroup, // Pass the correct group context
+							formVariableName,
+						)}
           </div>
         )}
       </For>
@@ -162,8 +162,8 @@ export function ${componentName}() {
   onSubmit : ({value}) => {
 			toast.success("success");
   },${
-				settings.focusOnError
-					? `
+		settings.focusOnError
+			? `
   onSubmitInvalid({ formApi }) {
 				const errorMap = formApi.state.errorMap['${settings.validationMethod || "onDynamic"}']!;
 				const inputs = Array.from(
@@ -179,8 +179,8 @@ export function ${componentName}() {
 				}
 				firstInput?.focus();
 		}`
-					: ""
-			}
+			: ""
+	}
 }));
 
 const defaultValues = ${defaultValuesStr};
@@ -399,4 +399,3 @@ return (
 	];
 	return multiStepFormCode;
 };
-

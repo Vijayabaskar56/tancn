@@ -157,7 +157,6 @@ function EditorItem({
 }
 
 function PreviewForm({ elements }: { elements: FormElement[] }) {
-	// Generate Zod schema dynamically based on elements
 	const formSchema = useMemo(() => {
 		const schemaShape: Record<string, any> = {};
 		elements.forEach((element) => {
@@ -217,8 +216,6 @@ function PreviewForm({ elements }: { elements: FormElement[] }) {
 		},
 	});
 
-	// Reset form when elements change to avoid stale state issues
-	// In a real app, you might want to preserve values where possible
 	useEffect(() => {
 		form.reset();
 	}, [form]);
@@ -389,7 +386,7 @@ function PreviewForm({ elements }: { elements: FormElement[] }) {
 	);
 }
 
-export function MiniFormBuilder() {
+export function FormBuilderTab() {
 	const [elements, setElements] = useState<FormElement[]>(initialElements);
 	const [activeTab, setActiveTab] = useState<"editor" | "preview">("editor");
 
@@ -409,33 +406,11 @@ export function MiniFormBuilder() {
 	};
 
 	return (
-		<div className="w-full h-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border border-border shadow-2xl overflow-hidden flex flex-col">
-			{/* Browser Tab Header */}
-			<div className="h-10 border-b border-border bg-muted/30 flex items-end px-2 gap-2 select-none">
-				<div className="relative group flex items-center gap-2 px-4 py-2 bg-background rounded-t-lg border-t border-x border-border -mb-[1px] shadow-sm min-w-[120px]">
-					<div className="w-3 h-3 rounded-full bg-primary/20 flex items-center justify-center">
-						<div className="w-1.5 h-1.5 rounded-full bg-primary" />
-					</div>
-					<span className="text-xs font-medium text-foreground">TanCN</span>
-					<div className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
-						<div className="w-3 h-3 rounded-full hover:bg-muted-foreground/20 flex items-center justify-center cursor-pointer">
-							<span className="text-[10px] leading-none text-muted-foreground">
-								×
-							</span>
-						</div>
-					</div>
-				</div>
-				<div className="flex-1 h-full flex items-center justify-end px-2">
-					<div className="flex gap-1.5">
-						<div className="w-2.5 h-2.5 rounded-full bg-muted-foreground/20" />
-						<div className="w-2.5 h-2.5 rounded-full bg-muted-foreground/20" />
-					</div>
-				</div>
-			</div>
-
+		<div className="flex-1 flex overflow-hidden relative h-full">
 			{/* Mobile Tab Navigation */}
-			<div className="lg:hidden flex border-b border-border bg-muted/10">
-				<Button
+			<div className="lg:hidden absolute top-0 left-0 right-0 z-30 flex border-b border-border bg-muted/10">
+				<button
+					type="button"
 					onClick={() => setActiveTab("editor")}
 					className={cn(
 						"flex-1 py-2 text-sm font-medium transition-colors relative",
@@ -448,7 +423,7 @@ export function MiniFormBuilder() {
 					{activeTab === "editor" && (
 						<div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />
 					)}
-				</Button>
+				</button>
 				<button
 					type="button"
 					onClick={() => setActiveTab("preview")}
@@ -466,85 +441,83 @@ export function MiniFormBuilder() {
 				</button>
 			</div>
 
-			<div className="flex-1 flex overflow-hidden relative">
-				{/* Left Column: Fields */}
-				<div
-					className={cn(
-						"border-r border-border bg-card/50 flex flex-col transition-all duration-300",
-						"lg:w-64 lg:relative lg:flex", // Desktop: Fixed width, always visible
-						activeTab === "editor"
-							? "w-1/3 absolute inset-y-0 left-0 z-10 lg:static lg:w-64" // Mobile Editor: 1/3 width
-							: "hidden lg:flex", // Mobile Preview: Hidden
-					)}
-				>
-					<div className="p-4 border-b border-border">
-						<h3 className="font-semibold text-primary">Fields</h3>
-						<p className="text-xs text-muted-foreground">Select Field</p>
+			{/* Left Column: Fields */}
+			<div
+				className={cn(
+					"border-r border-border bg-card/50 flex flex-col transition-all duration-300 pt-10 lg:pt-0",
+					"lg:w-64 lg:relative lg:flex",
+					activeTab === "editor"
+						? "w-1/3 absolute inset-y-0 left-0 z-10 lg:static lg:w-64"
+						: "hidden lg:flex",
+				)}
+			>
+				<div className="p-4 border-b border-border">
+					<h3 className="font-semibold text-primary">Fields</h3>
+					<p className="text-xs text-muted-foreground">Select Field</p>
+				</div>
+				<div className="flex-1 overflow-y-auto p-2 space-y-1 custom-scrollbar">
+					<div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+						Elements
 					</div>
-					<div className="flex-1 overflow-y-auto p-2 space-y-1 custom-scrollbar">
-						<div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-							Elements
-						</div>
-						{availableFields.map((field) => (
-							<FieldItem
-								key={field.type}
-								item={field}
-								onClick={() => handleAddField(field.type)}
+					{availableFields.map((field) => (
+						<FieldItem
+							key={field.type}
+							item={field}
+							onClick={() => handleAddField(field.type)}
+						/>
+					))}
+				</div>
+			</div>
+
+			{/* Middle Column: Editor */}
+			<div
+				className={cn(
+					"border-r border-border bg-background/50 flex flex-col transition-all duration-300 pt-10 lg:pt-0",
+					"lg:w-80 lg:relative lg:flex",
+					activeTab === "editor"
+						? "w-2/3 absolute inset-y-0 right-0 z-10 lg:static lg:w-80"
+						: "hidden lg:flex",
+				)}
+			>
+				<div className="p-4 border-b border-border">
+					<h3 className="font-semibold text-primary">Editor</h3>
+					<p className="text-xs text-muted-foreground">Design form</p>
+				</div>
+				<div className="flex-1 overflow-y-auto p-4 custom-scrollbar bg-muted/10">
+					<Reorder.Group
+						axis="y"
+						values={elements}
+						onReorder={setElements}
+						className="min-h-[100px] space-y-2"
+						layoutScroll
+					>
+						{elements.map((element) => (
+							<EditorItem
+								key={element.id}
+								element={element}
+								onDelete={handleDelete}
 							/>
 						))}
-					</div>
+					</Reorder.Group>
 				</div>
+			</div>
 
-				{/* Middle Column: Editor */}
-				<div
-					className={cn(
-						"border-r border-border bg-background/50 flex flex-col transition-all duration-300",
-						"lg:w-80 lg:relative lg:flex", // Desktop: Fixed width, always visible
-						activeTab === "editor"
-							? "w-2/3 absolute inset-y-0 right-0 z-10 lg:static lg:w-80" // Mobile Editor: 2/3 width
-							: "hidden lg:flex", // Mobile Preview: Hidden
-					)}
-				>
-					<div className="p-4 border-b border-border">
-						<h3 className="font-semibold text-primary">Editor</h3>
-						<p className="text-xs text-muted-foreground">Design form</p>
-					</div>
-					<div className="flex-1 overflow-y-auto p-4 custom-scrollbar bg-muted/10">
-						<Reorder.Group
-							axis="y"
-							values={elements}
-							onReorder={setElements}
-							className="min-h-[100px] space-y-2"
-							layoutScroll
-						>
-							{elements.map((element) => (
-								<EditorItem
-									key={element.id}
-									element={element}
-									onDelete={handleDelete}
-								/>
-							))}
-						</Reorder.Group>
-					</div>
+			{/* Right Column: Preview */}
+			<div
+				className={cn(
+					"bg-background flex flex-col transition-all duration-300 pt-10 lg:pt-0",
+					"lg:flex-1 lg:relative lg:flex",
+					activeTab === "preview"
+						? "absolute inset-0 z-20 lg:static"
+						: "hidden lg:flex",
+				)}
+			>
+				<div className="p-4 border-b border-border">
+					<h3 className="font-semibold text-primary">Preview</h3>
+					<p className="text-xs text-muted-foreground">Live preview</p>
 				</div>
-
-				{/* Right Column: Preview */}
-				<div
-					className={cn(
-						"bg-background flex flex-col transition-all duration-300",
-						"lg:flex-1 lg:relative lg:flex", // Desktop: Flex 1, always visible
-						activeTab === "preview"
-							? "absolute inset-0 z-20 lg:static" // Mobile Preview: Full screen
-							: "hidden lg:flex", // Mobile Editor: Hidden
-					)}
-				>
-					<div className="p-4 border-b border-border">
-						<h3 className="font-semibold text-primary">Preview</h3>
-						<p className="text-xs text-muted-foreground">Live preview</p>
-					</div>
-					<div className="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar">
-						<PreviewForm elements={elements} />
-					</div>
+				<div className="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar">
+					<PreviewForm elements={elements} />
 				</div>
 			</div>
 		</div>

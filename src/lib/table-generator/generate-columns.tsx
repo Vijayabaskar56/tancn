@@ -301,9 +301,7 @@ export function generateFilterFields(
 			if (col.type === "enum" && data) {
 				const uniqueValues = [
 					...new Set(
-						data
-							.map((row) => String(row[col.id] || ""))
-							.filter((val) => val),
+						data.map((row) => String(row[col.id] || "")).filter((val) => val),
 					),
 				];
 				baseConfig.options = uniqueValues.map((value) => ({

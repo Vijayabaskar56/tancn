@@ -1,7 +1,7 @@
 // generate-arktype-schema.tsx
-import { type, type Type } from "arktype";
-import { isStatic } from "@/utils/utils";
+import { type Type, type } from "arktype";
 import type { FormArray, FormElement } from "@/types/form-types";
+import { isStatic } from "@/utils/utils";
 
 /** Record of field names to ArkType schemas */
 type ArkTypeSchemaRecord = Record<string, Type>;
@@ -158,7 +158,10 @@ const processFormElements = (
 		if (isFormArray(element)) {
 			const arrayItemSchema = processArrayFields(element.arrayField);
 			const arrayItemType = type(arrayItemSchema);
-			let elementSchema: Type<unknown[]> | Type<unknown[] | undefined> = type([arrayItemType, "[]"]);
+			let elementSchema: Type<unknown[]> | Type<unknown[] | undefined> = type([
+				arrayItemType,
+				"[]",
+			]);
 
 			if (!("required" in element) || element.required !== true) {
 				elementSchema = elementSchema.or("undefined");
@@ -215,7 +218,10 @@ export const generateArkTypeSchemaObject = (
 			const arraySchema = generateArkTypeSchemaObject(
 				actualFields as FormElement[],
 			);
-				let elementSchema: Type<unknown[]> | Type<unknown[] | undefined> = type([arraySchema, "[]"]);
+			let elementSchema: Type<unknown[]> | Type<unknown[] | undefined> = type([
+				arraySchema,
+				"[]",
+			]);
 
 			if (!("required" in element) || element.required !== true) {
 				elementSchema = elementSchema.or("undefined");

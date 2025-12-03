@@ -16,6 +16,7 @@ import {
 	verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { createClientOnlyFn } from "@tanstack/react-start";
 import {
 	type Cell,
 	flexRender,
@@ -41,53 +42,57 @@ import {
 	DataGridTableRowSpacer,
 } from "@/components/ui/data-grid-table";
 
-function DataGridTableDndRowHandle({ rowId }: { rowId: string }) {
-	const { attributes, listeners } = useSortable({
-		id: rowId,
-	});
+const DataGridTableDndRowHandle = createClientOnlyFn(
+	({ rowId }: { rowId: string }) => {
+		const { attributes, listeners } = useSortable({
+			id: rowId,
+		});
 
-	return (
-		<Button
-			variant="dim"
-			size="sm"
-			className="size-7"
-			{...attributes}
-			{...listeners}
-		>
-			<GripHorizontal />
-		</Button>
-	);
-}
+		return (
+			<Button
+				variant="outline"
+				size="sm"
+				className="size-7"
+				{...attributes}
+				{...listeners}
+			>
+				<GripHorizontal />
+			</Button>
+		);
+	},
+);
 
-function DataGridTableDndRow<TData>({ row }: { row: Row<TData> }) {
-	const { transform, transition, setNodeRef, isDragging } = useSortable({
-		id: row.id,
-	});
+const DataGridTableDndRow = createClientOnlyFn(
+	({ row }: { row: Row<TData> }) => {
+		const { transform, transition, setNodeRef, isDragging } = useSortable({
+			id: row.id,
+		});
 
-	const style: CSSProperties = {
-		transform: CSS.Transform.toString(transform), //let dnd-kit do its thing
-		transition: transition,
-		opacity: isDragging ? 0.8 : 1,
-		zIndex: isDragging ? 1 : 0,
-		position: "relative",
-	};
-	return (
-		<DataGridTableBodyRow
-			row={row}
-			dndRef={setNodeRef}
-			dndStyle={style}
-			key={row.id}
-		>
-			{row.getVisibleCells().map((cell: Cell<TData, unknown>, colIndex) => {
-				return (
-					<DataGridTableBodyRowCell cell={cell} key={colIndex}>
-						{flexRender(cell.column.columnDef.cell, cell.getContext())}
-					</DataGridTableBodyRowCell>
-				);
-			})}
-		</DataGridTableBodyRow>
-	);
-}
+		const style: CSSProperties = {
+			transform: CSS.Transform.toString(transform), //let dnd-kit do its thing
+			transition: transition,
+			opacity: isDragging ? 0.8 : 1,
+			zIndex: isDragging ? 1 : 0,
+			position: "relative",
+		};
+		return (
+			<DataGridTableBodyRow
+				row={row}
+				dndRef={setNodeRef}
+				dndStyle={style}
+				key={row.id}
+			>
+				{row.getVisibleCells().map((cell: Cell<TData, unknown>, colIndex) => {
+					return (
+						<DataGridTableBodyRowCell cell={cell} key={colIndex}>
+							{flexRender(cell.column.columnDef.cell, cell.getContext())}
+						</DataGridTableBodyRowCell>
+					);
+				})}
+			</DataGridTableBodyRow>
+		);
+	},
+);
 
 function DataGridTableDndRows<TData>({
 	handleDragEnd,

@@ -8,7 +8,6 @@ import {
 import { getFormElementCode } from "@/lib/form-code-generators/react/generate-form-component";
 import { generateImports } from "@/lib/form-code-generators/react/generate-imports";
 import { flattenFormSteps } from "@/lib/form-elements-helpers";
-import { generateFormNames } from "@/utils/utils";
 // generate-form-code.ts
 import type {
 	FormArray,
@@ -16,6 +15,7 @@ import type {
 	FormElementOrList,
 	FormStep,
 } from "@/types/form-types";
+import { generateFormNames } from "@/utils/utils";
 
 const generateValidationLogic = (settings: Settings): string => {
 	if (settings.validationMethod === "onDynamic") {

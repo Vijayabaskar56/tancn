@@ -1,3 +1,4 @@
+import { Plus, Trash2 } from "lucide-react";
 import { RenderFormElement } from "@/components/form-components/render-form-element";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -9,7 +10,6 @@ import type {
 	FormElement,
 	FormElementOrList,
 } from "@/types/form-types";
-import { Plus, Trash2 } from "lucide-react";
 
 interface FormArrayPreviewProps {
 	formArray: FormArray;

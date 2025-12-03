@@ -25,8 +25,12 @@ export const generateTable = (
 		(col) => col.filterable === true,
 	);
 
-	const imports = generateTableImports(tableBuilder.settings, hasArrayColumns, hasFilterableColumns);
-	if(tableBuilder.settings.enableCRUD) {
+	const imports = generateTableImports(
+		tableBuilder.settings,
+		hasArrayColumns,
+		hasFilterableColumns,
+	);
+	if (tableBuilder.settings.enableCRUD) {
 		crudImports = generateRowActionCode();
 	}
 	const typeCode = generateTableType(tableBuilder.table.columns, customName);
@@ -49,9 +53,11 @@ ${componentCode}`;
 
 	// const dependencies = extractTableImportDependencies(imports);
 	const dependencies = {
-			dependencies : ["@tanstack/react-table"],
-			registryDependencies: [...extractTableImportDependencies(imports).registryDependencies],
-		};
+		dependencies: ["@tanstack/react-table"],
+		registryDependencies: [
+			...extractTableImportDependencies(imports).registryDependencies,
+		],
+	};
 
 	return {
 		files: [

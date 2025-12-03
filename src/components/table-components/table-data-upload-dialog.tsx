@@ -16,7 +16,7 @@ import {
 import { revalidateLogic, useAppForm } from "@/components/ui/tanstack-form";
 import { Textarea } from "@/components/ui/textarea";
 import { useDataProcessorWorker } from "@/hooks/use-data-processor-worker";
-import { TableBuilderService } from "@/services/table-builder.service";
+import { importData } from "@/services/table-builder.service";
 import type { Column } from "@/workers/data-processor.worker";
 
 const dataFormSchema = z.object({
@@ -41,7 +41,7 @@ function DataUploadDialog() {
 	});
 
 	const updateTableData = (data: any[], columns?: Column[]) => {
-		TableBuilderService.importData(data, columns);
+		importData(data, columns);
 		dataForm.setFieldValue("data", data);
 	};
 
@@ -64,7 +64,7 @@ function DataUploadDialog() {
 	const handleTextareaSubmit = async () => {
 		if (textareaText.trim() === "") {
 			dataForm.setFieldValue("data", []);
-			TableBuilderService.importData([]);
+			importData([]);
 			toast.success("Data cleared");
 			setTextareaText("[]");
 			setOpen(false);

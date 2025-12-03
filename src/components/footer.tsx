@@ -85,6 +85,7 @@ export default function FooterSection() {
 								<a
 									href="https://x.com/vijayabaskar56"
 									target="_blank"
+									rel="noopener"
 								>
 									<svg
 										width="16"
@@ -110,6 +111,7 @@ export default function FooterSection() {
 								<a
 									href="https://www.linkedin.com/in/vijaya-baskar/"
 									target="_blank"
+									rel="noopener"
 								>
 									<svg
 										width="16"
@@ -135,6 +137,7 @@ export default function FooterSection() {
 								<a
 									href="https://github.com/Vijayabaskar56/tancn"
 									target="_blank"
+									rel="noopener"
 								>
 									<svg
 										width="16"

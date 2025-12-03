@@ -48,7 +48,7 @@ export function Image({
 					height: height,
 					quality: quality,
 					format: "avif",
-					f:'avif',
+					f: "avif",
 					blur: blur,
 				},
 			}}
@@ -62,11 +62,13 @@ interface ThemeImageProps extends Omit<ImageProps, "src"> {
 	darkSrc: string;
 }
 
-const getThemeMediaQuery = createIsomorphicFn().client(() => {
-	return window.matchMedia("(prefers-color-scheme: dark)").matches;
-}).server(() => {
-	return true; // Default to dark mode on server
-});
+const getThemeMediaQuery = createIsomorphicFn()
+	.client(() => {
+		return window.matchMedia("(prefers-color-scheme: dark)").matches;
+	})
+	.server(() => {
+		return true; // Default to dark mode on server
+	});
 
 export function ThemeImage({ lightSrc, darkSrc, ...props }: ThemeImageProps) {
 	const isDark = getThemeMediaQuery();

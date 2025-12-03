@@ -1,12 +1,12 @@
-import { GeneratedTableCodeViewer } from "@/components/table-components/table-code-viewer";
-import useTableStore from "@/hooks/use-table-store";
-import { generateTable } from "@/lib/table-code-generators/react/index";
-import { TableBuilderService } from "@/services/table-builder.service";
-import type { CreateRegistryResponse } from "@/types/form-types";
-import { logger } from "@/utils/utils";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useId, useState } from "react";
 import * as z from "zod";
+import { GeneratedTableCodeViewer } from "@/components/table-components/table-code-viewer";
+import useTableStore from "@/hooks/use-table-store";
+import { generateTable } from "@/lib/table-code-generators/react/index";
+import { setTableName } from "@/services/table-builder.service";
+import type { CreateRegistryResponse } from "@/types/form-types";
+import { logger } from "@/utils/utils";
 import { AnimatedIconButton } from "../ui/animated-icon-button";
 import {
 	InputGroup,
@@ -87,7 +87,7 @@ function TableCodeDialog() {
 	const url =
 		import.meta.env.MODE === "development"
 			? "http://localhost:3000"
-			: "https://tancn.dev/";
+			: "https://tancn.dev";
 
 	const mutation = useMutation<CreateRegistryResponse, Error, void>({
 		mutationKey: ["/create-command", tableData.tableName],
@@ -167,7 +167,7 @@ function TableCodeDialog() {
 							word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
 					)
 					.join("");
-				TableBuilderService.setTableName(fieldApi.state.value as string);
+				setTableName(fieldApi.state.value as string);
 			},
 		},
 	});
@@ -202,7 +202,10 @@ function TableCodeDialog() {
 								{(field) => (
 									<field.FieldSet className="w-full">
 										<field.Field
-											aria-invalid={!!field.state.meta.errors.length && field.state.meta.isTouched}
+											aria-invalid={
+												!!field.state.meta.errors.length &&
+												field.state.meta.isTouched
+											}
 										>
 											<field.FieldLabel htmlFor={"tableName"}>
 												Table Name
@@ -210,7 +213,10 @@ function TableCodeDialog() {
 											<InputGroup className="flex flex-col gap-2 sm:flex-row sm:gap-0">
 												<InputGroupInput
 													name={"tableName"}
-													aria-invalid={!!field.state.meta.errors.length && field.state.meta.isTouched}
+													aria-invalid={
+														!!field.state.meta.errors.length &&
+														field.state.meta.isTouched
+													}
 													placeholder="Enter your table name eg:- UserTable"
 													type="string"
 													value={field.state.value as string}

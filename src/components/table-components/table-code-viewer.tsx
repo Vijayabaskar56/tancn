@@ -120,8 +120,12 @@ const TableCodeBlockPackagesInstallation = () => {
 	);
 };
 
-const TableCodeBlockCode = ({ files }: { files: { file: string; code: string }[] }) => {
-	const codeFile = files.find(f => f.file.endsWith('.tsx'));
+const TableCodeBlockCode = ({
+	files,
+}: {
+	files: { file: string; code: string }[];
+}) => {
+	const codeFile = files.find((f) => f.file.endsWith(".tsx"));
 	if (!codeFile) return null;
 	const formattedCode = formatCode(codeFile.code);
 	return (
@@ -133,8 +137,12 @@ const TableCodeBlockCode = ({ files }: { files: { file: string; code: string }[]
 	);
 };
 
-const TableCodeBlockData = ({ files }: { files: { file: string; code: string }[] }) => {
-	const dataFile = files.find(f => f.file.endsWith('.ts'));
+const TableCodeBlockData = ({
+	files,
+}: {
+	files: { file: string; code: string }[];
+}) => {
+	const dataFile = files.find((f) => f.file.endsWith(".ts"));
 	if (!dataFile) return null;
 	const formattedCode = formatCode(dataFile.code);
 	return (

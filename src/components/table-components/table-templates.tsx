@@ -1,11 +1,15 @@
+import { Heart, Table, Trash2 } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { tableTemplates } from "@/constants/table-templates";
 import type { SavedTableTemplate } from "@/db-collections/table-builder.collections";
-import { TableBuilderService } from "@/services/table-builder.service";
-import { Heart, Table, Trash2 } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
-import { toast } from "sonner";
+import {
+	deleteTableTemplate,
+	getSavedTableTemplates,
+	loadTableTemplate,
+} from "@/services/table-builder.service";
 
 export function TableTemplates() {
 	const [savedTemplates, setSavedTemplates] = useState<SavedTableTemplate[]>(
@@ -13,7 +17,7 @@ export function TableTemplates() {
 	);
 
 	const refreshSavedTemplates = useCallback(() => {
-		setSavedTemplates(TableBuilderService.getSavedTableTemplates());
+		setSavedTemplates(getSavedTableTemplates());
 	}, []);
 
 	useEffect(() => {
@@ -41,7 +45,7 @@ export function TableTemplates() {
 	}, [refreshSavedTemplates]);
 
 	const applyTemplate = (templateKey: string) => {
-		const success = TableBuilderService.applyTemplate(templateKey);
+		const success = applyTemplate(templateKey);
 		if (success) {
 			toast("Template applied successfully");
 		} else {
@@ -50,21 +54,21 @@ export function TableTemplates() {
 	};
 
 	const applySavedTemplate = (templateId: string) => {
-		const success = TableBuilderService.loadTableTemplate(templateId);
+		const success = loadTableTemplate(templateId);
 		if (success) {
 			toast("Saved table loaded successfully");
 			// Refresh saved templates in case any were modified
-			setSavedTemplates(TableBuilderService.getSavedTableTemplates());
+			setSavedTemplates(getSavedTableTemplates());
 		} else {
 			toast("Failed to load saved table");
 		}
 	};
 
 	const deleteSavedTemplate = (templateId: string, templateName: string) => {
-		const success = TableBuilderService.deleteTableTemplate(templateId);
+		const success = deleteTableTemplate(templateId);
 		if (success) {
 			toast(`Template "${templateName}" deleted`);
-			setSavedTemplates(TableBuilderService.getSavedTableTemplates());
+			setSavedTemplates(getSavedTableTemplates());
 		} else {
 			toast("Failed to delete template");
 		}

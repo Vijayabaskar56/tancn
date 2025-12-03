@@ -1,10 +1,10 @@
+import { FileStack, Heart, SquareStack, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { templates } from "@/constants/templates";
 import { useFormStore } from "@/hooks/use-form-store";
-import { FileStack, Heart, SquareStack, Trash2 } from "lucide-react";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
 
 const formTemplates = Object.entries(templates).map((template) => ({
 	label: template[1].name,

@@ -1,3 +1,6 @@
+import { ChevronDownIcon, HeartIcon, SettingsIcon } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -20,17 +23,15 @@ import {
 } from "@/components/ui/revola";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
-import { settingsCollection } from "@/db-collections/settings.collections";
 import useTableStore from "@/hooks/use-table-store";
-import { TableBuilderService } from "@/services/table-builder.service";
+import { setPreferredFramework } from "@/services/settings.service";
 import {
-	ChevronDownIcon,
-	HeartIcon,
-	SettingsIcon
-} from "lucide-react";
-import { useState } from "react";
-import { toast } from "sonner";
-import { Framework } from "../form-components/types";
+	resetTable,
+	saveTableTemplate,
+	updateSetting,
+	updateTableLayoutSetting,
+} from "@/services/table-builder.service";
+import type { Framework } from "../form-components/types";
 import { AnimatedIconButton } from "../ui/animated-icon-button";
 import { RotateCWIcon } from "../ui/rotate-cw";
 import TableCodeDialog from "./table-code-dialog";
@@ -44,15 +45,13 @@ export default function TableHeader() {
 	const [saveDialogOpen, setSaveDialogOpen] = useState(false);
 	const [saveTableName, setSaveTableName] = useState("");
 
-	const resetTable = () => {
-		TableBuilderService.resetTable();
+	const resetTableFn = () => {
+		resetTable();
 	};
 
 	const handleSaveTable = () => {
 		if (saveTableName.trim()) {
-			const success = TableBuilderService.saveTableTemplate(
-				saveTableName.trim(),
-			);
+			const success = saveTableTemplate(saveTableName.trim());
 			if (success) {
 				toast("Table saved successfully");
 				setSaveDialogOpen(false);
@@ -64,20 +63,15 @@ export default function TableHeader() {
 	};
 
 	const handleFrameworkChange = (framework: Framework) => {
-		settingsCollection.update("user-settings", (draft) => {
-			draft.preferredFramework = framework;
-		});
+		setPreferredFramework(framework);
 	};
 
 	const _togglePagination = () => {
-		TableBuilderService.updateSetting(
-			"enablePagination",
-			!tableData.settings.enablePagination,
-		);
+		updateSetting("enablePagination", !tableData.settings.enablePagination);
 	};
 
-	const updateTableLayoutSetting = (key: string, value: boolean | string) => {
-		TableBuilderService.updateTableLayoutSetting(key, value);
+	const updateTableLayoutSettingFn = (key: string, value: boolean | string) => {
+		updateTableLayoutSetting(key, value);
 	};
 
 	const _handleShare = () => {
@@ -88,7 +82,7 @@ export default function TableHeader() {
 		};
 		const baseUri = import.meta.env.DEV
 			? "http://localhost:3000"
-			: "https://tancn.dev/";
+			: "https://tancn.dev";
 		navigator.clipboard.writeText(
 			`${baseUri}/table-builder?share=${encodeURIComponent(JSON.stringify(shareData))}`,
 		);
@@ -138,7 +132,7 @@ export default function TableHeader() {
 							icon={<RotateCWIcon className="w-4 h-4 mr-1" />}
 							text={<span className="hidden xl:block ml-1">Reset Table</span>}
 							variant="ghost"
-							onClick={resetTable}
+							onClick={resetTableFn}
 						/>
 						{/* <div className="h-4 w-px bg-border" /> */}
 						{/* <AnimatedIconButton
@@ -186,7 +180,7 @@ export default function TableHeader() {
 											id="dense"
 											checked={tableData.settings.tableLayout?.dense ?? false}
 											onCheckedChange={(checked) =>
-												updateTableLayoutSetting("dense", checked)
+												updateTableLayoutSettingFn("dense", checked)
 											}
 										/>
 									</DropdownMenuItem>
@@ -203,7 +197,7 @@ export default function TableHeader() {
 												tableData.settings.tableLayout?.cellBorder ?? false
 											}
 											onCheckedChange={(checked) =>
-												updateTableLayoutSetting("cellBorder", checked)
+												updateTableLayoutSettingFn("cellBorder", checked)
 											}
 										/>
 									</DropdownMenuItem>
@@ -220,7 +214,7 @@ export default function TableHeader() {
 												tableData.settings.tableLayout?.rowBorder ?? true
 											}
 											onCheckedChange={(checked) =>
-												updateTableLayoutSetting("rowBorder", checked)
+												updateTableLayoutSettingFn("rowBorder", checked)
 											}
 										/>
 									</DropdownMenuItem>
@@ -237,7 +231,7 @@ export default function TableHeader() {
 												tableData.settings.tableLayout?.rowRounded ?? false
 											}
 											onCheckedChange={(checked) =>
-												updateTableLayoutSetting("rowRounded", checked)
+												updateTableLayoutSettingFn("rowRounded", checked)
 											}
 										/>
 									</DropdownMenuItem>
@@ -254,7 +248,7 @@ export default function TableHeader() {
 												tableData.settings.tableLayout?.stripped ?? false
 											}
 											onCheckedChange={(checked) =>
-												updateTableLayoutSetting("stripped", checked)
+												updateTableLayoutSettingFn("stripped", checked)
 											}
 										/>
 									</DropdownMenuItem>
@@ -274,7 +268,7 @@ export default function TableHeader() {
 												tableData.settings.tableLayout?.headerBorder ?? true
 											}
 											onCheckedChange={(checked) =>
-												updateTableLayoutSetting("headerBorder", checked)
+												updateTableLayoutSettingFn("headerBorder", checked)
 											}
 										/>
 									</DropdownMenuItem>
@@ -294,7 +288,7 @@ export default function TableHeader() {
 												tableData.settings.tableLayout?.headerSticky ?? false
 											}
 											onCheckedChange={(checked) =>
-												updateTableLayoutSetting("headerSticky", checked)
+												updateTableLayoutSettingFn("headerSticky", checked)
 											}
 										/>
 									</DropdownMenuItem>

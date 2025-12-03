@@ -1,3 +1,6 @@
+import { Check, CircleX, LucideGripVertical, PlusCircle } from "lucide-react";
+import { Reorder, useDragControls } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 import { FormElementsDropdown } from "@/components/form-components/form-elements-dropdown";
 import { RenderFormElement } from "@/components/form-components/render-form-element";
 import { StepContainer } from "@/components/form-components/step-container";
@@ -25,9 +28,6 @@ import type {
 	Option,
 } from "@/types/form-types";
 import { isStatic, logger } from "@/utils/utils";
-import { Check, CircleX, LucideGripVertical, PlusCircle } from "lucide-react";
-import { Reorder, useDragControls } from "motion/react";
-import { useEffect, useRef, useState } from "react";
 
 const getTransitionProps = (isLayoutTransitioning: boolean) => ({
 	transition: isLayoutTransitioning
@@ -312,7 +312,7 @@ const FormElementEditor = ({
 				});
 			}
 		},
-		listeners : {
+		listeners: {
 			onChangeDebounceMs: 500,
 			onChange: ({ formApi }) => {
 				logger("Form element changed:", formApi.baseStore.state.values);
@@ -385,7 +385,7 @@ const FormElementEditor = ({
 								required: true,
 								className: "border-secondary",
 							}}
-							form={form  as unknown as AppForm}
+							form={form as unknown as AppForm}
 						/>
 					</div>
 				) : (
@@ -399,7 +399,7 @@ const FormElementEditor = ({
 								type: "text",
 								required: true,
 							}}
-							form={form  as unknown as AppForm}
+							form={form as unknown as AppForm}
 						/>
 						<div className="flex items-center justify-between gap-4 w-full">
 							<RenderFormElement
@@ -412,7 +412,7 @@ const FormElementEditor = ({
 									required: true,
 									className: "outline-secondary",
 								}}
-								form={form  as unknown as AppForm}
+								form={form as unknown as AppForm}
 							/>
 							<RenderFormElement
 								formElement={{
@@ -423,7 +423,7 @@ const FormElementEditor = ({
 									type: "text",
 									required: true,
 								}}
-								form={form  as unknown as AppForm}
+								form={form as unknown as AppForm}
 							/>
 						</div>
 						<RenderFormElement
@@ -434,7 +434,7 @@ const FormElementEditor = ({
 								fieldType: "Input",
 								placeholder: "Add a description",
 							}}
-							form={form  as unknown as AppForm}
+							form={form as unknown as AppForm}
 						/>
 						{fieldType === "Input" && (
 							<RenderFormElement
@@ -448,7 +448,7 @@ const FormElementEditor = ({
 									placeholder: "Placeholder",
 									value: formElement.type,
 								}}
-								form={form  as unknown as AppForm}
+								form={form as unknown as AppForm}
 							/>
 						)}
 						{fieldType === "Slider" && (
@@ -463,7 +463,7 @@ const FormElementEditor = ({
 										defaultValue: formElement.min,
 										required: true,
 									}}
-									form={form  as unknown as AppForm}
+									form={form as unknown as AppForm}
 								/>
 								<RenderFormElement
 									formElement={{
@@ -475,7 +475,7 @@ const FormElementEditor = ({
 										defaultValue: formElement.max,
 										required: true,
 									}}
-									form={form  as unknown as AppForm}
+									form={form as unknown as AppForm}
 								/>
 								<RenderFormElement
 									formElement={{
@@ -487,7 +487,7 @@ const FormElementEditor = ({
 										defaultValue: formElement.step,
 										required: true,
 									}}
-									form={form  as unknown as AppForm}
+									form={form as unknown as AppForm}
 								/>
 							</div>
 						)}
@@ -506,7 +506,7 @@ const FormElementEditor = ({
 									required: true,
 									type: "single",
 								}}
-								form={form  as unknown as AppForm}
+								form={form as unknown as AppForm}
 							/>
 						)}
 						{isFieldWithOptions && (
@@ -524,7 +524,7 @@ const FormElementEditor = ({
 										label: "Required",
 										fieldType: "Checkbox",
 									}}
-									form={form  as unknown as AppForm}
+									form={form as unknown as AppForm}
 								/>
 							</div>
 							<RenderFormElement
@@ -555,13 +555,15 @@ const EditFormItem = (props: EditFormItemProps) => {
 	const { actions } = useFormStore();
 	const isNested = typeof props?.j === "number";
 	const DisplayName =
-	"label" in element && element?.label !== null && element?.label !== ""
-	? element?.label
-	: ("content" in element && element?.content !== null && element?.content !== ""
-		? element?.content
-		: "name" in element && element?.name !== null && element?.name !== ""
-			? element?.name
-			: "");
+		"label" in element && element?.label !== null && element?.label !== ""
+			? element?.label
+			: "content" in element &&
+					element?.content !== null &&
+					element?.content !== ""
+				? element?.content
+				: "name" in element && element?.name !== null && element?.name !== ""
+					? element?.name
+					: "";
 
 	return (
 		<div className="w-full group">

@@ -91,4 +91,3 @@ export const extractImportDependencies = (
 	// Default to React for backward compatibility
 	return extractReactImportDependencies(importSet);
 };
-

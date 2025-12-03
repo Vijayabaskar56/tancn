@@ -1,5 +1,5 @@
-import type { FormArray, FormElement } from "@/types/form-types";
 import useSettings from "@/hooks/use-settings";
+import type { FormArray, FormElement } from "@/types/form-types";
 import { getRegistryUrl } from "@/utils/utils";
 
 export const generateImports = (
@@ -95,16 +95,14 @@ export const generateImports = (
 				);
 				break;
 			case "Checkbox":
-				importSet.add(
-					'import { Checkbox } from "@/components/ui/checkbox"',
-				);
+				importSet.add('import { Checkbox } from "@/components/ui/checkbox"');
 				break;
-			case "Slider" :
+			case "Slider":
 				importSet.add(
 					'import { Slider, SliderGroup, SliderLabel, SliderValueLabel, SliderTrack, SliderFill, SliderThumb } from "@/components/ui/slider"',
 				);
 				break;
-			case "Switch" :
+			case "Switch":
 				importSet.add(
 					'import { Switch, SwitchInput, SwitchControl, SwitchThumb } from "@/components/ui/switch"',
 				);
@@ -116,12 +114,15 @@ export const generateImports = (
 			case "FieldDescription": {
 				// For any of these field types, accumulate the used components
 				const fieldComponents = new Set<string>();
-				if (field.fieldType === "Separator") fieldComponents.add("FieldSeparator");
-				if (["H1", "H2", "H3"].includes(field.fieldType)) fieldComponents.add("FieldLegend");
-				if (field.fieldType === "FieldDescription") fieldComponents.add("FieldDescription");
+				if (field.fieldType === "Separator")
+					fieldComponents.add("FieldSeparator");
+				if (["H1", "H2", "H3"].includes(field.fieldType))
+					fieldComponents.add("FieldLegend");
+				if (field.fieldType === "FieldDescription")
+					fieldComponents.add("FieldDescription");
 				if (fieldComponents.size) {
 					importSet.add(
-						`import { ${Array.from(fieldComponents).join(", ")} } from "@/components/ui/field"`
+						`import { ${Array.from(fieldComponents).join(", ")} } from "@/components/ui/field"`,
 					);
 				}
 				break;

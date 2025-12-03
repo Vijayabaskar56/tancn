@@ -35,6 +35,7 @@ export default function SponsorBanner() {
 						href="https://www.shadcnblocks.com"
 						className="group flex items-center justify-center text-center"
 						target="_blank"
+						rel="noopener"
 					>
 						<svg
 							className="w-6 h-6 md:w-5 md:h-5 me-1 shrink-0"
@@ -69,7 +70,11 @@ export default function SponsorBanner() {
 							/>
 						</svg>
 						<span className="text-base leading-5 md:leading-none">
-							The ultimate <span className="inline md:hidden">Shadcn</span> block set <span className="hidden md:inline">for Shadcn UI & Tailwind - Try</span> {" "}
+							The ultimate <span className="inline md:hidden">Shadcn</span>{" "}
+							block set{" "}
+							<span className="hidden md:inline">
+								for Shadcn UI & Tailwind - Try
+							</span>{" "}
 							<span className="font-bold">Shadcnblocks.com</span>
 						</span>
 						<ArrowRightIcon

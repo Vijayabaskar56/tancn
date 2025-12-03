@@ -90,7 +90,7 @@ export interface DataGridProps<TData extends object> {
 
 const DataGridContext = createContext<
 	// biome-ignore lint/suspicious/noExplicitAny: no-explicit-any
-		DataGridContextProps<any> | undefined
+	DataGridContextProps<any> | undefined
 >(undefined);
 
 function useDataGrid() {

@@ -118,7 +118,7 @@ export const formElementsList = [
 			},
 		],
 	},
-		{
+	{
 		group: "field",
 		name: "Password",
 		fieldType: "Password",

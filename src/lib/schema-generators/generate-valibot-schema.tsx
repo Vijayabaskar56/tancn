@@ -1,7 +1,7 @@
 import * as v from "valibot";
 import { flattenFormSteps, getStepFields } from "@/lib/form-elements-helpers";
-import { isStatic, logger } from "@/utils/utils";
 import type { FormArray, FormElement, FormStep } from "@/types/form-types";
+import { isStatic, logger } from "@/utils/utils";
 
 // Type definitions for Valibot schemas
 /** Valibot schema type - represents any Valibot schema */
@@ -331,6 +331,10 @@ export const getValiSchemaStringDirect = (
 			})
 			.map((element) => {
 				if (isFormArray(element)) {
+					// Skip FormArray elements without a name
+					if (!element.name) {
+						return null;
+					}
 					// Handle FormArray
 					// Use the template arrayField for schema generation
 					const actualFields = element.arrayField;
@@ -350,6 +354,11 @@ export const getValiSchemaStringDirect = (
 						/\s/.test(element.name) || /^\d/.test(element.name);
 					const quotedKey = needsQuotes ? `"${element.name}"` : element.name;
 					return `  ${quotedKey}: ${typeDefinition}`;
+				}
+
+				// Skip elements without a name
+				if (!element.name) {
+					return null;
 				}
 
 				// Handle regular FormElement
@@ -452,13 +461,14 @@ export const getValiSchemaStringDirect = (
 				}
 
 				// Strip prefix from field name
-				const fieldName = element.name.split(".").pop() || element.name;
+				const fieldName = element.name?.split(".").pop() || element.name;
 
 				// Quote keys that need it (contain spaces or start with number)
 				const needsQuotes = /\s/.test(fieldName) || /^\d/.test(fieldName);
 				const quotedKey = needsQuotes ? `"${fieldName}"` : fieldName;
 				return `  ${quotedKey}: ${typeDefinition}`;
-			});
+			})
+			.filter((item): item is string => item !== null);
 	};
 
 	const schemaEntries = processElements(flattenedElements).join(",\n");

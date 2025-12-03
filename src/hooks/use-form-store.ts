@@ -1075,14 +1075,14 @@ const createActions = (
 									return field.map((nestedField: any) => ({
 										...nestedField,
 										id: uuid(),
-										name: `${el.name.replace(/-/g, "_")}[${el.entries.length}].${nestedField.name.replace(/-/g, "_")}`,
+										name: `${el?.name?.replace(/-/g, "_")}[${el.entries.length}].${nestedField.name.replace(/-/g, "_")}`,
 									}));
 								}
 								// Handle single fields
 								return {
 									...field,
 									id: uuid(),
-									name: `${el.name.replace(/-/g, "_")}[${el.entries.length}].${field.name.replace(/-/g, "_")}`,
+									name: `${el?.name?.replace(/-/g, "_")}[${el.entries.length}].${field.name.replace(/-/g, "_")}`,
 								};
 							}),
 						};

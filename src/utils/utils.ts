@@ -2,10 +2,8 @@ import { createClientOnlyFn, createIsomorphicFn } from "@tanstack/react-start";
 import { type ClassValue, clsx } from "clsx";
 import js_beautify from "js-beautify";
 import { twMerge } from "tailwind-merge";
-import {
-	type SettingsCollection,
-	settingsCollection,
-} from "@/db-collections/settings.collections";
+import type { SettingsCollection } from "@/db-collections/settings.collections";
+import { setPreferredPackageManager } from "@/services/settings.service";
 import type { JsonData } from "@/types/table-types";
 
 export function cn(...inputs: ClassValue[]) {
@@ -155,14 +153,16 @@ export function formatCode(code: string): string {
 
 export const updatePreferredPackageManager = createClientOnlyFn(
 	(value: SettingsCollection["preferredPackageManager"]) => {
-		settingsCollection?.update("user-settings", (draft: SettingsCollection) => {
-			draft.preferredPackageManager = value;
-		});
+		if (value) {
+			setPreferredPackageManager(value);
+		}
 	},
 );
 
 export const logger = createIsomorphicFn()
-	.server((msg: string, data?: unknown) => console.log(`[SERVER]: ${msg}`, data))
+	.server((msg: string, data?: unknown) =>
+		console.log(`[SERVER]: ${msg}`, data),
+	)
 	.client((msg: string, data?: unknown) => {
 		if (import.meta.env.DEV) {
 			console.log(`[CLIENT]: ${msg}`, data);
@@ -188,8 +188,10 @@ import { detectColumnsConfig } from "../lib/column-detection";
 
 export const detectColumns = (data: JsonData[]) => detectColumnsConfig(data);
 
-
-export const getRegistryUrl = (framework?: SettingsCollection["preferredFramework"]) => {
-	if (!framework) return `${import.meta.env.MODE === "development" ? "http://localhost:3000" : `https://tancn.dev`}`;
+export const getRegistryUrl = (
+	framework?: SettingsCollection["preferredFramework"],
+) => {
+	if (!framework)
+		return `${import.meta.env.MODE === "development" ? "http://localhost:3000" : `https://tancn.dev`}`;
 	return `${import.meta.env.MODE === "development" ? "http://localhost:3000" : `${import.meta.env.VITE_APP_URL}`}/r/${framework.toLowerCase()}`;
 };

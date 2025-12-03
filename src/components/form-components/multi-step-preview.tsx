@@ -1,4 +1,7 @@
 // multi-step-form-preview.tsx
+
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import { FormArrayPreview } from "@/components/form-components/form-array-preview";
 import { RenderFormElement } from "@/components/form-components/render-form-element";
 import { Button } from "@/components/ui/button";
@@ -8,8 +11,6 @@ import { useFormStore } from "@/hooks/use-form-store";
 import { useMultiStepForm } from "@/hooks/use-multi-step-form";
 import useSettings from "@/hooks/use-settings";
 import type { FormArray, FormElement, FormStep } from "@/types/form-types";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
 
 function collectFieldNames(items: any[]): string[] {
 	const names: string[] = [];
@@ -36,8 +37,8 @@ function collectFieldNames(items: any[]): string[] {
 	return names;
 }
 export function MultiStepFormPreview() {
-		const { formElements,  } = useFormStore();
-	const { form , isDefault } = useFormBuilder();
+	const { formElements } = useFormStore();
+	const { form, isDefault } = useFormBuilder();
 	const { validationMethod } = useSettings();
 	const validate =
 		validationMethod === "onBlur"
@@ -129,45 +130,57 @@ export function MultiStepFormPreview() {
 					Previous
 				</Button>
 				{isLastStep ? (
-				<div className="flex items-center justify-end w-full pt-3 gap-3">
-				{!isDefault &&
-					<Button type="button" onClick={() => form.reset()} className="rounded-lg" variant='outline' size="sm">
+					<div className="flex items-center justify-end w-full pt-3 gap-3">
+						{!isDefault && (
+							<Button
+								type="button"
+								onClick={() => form.reset()}
+								className="rounded-lg"
+								variant="outline"
+								size="sm"
+							>
 								Reset
-					</Button>
-				}
-				<Button
-						size="sm"
-						type="button"
-						onClick={async (e) => {
-							e.preventDefault();
-							await form.handleSubmit();
-						}}
-						disabled={isSubmitting}
-					>
-						{isSubmitting
-							? "Submitting..."
-							: isSubmitted
-								? "Submitted "
-								: "Submit"}
-					</Button>
-				</div>
+							</Button>
+						)}
+						<Button
+							size="sm"
+							type="button"
+							onClick={async (e) => {
+								e.preventDefault();
+								await form.handleSubmit();
+							}}
+							disabled={isSubmitting}
+						>
+							{isSubmitting
+								? "Submitting..."
+								: isSubmitted
+									? "Submitted "
+									: "Submit"}
+						</Button>
+					</div>
 				) : (
-				<div className="flex items-center justify-end w-full pt-3 gap-3">
-				{!isDefault &&
-					<Button type="button" onClick={() => form.reset()} className="rounded-lg" variant='outline' size="sm">
+					<div className="flex items-center justify-end w-full pt-3 gap-3">
+						{!isDefault && (
+							<Button
+								type="button"
+								onClick={() => form.reset()}
+								className="rounded-lg"
+								variant="outline"
+								size="sm"
+							>
 								Reset
-					</Button>
-				}
-					<Button
-						size="sm"
-						type="button"
-						variant={"secondary"}
-						onClick={goToNext}
-					>
-						Next
-						<ChevronRightIcon />
-					</Button>
-				</div>
+							</Button>
+						)}
+						<Button
+							size="sm"
+							type="button"
+							variant={"secondary"}
+							onClick={goToNext}
+						>
+							Next
+							<ChevronRightIcon />
+						</Button>
+					</div>
 				)}
 			</div>
 		</div>

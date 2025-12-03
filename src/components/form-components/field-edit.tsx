@@ -31,8 +31,8 @@ import type { AppForm } from "@/hooks/use-form-builder";
 import { useFormStore } from "@/hooks/use-form-store";
 import { useListState } from "@/hooks/use-list-state";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { isStatic } from "@/utils/utils";
 import type { FormElement, Option } from "@/types/form-types";
+import { isStatic } from "@/utils/utils";
 
 const inputTypes = [
 	{

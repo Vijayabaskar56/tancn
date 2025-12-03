@@ -1,3 +1,4 @@
+import { createFileRoute } from "@tanstack/react-router";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { FormEdit } from "@/components/form-components/form-edit";
 import { FieldTab } from "@/components/form-components/form-field-library";
@@ -8,15 +9,14 @@ import Loader from "@/components/loader";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useIsMobile } from "@/hooks/use-mobile";
 import useSettings from "@/hooks/use-settings";
-import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/form-builder/")({
 	head: () => ({
-		meta : [],
+		meta: [],
 	}),
 	component: FormBuilderComponent,
 	errorComponent: ErrorBoundary,
-	pendingComponent : Loader,
+	pendingComponent: Loader,
 });
 
 function FormBuilderComponent() {

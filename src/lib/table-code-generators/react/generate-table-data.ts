@@ -1,5 +1,5 @@
-import { capitalize, toCamelCase } from "@/utils/utils";
 import type { ColumnConfig } from "@/types/table-types";
+import { capitalize, toCamelCase } from "@/utils/utils";
 
 const getTypeScriptType = (col: ColumnConfig): string => {
 	switch (col.type) {
@@ -9,7 +9,7 @@ const getTypeScriptType = (col: ColumnConfig): string => {
 			return "number";
 		case "boolean":
 			if (col.possibleValues && col.possibleValues.length > 0) {
-				return col.possibleValues.map(v => `"${v}"`).join(" | ");
+				return col.possibleValues.map((v) => `"${v}"`).join(" | ");
 			}
 			return "boolean";
 		case "date":
@@ -20,7 +20,7 @@ const getTypeScriptType = (col: ColumnConfig): string => {
 			return "any[]";
 		case "enum":
 			if (col.possibleValues && col.possibleValues.length > 0) {
-				return col.possibleValues.map(v => `"${v}"`).join(" | ");
+				return col.possibleValues.map((v) => `"${v}"`).join(" | ");
 			}
 			return "string";
 		default:
@@ -48,7 +48,11 @@ const formatValue = (value: any, col: ColumnConfig): string => {
 	}
 
 	// For boolean/enum fields with possibleValues, treat as strings
-	if ((col.type === "boolean" || col.type === "enum") && col.possibleValues && col.possibleValues.length > 0) {
+	if (
+		(col.type === "boolean" || col.type === "enum") &&
+		col.possibleValues &&
+		col.possibleValues.length > 0
+	) {
 		return `"${String(value).replace(/"/g, '\\"')}"`;
 	}
 

@@ -577,4 +577,3 @@ export const getFormElementCode = (
 			return null;
 	}
 };
-

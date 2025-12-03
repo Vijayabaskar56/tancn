@@ -1,16 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { DataGrid, DataGridContainer } from "@/components/ui/data-grid";
-import { DataGridColumnHeader } from "@/components/ui/data-grid-column-header";
-import { DataGridPagination } from "@/components/ui/data-grid-pagination";
-import {
-	createFilter,
-	type Filter,
-	type FilterFieldConfig,
-	Filters,
-} from "@/components/ui/filters";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import type { DragEndEvent } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 import {
@@ -33,6 +20,19 @@ import {
 	User,
 } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { DataGrid, DataGridContainer } from "@/components/ui/data-grid";
+import { DataGridColumnHeader } from "@/components/ui/data-grid-column-header";
+import { DataGridPagination } from "@/components/ui/data-grid-pagination";
+import {
+	createFilter,
+	type Filter,
+	type FilterFieldConfig,
+	Filters,
+} from "@/components/ui/filters";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { DataGridTableDnd } from "../ui/data-grid-table-dnd";
 
 interface IData {
@@ -65,7 +65,14 @@ const demoData: IData[] = [
 		joined: "2021-04-15",
 		location: "San Francisco, USA",
 		balance: 5143.03,
-		skills: ["Leadership", "Strategy", "Innovation", "Product Vision","testing",'testing'],
+		skills: [
+			"Leadership",
+			"Strategy",
+			"Innovation",
+			"Product Vision",
+			"testing",
+			"testing",
+		],
 	},
 	{
 		id: "2",
@@ -629,7 +636,7 @@ export default function DataGridWithFiltersDemo() {
 									src={`/media/avatars/${row.original.avatar}`}
 									alt={row.original.name}
 								/>
-								<AvatarFallback>{row.original.name.charAt(0)}</AvatarFallback>
+								<AvatarFallback>{row.original.name?.charAt(0)}</AvatarFallback>
 							</Avatar>
 							<div className="space-y-px">
 								<div className="font-medium text-foreground">
@@ -795,17 +802,16 @@ export default function DataGridWithFiltersDemo() {
 		getPaginationRowModel: getPaginationRowModel(),
 		getSortedRowModel: getSortedRowModel(),
 	});
-	  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    if (active && over && active.id !== over.id) {
-      setColumnOrder((columnOrder) => {
-        const oldIndex = columnOrder.indexOf(active.id as string);
-        const newIndex = columnOrder.indexOf(over.id as string);
-        return arrayMove(columnOrder, oldIndex, newIndex);
-      });
-    }
-  };
-
+	const handleDragEnd = (event: DragEndEvent) => {
+		const { active, over } = event;
+		if (active && over && active.id !== over.id) {
+			setColumnOrder((columnOrder) => {
+				const oldIndex = columnOrder.indexOf(active.id as string);
+				const newIndex = columnOrder.indexOf(over.id as string);
+				return arrayMove(columnOrder, oldIndex, newIndex);
+			});
+		}
+	};
 
 	return (
 		<div className="w-full self-start">
@@ -837,7 +843,7 @@ export default function DataGridWithFiltersDemo() {
 					columnsResizable: true,
 					columnsVisibility: true,
 					columnsPinnable: true,
-					columnsDraggable : true,
+					columnsDraggable: true,
 				}}
 			>
 				<div className="w-full space-y-2.5">

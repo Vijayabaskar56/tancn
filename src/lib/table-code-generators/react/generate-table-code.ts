@@ -1,11 +1,12 @@
 // @ts-nocheck
 import type { TableBuilder } from "@/db-collections/table-builder.collections";
-import {
-	generateFilterFields,
-} from "@/lib/table-generator/generate-columns";
+import { generateFilterFields } from "@/lib/table-generator/generate-columns";
 import type { JsonData } from "@/types/table-types";
 import { capitalize, toCamelCase, toJSLiteral } from "@/utils/utils";
-import { getColumnsString, getFilteredDataString } from "./generate-coloum-code";
+import {
+	getColumnsString,
+	getFilteredDataString,
+} from "./generate-coloum-code";
 
 const getDataName = (customName?: string): string => {
 	return customName ? `${customName}Data` : "tableData";
@@ -16,7 +17,9 @@ const getTypeName = (customName?: string): string => {
 };
 
 const getComponentName = (tableName: string, customName?: string): string => {
-	return customName ? `${capitalize(customName)}Table` : `${capitalize(tableName)}Table`;
+	return customName
+		? `${capitalize(customName)}Table`
+		: `${capitalize(tableName)}Table`;
 };
 
 const generateTableLayoutProps = (tableData: TableBuilder): string => {
@@ -76,7 +79,9 @@ const generateFilterFieldsCode = (
 	typeName: string,
 ): string => {
 	// Check if any column has filterable enabled
-	const hasFilterableColumns = tableData.table.columns.some((col) => col.filterable === true);
+	const hasFilterableColumns = tableData.table.columns.some(
+		(col) => col.filterable === true,
+	);
 	if (!hasFilterableColumns) return "";
 
 	const modifiedDataFormat = tableData.table.columns.map((col) => ({
@@ -98,7 +103,10 @@ const generateFilterFieldsCode = (
 		)
 		.join(",");
 
-	const filteringCode = getFilteredDataString(tableData.table.columns, typeName);
+	const filteringCode = getFilteredDataString(
+		tableData.table.columns,
+		typeName,
+	);
 
 	return `const filterFields = useMemo<FilterFieldConfig[]>(() => [
 		${fieldsCode}
@@ -124,9 +132,7 @@ export const generateTableCode = (
 		(col) => col.filterable === true,
 	);
 
-	const dataVar = hasFilterableColumns
-		? "filteredData"
-		: toCamelCase(dataName);
+	const dataVar = hasFilterableColumns ? "filteredData" : toCamelCase(dataName);
 
 	const componentBody =
 		`export default function ${capitalize(componentName)}() {
@@ -176,19 +182,20 @@ export const generateTableCode = (
 	}
 
 	${getColumnsString(
-			tableData.table.columns,
-			{
-				enableSorting: tableData.settings.enableSorting,
-				enableHiding: tableData.settings.enableHiding,
-				enableResizing: tableData.settings.enableResizing,
-				enablePinning: tableData.settings.enablePinning,
-				enableRowSelection: tableData.settings.enableRowSelection,
-				enableCRUD: tableData.settings.enableCRUD,
-			},
-			`${typeName}`
-		)}
+		tableData.table.columns,
+		{
+			enableSorting: tableData.settings.enableSorting,
+			enableHiding: tableData.settings.enableHiding,
+			enableResizing: tableData.settings.enableResizing,
+			enablePinning: tableData.settings.enablePinning,
+			enableRowSelection: tableData.settings.enableRowSelection,
+			enableCRUD: tableData.settings.enableCRUD,
+		},
+		`${typeName}`,
+	)}
 
-	${hasFilterableColumns
+	${
+		hasFilterableColumns
 			? `${FilterCode}
 	const handleFiltersChange = useCallback((filters: Filter[]) => {
 		setFilters(filters);

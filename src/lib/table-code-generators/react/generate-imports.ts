@@ -20,7 +20,7 @@ export const generateTableImports = (
 	importSet.add('import { Badge } from "@/components/ui/badge"');
 	importSet.add(`import { ${reactImports.join(", ")} } from "react"`);
 	importSet.add(
-			'import { EllipsisIcon , Settings2 , FunnelX} from "lucide-react"',
+		'import { EllipsisIcon , Settings2 , FunnelX} from "lucide-react"',
 	);
 	importSet.add(
 		'import {\n\ttype ColumnDef,\n\tcreateColumnHelper,\n\tgetCoreRowModel,\n\tgetPaginationRowModel,\n\tgetSortedRowModel,\n\ttype PaginationState,\n\ttype SortingState,\n\tuseReactTable,\n} from "@tanstack/react-table"',

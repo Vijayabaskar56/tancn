@@ -1,8 +1,3 @@
-import CTASection from "@/components/cta";
-import { ErrorBoundary } from "@/components/error-boundary";
-import FAQSection from "@/components/faq";
-import FooterSection from "@/components/footer";
-import { NotFound } from "@/components/not-found";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
 	CheckCircle,
@@ -15,14 +10,17 @@ import {
 	Palette,
 	Share2,
 } from "lucide-react";
-
-
+import { Suspense } from "react";
+import CTASection from "@/components/cta";
+import { ErrorBoundary } from "@/components/error-boundary";
+import FAQSection from "@/components/faq";
+import FooterSection from "@/components/footer";
 import Loader from "@/components/loader";
+import { MiniFormBuilder } from "@/components/mini-builder/index";
+import { NotFound } from "@/components/not-found";
+import { SponsorsContributors } from "@/components/sponsors-contributors";
 import { Button } from "@/components/ui/button";
 import { seo } from "@/utils/seo";
-import { SponsorsContributors } from "@/components/sponsors-contributors";
-
-import { MiniFormBuilder } from "@/components/mini-form-builder";
 
 export const Route = createFileRoute("/")({
 	head: () => ({
@@ -223,7 +221,6 @@ const roadmapItems = [
 function HomePage() {
 	// Carousel logic removed
 
-
 	return (
 		<div className="w-full min-h-screen relative bg-background md:px-8 px-4 overflow-x-hidden">
 			{/* Hero Section */}
@@ -233,34 +230,26 @@ function HomePage() {
 						{/* Main Headline */}
 						<div className="w-full flex flex-col items-start gap-4 sm:gap-5 md:gap-6 mb-6 sm:mb-8 md:mb-10 lg:mb-12 max-w-2xl">
 							<h1 className="text-left text-foreground text-2xl sm:text-3xl md:text-4xl font-bold leading-tight">
-								<span className="text-primary">TANCN</span> is the best & Fastest way to{" "}
-								<span className="text-primary">build forms</span> and{" "}
-								<span className="text-primary">tables</span>
+								<span className="text-primary">TANCN</span> is the best &
+								Fastest way to <span className="text-primary">build forms</span>{" "}
+								and <span className="text-primary">tables</span>
 							</h1>
 
 							{/* Subtitle */}
 							<p className="text-left text-muted-foreground text-base sm:text-lg md:text-xl leading-relaxed max-w-2xl font-medium">
-								Build powerful forms and tables with ease using TanStack technologies.
-								Code generation with 100% Type-Safe.
+								Build powerful forms and tables with ease using TanStack
+								technologies. Code generation with 100% Type-Safe.
 							</p>
 						</div>
 
 						{/* CTA Button */}
-						<div className="flex flex-col sm:flex-row justify-start items-start sm:items-center gap-4 sm:gap-6 mb-12 sm:mb-16 md:mb-20 lg:mb-24">
-							<Button
-								variant="default"
-								size="lg"
-								asChild
-							>
+						<div className="flex flex-col sm:flex-row justify-start items-start sm:items-center gap-4 sm:gap-6 mb-12">
+							<Button variant="default" size="default" asChild>
 								<Link to="/form-builder" preload="intent">
 									Start Building
 								</Link>
 							</Button>
-							<Button
-								variant="outline"
-								size="lg"
-								asChild
-							>
+							<Button variant="outline" size="default" asChild>
 								<Link to="/form-registry">Form Registry</Link>
 							</Button>
 						</div>
@@ -297,34 +286,36 @@ function HomePage() {
 			<section className="w-full py-16">
 				<div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
 					<div className="text-center mb-12 md:mb-16">
-						<h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold mb-4">Features</h2>
+						<h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold mb-4">
+							Features
+						</h2>
 					</div>
 					<div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-							{features.map((feature) => {
-								const IconComponent = feature.icon;
-								return (
-									<div key={feature.title} className="relative group h-full">
-										<div className="absolute -top-6 left-1/2 transform -translate-x-1/2 z-10">
-											<div className="bg-primary/10 backdrop-blur-sm border border-primary/20 rounded-full p-3 shadow-lg group-hover:scale-110 transition-transform duration-300">
-												<IconComponent className="w-6 h-6 text-primary" />
-											</div>
+						{features.map((feature) => {
+							const IconComponent = feature.icon;
+							return (
+								<div key={feature.title} className="relative group h-full">
+									<div className="absolute -top-6 left-1/2 transform -translate-x-1/2 z-10">
+										<div className="bg-primary/10 backdrop-blur-sm border border-primary/20 rounded-full p-3 shadow-lg group-hover:scale-110 transition-transform duration-300">
+											<IconComponent className="w-6 h-6 text-primary" />
 										</div>
+									</div>
 
-										<div className="h-full flex flex-col p-6 pt-8 rounded-xl border bg-card hover:shadow-md transition-all duration-300">
-											<div className="flex-1 flex flex-col">
-												<h3 className="font-semibold mb-4 text-lg text-center">
-													{feature.title}
-												</h3>
-												<div className="flex-1 flex items-center">
-													<p className="text-sm text-muted-foreground leading-relaxed text-center w-full">
-														{feature.description}
-													</p>
-												</div>
+									<div className="h-full flex flex-col p-6 pt-8 rounded-xl border bg-card hover:shadow-md transition-all duration-300">
+										<div className="flex-1 flex flex-col">
+											<h3 className="font-semibold mb-4 text-lg text-center">
+												{feature.title}
+											</h3>
+											<div className="flex-1 flex items-center">
+												<p className="text-sm text-muted-foreground leading-relaxed text-center w-full">
+													{feature.description}
+												</p>
 											</div>
 										</div>
 									</div>
-								);
-							})}
+								</div>
+							);
+						})}
 					</div>
 				</div>
 			</section>
@@ -332,7 +323,15 @@ function HomePage() {
 			{/* Sponsors & Contributors */}
 			<section className="w-full py-16 ">
 				<div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
-					<SponsorsContributors />
+					<Suspense
+						fallback={
+							<div className="text-sm text-muted-foreground">
+								Loading contributors...
+							</div>
+						}
+					>
+						<SponsorsContributors />
+					</Suspense>
 				</div>
 			</section>
 
@@ -340,7 +339,9 @@ function HomePage() {
 			<section className="w-full py-16 ">
 				<div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
 					<div className="text-center mb-12 md:mb-16">
-						<h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold mb-4">Development Roadmap</h2>
+						<h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold mb-4">
+							Development Roadmap
+						</h2>
 					</div>
 					<div className="space-y-12">
 						<div className="text-left">
@@ -484,8 +485,6 @@ function FeatureCard({
 			role="button"
 			tabIndex={0}
 		>
-
-
 			<div className="text-foreground text-sm md:text-base font-semibold leading-6">
 				{title}
 			</div>

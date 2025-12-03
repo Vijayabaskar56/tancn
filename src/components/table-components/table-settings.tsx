@@ -1,14 +1,8 @@
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Switch } from "@/components/ui/switch";
-import { useAppForm } from "@/components/ui/tanstack-form";
-import useTableStore from "@/hooks/use-table-store";
-import { TableBuilderService } from "@/services/table-builder.service";
 import {
 	ArrowRightLeftIcon,
 	CheckSquare,
 	Eye,
 	GripVertical,
-	Link,
 	MoreHorizontal,
 	MoveHorizontal,
 	Pin,
@@ -17,8 +11,13 @@ import {
 } from "lucide-react";
 import { useId } from "react";
 import * as v from "valibot";
-import { Separator } from "../ui/separator";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Switch } from "@/components/ui/switch";
+import { useAppForm } from "@/components/ui/tanstack-form";
+import useTableStore from "@/hooks/use-table-store";
+import { updateSettings } from "@/services/table-builder.service";
 import { logger } from "@/utils/utils";
+import { Separator } from "../ui/separator";
 
 const TableSettingsSchema = v.object({
 	isGlobalSearch: v.optional(v.boolean(), false),
@@ -30,7 +29,7 @@ const TableSettingsSchema = v.object({
 	enableCRUD: v.optional(v.boolean(), false),
 	enableColumnDragging: v.optional(v.boolean(), false),
 	enableRowDragging: v.optional(v.boolean(), false),
-	enableColumnMovable : v.optional(v.boolean(), false),
+	enableColumnMovable: v.optional(v.boolean(), false),
 	enableUrlFiltering: v.optional(v.boolean(), false),
 });
 
@@ -43,7 +42,7 @@ export function TableSettingsSidebar() {
 	const rowSelectionId = useId();
 	const rowActionsId = useId();
 	const draggableId = useId();
-	const urlFilteringId = useId();
+	const _urlFilteringId = useId();
 	const data = useTableStore();
 
 	const form = useAppForm({
@@ -57,7 +56,7 @@ export function TableSettingsSidebar() {
 			enableCRUD: data?.settings?.enableCRUD ?? false,
 			enableColumnDragging: data?.settings?.enableColumnDragging ?? false,
 			enableRowDragging: data?.settings?.enableRowDragging ?? false,
-			enableColumnMovable : data?.settings?.enableColumnMovable ?? false,
+			enableColumnMovable: data?.settings?.enableColumnMovable ?? false,
 			enableUrlFiltering: data?.settings?.enableUrlFiltering ?? false,
 		} as v.InferInput<typeof TableSettingsSchema>,
 		validators: {
@@ -66,8 +65,8 @@ export function TableSettingsSidebar() {
 		listeners: {
 			onChangeDebounceMs: 1000,
 			onChange: ({ formApi }) => {
-				logger('test',formApi.baseStore.state.values ,);
-				TableBuilderService.updateSettings(formApi.baseStore.state.values);
+				logger("test", formApi.baseStore.state.values);
+				updateSettings(formApi.baseStore.state.values);
 			},
 		},
 	});
@@ -124,6 +123,7 @@ export function TableSettingsSidebar() {
 														className="text-primary"
 														href="https://tanstack.com/table/latest/docs/guide/global-filtering"
 														target="_blank"
+														rel="noopener"
 													>
 														Global Filtering
 													</a>
@@ -153,12 +153,14 @@ export function TableSettingsSidebar() {
 												</div>
 												<Separator className="my-2" />
 												<field.FieldDescription className="pb-2">
-													Allow moving columns to adjacent positions via the header menu. For more info check the TanStack Table docs:{" "}
+													Allow moving columns to adjacent positions via the
+													header menu. For more info check the TanStack Table
+													docs:{" "}
 													<a
 														className="text-primary"
 														href="https://tanstack.com/table/latest/docs/guide/column-ordering"
 														target="_blank"
-
+														rel="noopener"
 													>
 														Column Ordering
 													</a>
@@ -229,7 +231,7 @@ export function TableSettingsSidebar() {
 														className="text-primary"
 														href="https://tanstack.com/table/latest/docs/guide/sorting"
 														target="_blank"
-
+														rel="noopener"
 													>
 														Sorting
 													</a>
@@ -244,7 +246,7 @@ export function TableSettingsSidebar() {
 											<div className="p-3 border-b mx-2">
 												<div className="flex items-center justify-between">
 													<div className="flex items-center gap-2">
-															<MoveHorizontal className="w-4 h-4 text-muted-foreground" />
+														<MoveHorizontal className="w-4 h-4 text-muted-foreground" />
 														<field.FieldLabel
 															htmlFor={asyncValidationId}
 															className="text-sm"
@@ -267,7 +269,7 @@ export function TableSettingsSidebar() {
 														className="text-primary"
 														href="https://tanstack.com/table/latest/docs/guide/column-sizing"
 														target="_blank"
-
+														rel="noopener"
 													>
 														Column Sizing
 													</a>
@@ -304,7 +306,7 @@ export function TableSettingsSidebar() {
 														className="text-primary"
 														href="https://tanstack.com/table/latest/docs/guide/column-pinning"
 														target="_blank"
-
+														rel="noopener"
 													>
 														Column Pinning
 													</a>
@@ -342,7 +344,7 @@ export function TableSettingsSidebar() {
 														className="text-primary"
 														href="https://tanstack.com/table/latest/docs/guide/column-visibility"
 														target="_blank"
-
+														rel="noopener"
 													>
 														Column Visibility
 													</a>
@@ -379,7 +381,7 @@ export function TableSettingsSidebar() {
 														className="text-primary"
 														href="https://tanstack.com/table/latest/docs/guide/column-ordering"
 														target="_blank"
-
+														rel="noopener"
 													>
 														Column Ordering
 													</a>
@@ -416,7 +418,7 @@ export function TableSettingsSidebar() {
 														className="text-primary"
 														href="https://tanstack.com/table/latest/docs/guide/row-selection"
 														target="_blank"
-
+														rel="noopener"
 													>
 														Row Selection
 													</a>
@@ -454,7 +456,7 @@ export function TableSettingsSidebar() {
 														className="text-primary"
 														href="https://tanstack.com/table/latest/docs/guide/actions"
 														target="_blank"
-
+														rel="noopener"
 													>
 														Table Actions
 													</a>
@@ -464,8 +466,7 @@ export function TableSettingsSidebar() {
 										)}
 									</form.AppField>
 
-
-{/*
+									{/*
 									<form.AppField name="enableRowDragging" mode="value">
 										{(field) => (
 											<div className="p-3 border-b mx-2">

@@ -1,20 +1,4 @@
 import {
-	Accordion,
-	AccordionContent,
-	AccordionItem,
-	AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
-import { DeleteIcon } from "@/components/ui/delete";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useAppForm } from "@/components/ui/tanstack-form";
-import type { TableBuilder } from "@/db-collections/table-builder.collections";
-import { useForcedTransition } from "@/hooks/use-force-transition";
-import useTableStore from "@/hooks/use-table-store";
-import { TableBuilderService } from "@/services/table-builder.service";
-import type { Column } from "@/workers/data-processor.worker";
-import {
 	closestCenter,
 	DndContext,
 	type DragOverEvent,
@@ -32,6 +16,22 @@ import {
 } from "@dnd-kit/sortable";
 import { LucideGripVertical } from "lucide-react";
 import { useEffect, useOptimistic, useState, useTransition } from "react";
+import {
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
+import { DeleteIcon } from "@/components/ui/delete";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useAppForm } from "@/components/ui/tanstack-form";
+import type { TableBuilder } from "@/db-collections/table-builder.collections";
+import { useForcedTransition } from "@/hooks/use-force-transition";
+import useTableStore from "@/hooks/use-table-store";
+import { addColumnData } from "@/services/table-builder.service";
+import type { Column } from "@/workers/data-processor.worker";
 import { Badge } from "../ui/badge";
 import { Checkbox } from "../ui/checkbox";
 import { ScrollArea } from "../ui/scroll-area";
@@ -74,22 +74,20 @@ export function TableColumnEdit() {
 		columnId: string,
 		updates: Partial<(typeof columns)[0]>,
 	) => {
-		TableBuilderService.updateColumn(columnId, updates);
+		updateColumn(columnId, updates);
 	};
 	const deleteColumn = (columnId: string) => {
-		TableBuilderService.deleteColumn(columnId);
+		deleteColumn(columnId);
 	};
 
 	const reorderColumns = (newOrder: typeof columns) => {
-		TableBuilderService.reorderColumns(newOrder);
+		reorderColumns(newOrder);
 		setLocalColumns(newOrder);
 	};
 
 	const addColumn = (type: string) => {
-		TableBuilderService.addColumn(
-			type as TableBuilder["table"]["columns"][0]["type"],
-		);
-		TableBuilderService.addColumnData();
+		addColumn(type as TableBuilder["table"]["columns"][0]["type"]);
+		addColumnData();
 	};
 
 	function handleDragStart() {
@@ -126,7 +124,7 @@ export function TableColumnEdit() {
 			<div className="mb-4 pb-2 px-4 border-b">
 				<h3 className="text-lg font-semibold text-primary">Columns</h3>
 				<p className="text-sm text-muted-foreground">
-					Add Columns to Your Forms
+					Add Columns to Your Table
 				</p>
 			</div>
 			<div className="flex items-center justify-between">

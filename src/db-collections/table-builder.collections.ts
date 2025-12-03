@@ -1,7 +1,7 @@
 import {
 	createCollection,
 	localOnlyCollectionOptions,
-	localStorageCollectionOptions
+	localStorageCollectionOptions,
 } from "@tanstack/react-db";
 import { createIsomorphicFn } from "@tanstack/react-start";
 import * as v from "valibot";
@@ -20,7 +20,7 @@ export const TableBuilderSchema = v.object({
 		enableColumnDragging: v.optional(v.boolean(), false),
 		enableRowDragging: v.optional(v.boolean(), false),
 		enablePagination: v.optional(v.boolean(), true),
-		enableColumnMovable : v.optional(v.boolean(), false),
+		enableColumnMovable: v.optional(v.boolean(), false),
 		enableUrlFiltering: v.optional(v.boolean(), false),
 		tableLayout: v.optional(
 			v.object({
@@ -57,11 +57,19 @@ export const TableBuilderSchema = v.object({
 				order: v.number(),
 				filterable: v.optional(v.boolean(), false),
 				hasFacetedFilter: v.optional(v.boolean(), false),
-				options: v.optional(v.array(v.object({
-					label: v.string(),
-					value: v.string(),
-				})), undefined),
-				optionsMode: v.optional(v.union([v.literal("auto"), v.literal("custom")]), "auto"),
+				options: v.optional(
+					v.array(
+						v.object({
+							label: v.string(),
+							value: v.string(),
+						}),
+					),
+					undefined,
+				),
+				optionsMode: v.optional(
+					v.union([v.literal("auto"), v.literal("custom")]),
+					"auto",
+				),
 				possibleValues: v.optional(v.array(v.string()), undefined),
 			}),
 		),
