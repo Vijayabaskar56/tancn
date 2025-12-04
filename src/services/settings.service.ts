@@ -28,7 +28,7 @@ const DEFAULT_SETTINGS: SettingsCollection = {
  */
 export const getSettings = (): SettingsCollection | null => {
 	try {
-		return settingsCollection.get(SETTINGS_ID) || null;
+		return settingsCollection().get(SETTINGS_ID) || null;
 	} catch (error) {
 		console.error("Failed to get settings:", error);
 		return null;
@@ -55,7 +55,7 @@ export const getSetting = <K extends keyof SettingsCollection>(
  */
 export const hasSettings = (): boolean => {
 	try {
-		return settingsCollection.has(SETTINGS_ID);
+		return settingsCollection().has(SETTINGS_ID);
 	} catch (error) {
 		console.error("Failed to check settings existence:", error);
 		return false;
@@ -74,7 +74,7 @@ export const updateSetting = <K extends keyof SettingsCollection>(
 	value: SettingsCollection[K],
 ): boolean => {
 	try {
-		settingsCollection.update(SETTINGS_ID, (draft) => {
+		settingsCollection().update(SETTINGS_ID, (draft) => {
 			draft[key] = value;
 		});
 		return true;
@@ -91,7 +91,7 @@ export const updateSettings = (
 	settings: Partial<SettingsCollection>,
 ): boolean => {
 	try {
-		settingsCollection.update(SETTINGS_ID, (draft) => {
+		settingsCollection().update(SETTINGS_ID, (draft) => {
 			Object.assign(draft, settings);
 		});
 		return true;
@@ -238,7 +238,7 @@ export const initializeSettings = createIsomorphicFn()
 			}
 
 			// Initialize with defaults
-			settingsCollection.insert([DEFAULT_SETTINGS]);
+			settingsCollection().insert([DEFAULT_SETTINGS]);
 			return true;
 		} catch (error) {
 			console.error("Failed to initialize settings:", error);

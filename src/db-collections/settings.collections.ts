@@ -66,5 +66,4 @@ export const settingsCollection = createIsomorphicFn()
 				schema: SettingsSchema,
 				getKey: (settings) => settings.id,
 			}),
-		),
-	)();
+		))

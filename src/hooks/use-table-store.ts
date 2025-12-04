@@ -45,7 +45,7 @@ const useTableStore = createIsomorphicFn()
 	.client(() => {
 		const { data } = useLiveQuery((q) =>
 			q
-				.from({ tableBuilder: tableBuilderCollection })
+				.from({ tableBuilder: tableBuilderCollection() })
 				.select(({ tableBuilder }) => ({
 					tableName: tableBuilder.tableName,
 					settings: tableBuilder.settings,

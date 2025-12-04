@@ -96,15 +96,7 @@ export const tableBuilderCollection = createIsomorphicFn()
 				schema: TableBuilderSchema,
 			}),
 		),
-	)();
-// export const tableBuilderCollection = createCollection(
-// 	localOnlyCollectionOptions({
-// 		getKey: (tableBuilder) => tableBuilder.id,
-// 		schema: TableBuilderSchema,
-// 	}),
-// );
-
-// Schema for saved table templates
+	)
 export const SavedTableTemplateSchema = v.object({
 	id: v.string(),
 	name: v.string(),
