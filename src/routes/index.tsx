@@ -16,7 +16,7 @@ import { ErrorBoundary } from "@/components/error-boundary";
 import FAQSection from "@/components/faq";
 import FooterSection from "@/components/footer";
 import Loader from "@/components/loader";
-import { MiniFormBuilder } from "@/components/mini-builder/index";
+import { MiniFormBuilder } from "@/components/mini-form-builder";
 import { NotFound } from "@/components/not-found";
 import { SponsorsContributors } from "@/components/sponsors-contributors";
 import { Button } from "@/components/ui/button";
