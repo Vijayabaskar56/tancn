@@ -48,7 +48,7 @@ const DEFAULT_TABLE_SETTINGS = {
  */
 export const getTableData = (): TableBuilder | null => {
 	try {
-		return tableBuilderCollection().get(TABLE_ID) || null;
+		return tableBuilderCollection.get(TABLE_ID) || null;
 	} catch (error) {
 		console.error("Failed to get table data:", error);
 		return null;
@@ -106,7 +106,7 @@ export const updateSetting = (
 	value: boolean,
 ): boolean => {
 	try {
-		tableBuilderCollection().update(TABLE_ID, (draft) => {
+		tableBuilderCollection.update(TABLE_ID, (draft) => {
 			if (!draft.settings) {
 				draft.settings = DEFAULT_TABLE_SETTINGS;
 			}
@@ -127,7 +127,7 @@ export const updateTableLayoutSetting = (
 	value: boolean | string,
 ): boolean => {
 	try {
-		tableBuilderCollection().update(TABLE_ID, (draft) => {
+		tableBuilderCollection.update(TABLE_ID, (draft) => {
 			if (!draft.settings) {
 				draft.settings = DEFAULT_TABLE_SETTINGS;
 			}
@@ -151,7 +151,7 @@ export const updateSettings = (
 	settings: Partial<TableBuilder["settings"]>,
 ): boolean => {
 	try {
-		tableBuilderCollection().update(TABLE_ID, (draft) => {
+		tableBuilderCollection.update(TABLE_ID, (draft) => {
 			if (!draft.settings) {
 				draft.settings = DEFAULT_TABLE_SETTINGS;
 			}
@@ -176,7 +176,7 @@ export const updateSettings = (
  */
 export const setTableName = (name: string): boolean => {
 	try {
-		tableBuilderCollection().update(TABLE_ID, (draft) => {
+		tableBuilderCollection.update(TABLE_ID, (draft) => {
 			draft.tableName = name;
 		});
 		return true;
@@ -207,7 +207,7 @@ export const resetSettings = (): boolean => {
  */
 export const addColumnData = (): boolean => {
 	try {
-		tableBuilderCollection().update(TABLE_ID, (draft) => {
+		tableBuilderCollection.update(TABLE_ID, (draft) => {
 			const columns = draft.table.columns;
 			const data = draft.table.data;
 
@@ -238,6 +238,10 @@ export const addColumnData = (): boolean => {
 			// Ensure all columns have data in all rows
 			for (const col of columns) {
 				for (let i = 0; i < data.length; i++) {
+					// Safety check: skip if row is undefined
+					if (!data[i]) {
+						continue;
+					}
 					if (!(col.id in data[i])) {
 						data[i][col.id] = getStaticData(col.type, i);
 					}
@@ -268,7 +272,7 @@ export const addColumn = (type: ColumnConfig["type"]): boolean => {
 			order: columns.length,
 			filterable: true,
 		};
-		tableBuilderCollection().update(TABLE_ID, (draft) => {
+		tableBuilderCollection.update(TABLE_ID, (draft) => {
 			draft.table.columns.push(newColumn);
 		});
 		return true;
@@ -286,7 +290,7 @@ export const updateColumn = (
 	updates: Partial<ColumnConfig>,
 ): boolean => {
 	try {
-		tableBuilderCollection().update(TABLE_ID, (draft) => {
+		tableBuilderCollection.update(TABLE_ID, (draft) => {
 			const columnIndex = draft.table.columns.findIndex(
 				(col) => col.id === columnId,
 			);
@@ -311,17 +315,24 @@ export const updateColumn = (
  */
 export const deleteColumn = (columnId: string): boolean => {
 	try {
-		tableBuilderCollection().update(TABLE_ID, (draft) => {
+		tableBuilderCollection.update(TABLE_ID, (draft) => {
+			// Remove the column from columns array
 			draft.table.columns = draft.table.columns.filter(
 				(col) => col.id !== columnId,
 			);
-			// Remove column data from all rows
-			for (const row of draft.table.data) {
-				delete row[columnId];
+
+			// Remove column data from all rows using index-based iteration
+			// This works better with tanstack-db proxies than for...of
+			const data = draft.table.data;
+			for (let i = 0; i < data.length; i++) {
+				if (data[i] && columnId in data[i]) {
+					delete data[i][columnId];
+				}
 			}
-			// Remove rows that are now empty
+
+			// Remove rows that are now empty (have no keys left)
 			draft.table.data = draft.table.data.filter(
-				(row) => Object.keys(row).length > 0,
+				(row) => row && Object.keys(row).length > 0,
 			);
 		});
 		return true;
@@ -342,7 +353,7 @@ export const reorderColumns = (newOrder: ColumnConfig[]): boolean => {
 			order: index,
 		}));
 
-		tableBuilderCollection().update(TABLE_ID, (draft) => {
+		tableBuilderCollection.update(TABLE_ID, (draft) => {
 			draft.table.columns = reorderedColumns;
 		});
 		return true;
@@ -383,7 +394,7 @@ export const importData = (
 			finalColumns = detectColumns(data);
 		}
 
-		tableBuilderCollection().update(TABLE_ID, (draft) => {
+		tableBuilderCollection.update(TABLE_ID, (draft) => {
 			draft.table = {
 				columns: finalColumns,
 				data,
@@ -401,7 +412,7 @@ export const importData = (
  */
 export const updateData = (data: DataRow[]): boolean => {
 	try {
-		tableBuilderCollection().update(TABLE_ID, (draft) => {
+		tableBuilderCollection.update(TABLE_ID, (draft) => {
 			draft.table.data = data;
 		});
 		return true;
@@ -416,7 +427,7 @@ export const updateData = (data: DataRow[]): boolean => {
  */
 export const clearData = (): boolean => {
 	try {
-		tableBuilderCollection().update(TABLE_ID, (draft) => {
+		tableBuilderCollection.update(TABLE_ID, (draft) => {
 			draft.table.data = [];
 		});
 		return true;
@@ -431,7 +442,7 @@ export const clearData = (): boolean => {
  */
 export const resetTable = (): boolean => {
 	try {
-		tableBuilderCollection().update(TABLE_ID, (draft) => {
+		tableBuilderCollection.update(TABLE_ID, (draft) => {
 			draft.table = { data: [], columns: [] };
 		});
 		return true;
@@ -455,7 +466,7 @@ export const applyTemplate = (templateKey: string): boolean => {
 			throw new Error(`Template ${templateKey} not found`);
 		}
 
-		tableBuilderCollection().update(TABLE_ID, (draft) => {
+		tableBuilderCollection.update(TABLE_ID, (draft) => {
 			draft.settings = template.settings;
 			draft.table = {
 				columns: template.columns,
@@ -484,7 +495,7 @@ export const initializeTable = createIsomorphicFn()
 		try {
 			// Clear old data only if invalid to force re-initialization with new schema
 			try {
-				const existing = tableBuilderCollection().get(TABLE_ID);
+				const existing = tableBuilderCollection.get(TABLE_ID);
 				if (existing) {
 					// Data exists and is valid, no need to initialize
 					return true;
@@ -495,7 +506,7 @@ export const initializeTable = createIsomorphicFn()
 			}
 
 			// Initialize with defaults if no valid data exists
-			tableBuilderCollection().insert([
+			tableBuilderCollection.insert([
 				{
 					id: TABLE_ID,
 					tableName: "draft",
@@ -598,7 +609,7 @@ export const loadTableTemplate = (templateId: string): boolean => {
 
 		const template: SavedTableTemplate = JSON.parse(templateData);
 
-		tableBuilderCollection().update(TABLE_ID, (draft) => {
+		tableBuilderCollection.update(TABLE_ID, (draft) => {
 			Object.assign(draft, template.data);
 		});
 		return true;

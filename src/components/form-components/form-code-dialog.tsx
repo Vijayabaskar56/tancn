@@ -16,7 +16,7 @@ import type {
 	FormElement,
 	FormElementOrList,
 } from "@/types/form-types";
-import { logger } from "@/utils/utils";
+import { getRegistryUrl, logger } from "@/utils/utils";
 import { AnimatedIconButton } from "../ui/animated-icon-button";
 import {
 	InputGroup,
@@ -75,10 +75,10 @@ function CodeDialog() {
 		},
 	];
 	const preferredFramework = (settings?.preferredFramework || "react") as
-		| "react"
-		| "solid"
-		| "vue"
-		| "angular";
+	| "react"
+	| "solid"
+	| "vue"
+	| "angular";
 	const generatedCode = generateFormCode({
 		formElements: formElements as FormElementOrList[],
 		isMS,
@@ -119,15 +119,11 @@ function CodeDialog() {
 		files,
 		name: formName,
 	};
-	const url =
-		import.meta.env.MODE === "development"
-			? "http://localhost:3000"
-			: "https://tancn.dev";
 
 	const mutation = useMutation<CreateRegistryResponse, Error, void>({
 		mutationKey: ["/create-command", formName],
 		mutationFn: async (): Promise<CreateRegistryResponse> => {
-			const res = await fetch(`${url}/r/${formName}`, {
+			const res = await fetch(`${getRegistryUrl()}/r/${formName}`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

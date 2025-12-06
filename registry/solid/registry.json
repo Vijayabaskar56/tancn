@@ -354,6 +354,20 @@
 			]
 		},
 		{
+			"name": "textarea",
+			"type": "registry:ui",
+			"title": "Textarea",
+			"description": "A textarea component for multi-line text input.",
+			"tags": ["ui", "textarea", "form"],
+			"dependencies": ["class-variance-authority"],
+			"files": [
+				{
+					"path": "registry/solid/textarea.tsx",
+					"type": "registry:ui"
+				}
+			]
+		},
+		{
 			"name": "toggle-button",
 			"type": "registry:ui",
 			"title": "Toggle Button",

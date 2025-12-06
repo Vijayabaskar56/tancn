@@ -1,9 +1,7 @@
 import {
 	createCollection,
-	localOnlyCollectionOptions,
-	localStorageCollectionOptions,
+	localStorageCollectionOptions
 } from "@tanstack/react-db";
-import { createIsomorphicFn } from "@tanstack/react-start";
 import * as v from "valibot";
 
 export const SettingsSchema = v.object({
@@ -44,26 +42,34 @@ type PreferredFramework = v.InferInput<
 type ValidationMethod = v.InferInput<typeof SettingsSchema>["validationMethod"];
 
 export type {
-	SettingsCollection,
-	PreferredSchema,
-	PreferredFramework,
-	ValidationMethod,
+	PreferredFramework, PreferredSchema, SettingsCollection, ValidationMethod
 };
 
-export const settingsCollection = createIsomorphicFn()
-	.client(() =>
-		createCollection(
-			localStorageCollectionOptions({
-				storageKey: "settings",
-				getKey: (settings) => settings.id,
-				schema: SettingsSchema,
-			}),
-		),
-	)
-	.server(() =>
-		createCollection(
-			localOnlyCollectionOptions({
-				schema: SettingsSchema,
-				getKey: (settings) => settings.id,
-			}),
-		))
+// const settingsCollection = createIsomorphicFn()
+// 	.client(() =>
+// 		createCollection(
+// 			localStorageCollectionOptions({
+// 				storageKey: "settings",
+// 				getKey: (settings) => settings.id,
+// 				schema: SettingsSchema,
+// 			}),
+// 		),
+// 	)
+// 	.server(() =>
+// 		createCollection(
+// 			localOnlyCollectionOptions({
+// 				schema: SettingsSchema,
+// 				getKey: (settings) => settings.id,
+// 			}),
+// 		),
+// 	)();
+
+const settingsCollection =createCollection(
+	localStorageCollectionOptions({
+		storageKey: "settings",
+		getKey: (settings) => settings.id,
+		schema: SettingsSchema,
+	}),
+);
+
+export { settingsCollection };

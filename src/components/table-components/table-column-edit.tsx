@@ -30,17 +30,16 @@ import { useAppForm } from "@/components/ui/tanstack-form";
 import type { TableBuilder } from "@/db-collections/table-builder.collections";
 import { useForcedTransition } from "@/hooks/use-force-transition";
 import useTableStore from "@/hooks/use-table-store";
-import { addColumnData } from "@/services/table-builder.service";
-import type { Column } from "@/workers/data-processor.worker";
+import { addColumn, updateColumn, deleteColumn, reorderColumns, addColumnData } from "@/services/table-builder.service";
+
+import type { ColumnConfig } from "@/types/table-types";
 import { Badge } from "../ui/badge";
 import { Checkbox } from "../ui/checkbox";
 import { ScrollArea } from "../ui/scroll-area";
 import { TableColumnDropdown } from "./table-column-dropdown";
 
 export function TableColumnEdit() {
-	const [localColumns, setLocalColumns] = useState<
-		TableBuilder["table"]["columns"]
-	>([]);
+	const [localColumns, setLocalColumns] = useState<ColumnConfig[]>([]);
 
 	// Get the current table data using the store
 	const tableData = useTableStore();
@@ -70,22 +69,22 @@ export function TableColumnEdit() {
 	}
 
 	const columns = tableData.table.columns;
-	const updateColumn = (
+	const handleUpdateColumn = (
 		columnId: string,
 		updates: Partial<(typeof columns)[0]>,
 	) => {
 		updateColumn(columnId, updates);
 	};
-	const deleteColumn = (columnId: string) => {
+	const handleDeleteColumn = (columnId: string) => {
 		deleteColumn(columnId);
 	};
 
-	const reorderColumns = (newOrder: typeof columns) => {
+	const handleReorderColumns = (newOrder: typeof columns) => {
 		reorderColumns(newOrder);
 		setLocalColumns(newOrder);
 	};
 
-	const addColumn = (type: string) => {
+	const handleAddColumn = (type: string) => {
 		addColumn(type as TableBuilder["table"]["columns"][0]["type"]);
 		addColumnData();
 	};
@@ -97,7 +96,7 @@ export function TableColumnEdit() {
 	function handleDragEnd() {
 		sortingTransition.stop();
 		startSaveTransition(async () => {
-			reorderColumns(optimisticColumns);
+			handleReorderColumns(optimisticColumns);
 		});
 	}
 
@@ -129,7 +128,7 @@ export function TableColumnEdit() {
 			</div>
 			<div className="flex items-center justify-between">
 				<Label className="text-sm font-medium">Table Columns</Label>
-				<TableColumnDropdown onAddColumn={addColumn} />
+				<TableColumnDropdown onAddColumn={handleAddColumn} />
 			</div>
 
 			<ScrollArea className="h-[calc(100vh-20rem)]">
@@ -151,8 +150,8 @@ export function TableColumnEdit() {
 								column={column}
 								openAccordions={openAccordions}
 								setOpenAccordions={setOpenAccordions}
-								deleteColumn={deleteColumn}
-								updateColumn={updateColumn}
+								deleteColumn={handleDeleteColumn}
+								updateColumn={handleUpdateColumn}
 							/>
 						))}
 					</SortableContext>
@@ -175,11 +174,11 @@ function SortableItem({
 	deleteColumn,
 	updateColumn,
 }: {
-	column: TableBuilder["table"]["columns"][0];
+	column: ColumnConfig;
 	openAccordions: Map<string, boolean>;
 	setOpenAccordions: React.Dispatch<React.SetStateAction<Map<string, boolean>>>;
 	deleteColumn: (columnId: string) => void;
-	updateColumn: (columnId: string, values: Column) => void;
+	updateColumn: (columnId: string, values: Partial<ColumnConfig>) => void;
 }) {
 	const { attributes, listeners, setNodeRef, transform, transition } =
 		useSortable({ id: column.id });

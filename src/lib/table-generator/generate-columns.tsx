@@ -107,6 +107,56 @@ function renderCell(
 				return <div>{date.toLocaleDateString()}</div>;
 			}
 			return <div></div>;
+		case "email":
+			if (value) {
+				return (
+					<a
+						href={`mailto:${value}`}
+						className="text-primary hover:underline"
+					>
+						{String(value)}
+					</a>
+				);
+			}
+			return <div></div>;
+		case "url":
+			if (value) {
+				const url = String(value).startsWith('http') ? value : `https://${value}`;
+				return (
+					<a
+						href={url}
+						target="_blank"
+						rel="noopener noreferrer"
+						className="text-primary hover:underline truncate max-w-[200px] block"
+					>
+						{String(value)}
+					</a>
+				);
+			}
+			return <div></div>;
+		case "tel":
+			if (value) {
+				return (
+					<a
+						href={`tel:${value}`}
+						className="text-primary hover:underline"
+					>
+						{String(value)}
+					</a>
+				);
+			}
+			return <div></div>;
+		case "time":
+			if (value) {
+				return <div>{String(value)}</div>;
+			}
+			return <div></div>;
+		case "datetime":
+			if (value) {
+				const date = new Date(value);
+				return <div>{date.toLocaleString()}</div>;
+			}
+			return <div></div>;
 		case "object":
 			return (
 				<div className="text-xs text-muted-foreground">
@@ -271,23 +321,26 @@ export function generateFilterFields(
 	return columns
 		.filter((col) => col.filterable)
 		.map((col) => {
+			// Map column types to filter types
+			const typeMap: Record<ColumnConfig["type"], FilterFieldConfig["type"]> = {
+				string: "text",
+				number: "number",
+				boolean: "boolean",
+				date: "date",
+				enum: "select",
+				array: "multiselect",
+				object: "text", // Object fallback to text
+				email: "email",
+				url: "url",
+				tel: "tel",
+				time: "time",
+				datetime: "datetime",
+			};
+
 			const baseConfig: FilterFieldConfig = {
 				key: col.accessor,
 				label: col.label,
-				type:
-					col.type === "string"
-						? "text"
-						: col.type === "number"
-							? "number"
-							: col.type === "boolean"
-								? "boolean"
-								: col.type === "date"
-									? "date"
-									: col.type === "enum"
-										? "select"
-										: col.type === "array"
-											? "multiselect"
-											: "text",
+				type: typeMap[col.type] || "text",
 				placeholder: `Filter by ${col.label.toLowerCase()}...`,
 			};
 

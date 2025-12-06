@@ -1,42 +1,14 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { getGitHubContributorsOptions } from "@/api/query-options";
 import { ArrowRightIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { GithubButton } from "@/components/ui/github-button";
 
-interface Contributor {
-	login: string;
-	avatar_url: string;
-	html_url: string;
-	contributions: number;
-}
 
 export function SponsorsContributors() {
-	const { data: contributors = [] } = useSuspenseQuery({
-		queryKey: ["github-contributors"],
-		queryFn: async () => {
-			if (import.meta.env.PROD) {
-				const res = await fetch(
-					"https://api.github.com/repos/Vijayabaskar56/tancn/contributors",
-					{
-						headers: {
-							"User-Agent": "TanCN-App",
-						},
-					},
-				);
-				if (!res.ok) {
-					throw new Error(
-						`Failed to fetch GitHub contributors: ${res.status} ${res.statusText}`,
-					);
-				}
-				const data = (await res.json()) as Contributor[];
-				return data;
-			} else {
-				return [] as Contributor[];
-			}
-		},
-	});
+	const { data: contributors = [] } = useSuspenseQuery(getGitHubContributorsOptions());
 
 	const displayedContributors = contributors.slice(0, 15);
 	const remainingContributors = contributors.length - 15;

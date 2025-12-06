@@ -6,7 +6,7 @@ import useTableStore from "@/hooks/use-table-store";
 import { generateTable } from "@/lib/table-code-generators/react/index";
 import { setTableName } from "@/services/table-builder.service";
 import type { CreateRegistryResponse } from "@/types/form-types";
-import { logger } from "@/utils/utils";
+import { getRegistryUrl, logger } from "@/utils/utils";
 import { AnimatedIconButton } from "../ui/animated-icon-button";
 import {
 	InputGroup,
@@ -83,16 +83,10 @@ function TableCodeDialog() {
 		files,
 		name: tableData.tableName,
 	};
-
-	const url =
-		import.meta.env.MODE === "development"
-			? "http://localhost:3000"
-			: "https://tancn.dev";
-
 	const mutation = useMutation<CreateRegistryResponse, Error, void>({
 		mutationKey: ["/create-command", tableData.tableName],
 		mutationFn: async (): Promise<CreateRegistryResponse> => {
-			const res = await fetch(`${url}/r/${tableData.tableName}`, {
+			const res = await fetch(`${getRegistryUrl()}/r/${tableData.tableName}`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

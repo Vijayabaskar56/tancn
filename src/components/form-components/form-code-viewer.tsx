@@ -115,7 +115,7 @@ export function CodeBlockPackagesInstallation({
 	const settings = useSettings();
 	const preferredPackageManager = settings?.preferredPackageManager || "pnpm";
 	const packagesSet = new Set(formElementTypes);
-	const packages = Array.from(packagesSet).join(" ");
+	const packages = settings?.preferredFramework !== "react" ? Array.from(packagesSet).map(item => `${getRegistryUrl(settings?.preferredFramework)}/${item}.json`).join(" ") : Array.from(packagesSet).join(" ");
 	const formPackage =
 		settings?.preferredFramework === "solid"
 			? "@tanstack/solid-form"
@@ -128,7 +128,7 @@ export function CodeBlockPackagesInstallation({
 	const tabsData = [
 		{
 			value: "pnpm",
-			shadcn: `pnpm add shadcn@latest add ${packages}`,
+			shadcn: `pnpm dlx shadcn@latest add ${packages}`,
 			base: `pnpm add ${otherPackages}`,
 			registery: `pnpm dlx shadcn@canary add ${registryUrl}`,
 		},
@@ -362,7 +362,7 @@ export function GeneratedFormCodeViewer({
 								iconPosition="end"
 							/>
 						</DropdownMenuTrigger>
-						<DropdownMenuContent>
+						<DropdownMenuContent className="z-[2000]">
 							{validationLibs.map((lib) => (
 								<DropdownMenuItem
 									key={lib}

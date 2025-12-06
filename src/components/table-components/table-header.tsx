@@ -36,6 +36,7 @@ import { AnimatedIconButton } from "../ui/animated-icon-button";
 import { RotateCWIcon } from "../ui/rotate-cw";
 import TableCodeDialog from "./table-code-dialog";
 import DataUploadDialog from "./table-data-upload-dialog";
+import { getRegistryUrl } from "@/utils/utils";
 
 export default function TableHeader() {
 	const tableData = useTableStore();
@@ -80,11 +81,8 @@ export default function TableHeader() {
 			settings: tableData.settings,
 			table: { columns: tableData.table.columns },
 		};
-		const baseUri = import.meta.env.DEV
-			? "http://localhost:3000"
-			: "https://tancn.dev";
 		navigator.clipboard.writeText(
-			`${baseUri}/table-builder?share=${encodeURIComponent(JSON.stringify(shareData))}`,
+			`${getRegistryUrl()}/table-builder?share=${encodeURIComponent(JSON.stringify(shareData))}`,
 		);
 		toast("Link Copied to clipboard");
 	};

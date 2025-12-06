@@ -184,7 +184,7 @@ export const extractImportDependencies = (
 					`${getRegistryUrl(settings.preferredFramework)}/tanstack-form.json`,
 				);
 			} else {
-				if (component) registry.add(component);
+				if (component) registry.add(`${getRegistryUrl(settings.preferredFramework)}/${component}.json`);
 			}
 		} else if (!modulePath.startsWith("./")) {
 			// Skip function definitions and comments

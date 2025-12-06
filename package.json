@@ -11,9 +11,10 @@
 		"format": "biome format",
 		"lint": "biome lint",
 		"check": "biome check",
-		"registry:build": "shadcn build",
 		"prepare": "husky",
 		"deploy": "wrangler deploy",
+		"registry:build:solid": "shadcn build --output='./public/r/solid' ./registry/solid/registry.json",
+		"registry:build:react": "shadcn build --output='./public/r/react' ./registry/react/registry.json",
 		"cf-typegen": "wrangler types --env-interface Env",
 		"changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
 		"changelog:all": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"

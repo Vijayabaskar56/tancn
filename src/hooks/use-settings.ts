@@ -26,7 +26,7 @@ const useSettings = createIsomorphicFn()
 	})
 	.client((): SettingsCollection => {
 		const { data } = useLiveQuery((q) =>
-			q.from({ settings: settingsCollection() }).select(({ settings }) => ({
+			q.from({ settings: settingsCollection }).select(({ settings }) => ({
 				activeTab: settings.activeTab,
 				defaultRequiredValidation: settings.defaultRequiredValidation,
 				numericInput: settings.numericInput,

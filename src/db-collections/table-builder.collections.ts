@@ -1,9 +1,7 @@
 import {
 	createCollection,
-	localOnlyCollectionOptions,
-	localStorageCollectionOptions,
+	localStorageCollectionOptions
 } from "@tanstack/react-db";
-import { createIsomorphicFn } from "@tanstack/react-start";
 import * as v from "valibot";
 
 export const TableBuilderSchema = v.object({
@@ -53,6 +51,11 @@ export const TableBuilderSchema = v.object({
 					v.literal("object"),
 					v.literal("array"),
 					v.literal("enum"),
+					v.literal("email"),
+					v.literal("url"),
+					v.literal("tel"),
+					v.literal("time"),
+					v.literal("datetime"),
 				]),
 				order: v.number(),
 				filterable: v.optional(v.boolean(), false),
@@ -79,24 +82,35 @@ export const TableBuilderSchema = v.object({
 
 export type TableBuilder = v.InferOutput<typeof TableBuilderSchema>;
 
-export const tableBuilderCollection = createIsomorphicFn()
-	.client(() =>
-		createCollection(
-			localStorageCollectionOptions({
-				storageKey: "table-builder",
-				getKey: (tableBuilder) => tableBuilder.id,
-				schema: TableBuilderSchema,
-			}),
-		),
-	)
-	.server(() =>
-		createCollection(
-			localOnlyCollectionOptions({
-				getKey: (tableBuilder) => tableBuilder.id,
-				schema: TableBuilderSchema,
-			}),
-		),
-	)
+//  const tableBuilderCollection = createIsomorphicFn()
+// 	.client(() =>
+// 		createCollection(
+// 			localStorageCollectionOptions({
+// 				storageKey: "table-builder",
+// 				getKey: (tableBuilder) => tableBuilder.id,
+// 				schema: TableBuilderSchema,
+// 			}),
+// 		),
+// 	)
+// 	.server(() =>
+// 		createCollection(
+// 			localOnlyCollectionOptions({
+// 				getKey: (tableBuilder) => tableBuilder.id,
+// 				schema: TableBuilderSchema,
+// 			}),
+// 		),
+// 	)();
+
+
+const tableBuilderCollection = createCollection(
+	localStorageCollectionOptions({
+		storageKey: "table-builder",
+		getKey: (tableBuilder) => tableBuilder.id,
+		schema: TableBuilderSchema,
+	}),
+);
+
+// Schema for saved table templates
 export const SavedTableTemplateSchema = v.object({
 	id: v.string(),
 	name: v.string(),
@@ -105,3 +119,5 @@ export const SavedTableTemplateSchema = v.object({
 });
 
 export type SavedTableTemplate = v.InferOutput<typeof SavedTableTemplateSchema>;
+
+export { tableBuilderCollection };

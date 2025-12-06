@@ -7,7 +7,7 @@ export interface ColumnConfig {
 	id: string;
 	accessor: string;
 	label: string;
-	type: "string" | "number" | "boolean" | "date" | "object" | "array" | "enum";
+	type: "string" | "number" | "boolean" | "date" | "object" | "array" | "enum" | "email" | "url" | "tel" | "time" | "datetime";
 	order: number;
 	filterable?: boolean;
 	hasFacetedFilter?: boolean;

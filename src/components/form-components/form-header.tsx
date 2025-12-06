@@ -42,6 +42,7 @@ import { SettingsGearIcon } from "../ui/settings-gear";
 import { ShareIcon } from "../ui/share";
 import CodeDialog from "./form-code-dialog";
 import type { Framework, ValidationSchema } from "./types";
+import { getRegistryUrl } from "@/utils/utils";
 
 export default function FormHeader() {
 	const location = useLocation();
@@ -94,7 +95,7 @@ export default function FormHeader() {
 
 	function handleShare() {
 		navigator.clipboard.writeText(
-			`https://tancn.dev/form-builder?share=${encodeURIComponent(JSON.stringify(formElements))}`,
+			`${getRegistryUrl()}/form-builder?share=${encodeURIComponent(JSON.stringify(formElements))}`,
 		);
 		toast("Link Copied to clipboard");
 	}

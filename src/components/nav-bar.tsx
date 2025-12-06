@@ -1,4 +1,5 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { getGitHubStarsOptions } from "@/api/query-options";
 import { Link, useLocation } from "@tanstack/react-router";
 import { Suspense } from "react";
 import { ModeToggle } from "@/components/mode-toggle";
@@ -11,30 +12,7 @@ export default function NavBar() {
 	const location = useLocation();
 	const isLandingPage = location.pathname === "/";
 
-	const { data: stars } = useSuspenseQuery({
-		queryKey: ["github-stars"],
-		queryFn: async () => {
-			if (import.meta.env.PROD) {
-				const res = await fetch(
-					"https://api.github.com/repos/Vijayabaskar56/tancn",
-					{
-						headers: {
-							"User-Agent": "TanCN-App",
-						},
-					},
-				);
-				if (!res.ok) {
-					throw new Error(
-						`Failed to fetch GitHub stars: ${res.status} ${res.statusText}`,
-					);
-				}
-				const data = (await res.json()) as { stargazers_count: number };
-				return data.stargazers_count;
-			} else {
-				return 100;
-			}
-		},
-	});
+	const { data: stars } = useSuspenseQuery(getGitHubStarsOptions());
 	return (
 		<header
 			className="fixed left-0 right-0 z-40 bg-background  px-4 md:px-6 transition-top duration-200"

@@ -222,6 +222,31 @@ export const tableColumnTypes = [
 		icon: Calendar,
 	},
 	{
+		name: "Email",
+		type: "email",
+		icon: Type,
+	},
+	{
+		name: "URL",
+		type: "url",
+		icon: Type,
+	},
+	{
+		name: "Phone",
+		type: "tel",
+		icon: Type,
+	},
+	{
+		name: "Time",
+		type: "time",
+		icon: Calendar,
+	},
+	{
+		name: "DateTime",
+		type: "datetime",
+		icon: Calendar,
+	},
+	{
 		name: "Object",
 		type: "object",
 		icon: Grid3X3,

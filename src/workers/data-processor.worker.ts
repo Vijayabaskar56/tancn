@@ -16,7 +16,7 @@ export interface Column {
 	id: string;
 	accessor: string;
 	label: string;
-	type: "string" | "number" | "boolean" | "date" | "object" | "array" | "enum";
+	type: "string" | "number" | "boolean" | "date" | "object" | "array" | "enum" | "email" | "url" | "tel" | "time" | "datetime";
 	order: number;
 	possibleValues?: string[];
 }
@@ -70,17 +70,54 @@ const parseJSON = (jsonText: string): DataRow[] => {
 // Utility: Detect column type from value
 const detectColumnType = (
 	value: string | number | boolean | null | undefined | object,
-): "string" | "number" | "boolean" | "date" | "object" | "array" | "enum" => {
+): "string" | "number" | "boolean" | "date" | "object" | "array" | "enum" | "email" | "url" | "tel" | "time" | "datetime" => {
 	if (value === null || value === undefined) return "string";
 	if (typeof value === "boolean") return "boolean";
 	if (typeof value === "number") return "number";
 	if (Array.isArray(value)) return "array";
 	if (typeof value === "object") return "object";
 	if (typeof value === "string") {
-		// Try to detect dates
-		const dateRegex =
-			/^\d{4}-\d{2}-\d{2}|^\d{2}\/\d{2}\/\d{4}|^\d{2}-\d{2}-\d{4}/;
-		if (dateRegex.test(value) && !Number.isNaN(Date.parse(value))) {
+		const trimmed = value.trim();
+
+		// Check if the string is a valid number (including integers and floats)
+		if (trimmed !== "" && !Number.isNaN(Number(trimmed)) && Number.isFinite(Number(trimmed))) {
+			return "number";
+		}
+
+		// Email pattern: basic email format with @ and domain
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		if (emailRegex.test(trimmed)) {
+			return "email";
+		}
+
+		// URL pattern: http://, https://, or www.
+		const urlRegex = /^(https?:\/\/|www\.)[^\s]+$/i;
+		if (urlRegex.test(trimmed)) {
+			return "url";
+		}
+
+		// Phone pattern: various phone formats with optional country code
+		// Matches: +1-234-567-8900, (123) 456-7890, 123.456.7890, +12345678900, etc.
+		const telRegex = /^[\+]?[(]?[0-9]{1,3}[)]?[-\s\.]?[(]?[0-9]{1,4}[)]?[-\s\.]?[0-9]{1,4}[-\s\.]?[0-9]{1,9}$/;
+		if (telRegex.test(trimmed.replace(/\s/g, ''))) {
+			return "tel";
+		}
+
+		// Time pattern: HH:MM or HH:MM:SS (24-hour or 12-hour with AM/PM)
+		const timeRegex = /^([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?(\s?[AaPp][Mm])?$/;
+		if (timeRegex.test(trimmed)) {
+			return "time";
+		}
+
+		// DateTime pattern: ISO 8601 with time component (e.g., 2023-12-01T10:30:00)
+		const datetimeRegex = /^\d{4}-\d{2}-\d{2}[T\s]\d{2}:\d{2}(:\d{2})?(\.\d{1,3})?(Z|[+-]\d{2}:\d{2})?$/;
+		if (datetimeRegex.test(trimmed) && !Number.isNaN(Date.parse(trimmed))) {
+			return "datetime";
+		}
+
+		// Date pattern: YYYY-MM-DD, MM/DD/YYYY, or DD-MM-YYYY
+		const dateRegex = /^\d{4}-\d{2}-\d{2}$|^\d{2}\/\d{2}\/\d{4}$|^\d{2}-\d{2}-\d{4}$/;
+		if (dateRegex.test(trimmed) && !Number.isNaN(Date.parse(trimmed))) {
 			return "date";
 		}
 	}

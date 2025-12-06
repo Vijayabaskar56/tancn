@@ -89,7 +89,7 @@ function RouteComponent() {
 
 	const handleReplace = () => {
 		if (sharedData) {
-			tableBuilderCollection().update(1, (draft) => {
+			tableBuilderCollection.update(1, (draft) => {
 				draft.tableName = sharedData.tableName;
 				draft.settings = sharedData.settings;
 				draft.table.columns = sharedData.table.columns;
