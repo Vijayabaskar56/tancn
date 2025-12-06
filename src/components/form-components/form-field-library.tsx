@@ -60,14 +60,14 @@ export function FieldTab() {
 	};
 
 	return (
-		<div className="flex flex-col h-full md:h-full max-h-[35vh] md:max-h-none">
-			<div className="mb-4 pb-2 px-4 border-b">
+		<div className="flex flex-col h-full">
+			<div className="mb-4 p-4 border-b">
 				<h3 className="text-lg font-semibold text-primary">Fields</h3>
 				<p className="text-sm text-muted-foreground">
 					Select Field For the Form
 				</p>
 			</div>
-			<ScrollArea className="h-[calc(35vh-8rem)]  md:h-[45rem]">
+			<ScrollArea className="flex-1 min-h-0">
 				<div className="">
 					{/* Field Elements Group */}
 					{groupedElements.field && (

@@ -59,18 +59,19 @@ export function SettingsSidebar() {
 			<form.AppForm>
 				<form
 					noValidate
+					className="flex flex-col h-full"
 					onSubmit={(e) => {
 						e.preventDefault();
 						e.stopPropagation();
 						void form.handleSubmit();
 					}}
 				>
-					<div className="mb-4 pb-2 px-4 border-b">
+					<div className="mb-4 p-4 border-b">
 						<h3 className="text-lg font-semibold text-primary">Settings</h3>
 						<p className="text-sm text-muted-foreground">Configure Your Form</p>
 					</div>
 
-					<ScrollArea className="h-[calc(35vh-8rem)]  md:h-[45rem]">
+					<ScrollArea className="flex-1 min-h-0">
 						<div className=" space-y-4 sm:space-y-6">
 							<div>
 								<div className="space-y-3">

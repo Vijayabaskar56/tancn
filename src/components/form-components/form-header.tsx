@@ -25,20 +25,18 @@ import { useFormBuilder } from "@/hooks/use-form-builder";
 import { useFormStore } from "@/hooks/use-form-store";
 import useSettings from "@/hooks/use-settings";
 import {
-	setActiveTab,
 	setPreferredFramework,
 } from "@/services/settings.service";
 import {
 	AnimatedIconButton,
 	AnimatedIconSpan,
 } from "../ui/animated-icon-button";
-import { BlocksIcon } from "../ui/blocks";
 import { ChevronDownIcon } from "../ui/chevron-down";
 import { HeartIcon } from "../ui/heart";
 import { LayersIcon } from "../ui/layers";
-import { LayoutPanelTopIcon } from "../ui/layout-panel-top";
+
 import { RotateCWIcon } from "../ui/rotate-cw";
-import { SettingsGearIcon } from "../ui/settings-gear";
+
 import { ShareIcon } from "../ui/share";
 import CodeDialog from "./form-code-dialog";
 import type { Framework, ValidationSchema } from "./types";
@@ -46,15 +44,11 @@ import { getRegistryUrl } from "@/utils/utils";
 
 export default function FormHeader() {
 	const location = useLocation();
-	const { activeTab, preferredFramework, preferredSchema } = useSettings();
+	const { preferredFramework, preferredSchema } = useSettings();
 	const frameworks = ["react", "solid", "vue", "angular"];
 	const validationLibs = ["zod", "valibot", "arktype"];
 
 	const _isFormBuilder = location.pathname.startsWith("/form-builder");
-
-	const handleSubTabChange = (newSubTab: string) => {
-		setActiveTab(newSubTab as "builder" | "template" | "settings");
-	};
 
 	const id = useId();
 	const { actions, isMS, framework, validationSchema, formElements } =
@@ -102,44 +96,9 @@ export default function FormHeader() {
 
 	return (
 		<header className="w-full bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
-			<div className="flex h-auto lg:h-14 border-y items-center mx-3 flex-col lg:flex-row justify-between">
-				{/* Tabs section */}
-				<div className="order-2 lg:order-1 shrink-0 mr-4 w-full lg:w-auto py-3 border-t md:border-0 mx-3">
-					<div className="flex gap-2">
-						<AnimatedIconButton
-							icon={
-								<BlocksIcon className="-ms-0.5 me-1.5 opacity-60" size={16} />
-							}
-							text="Builder"
-							variant={activeTab === "builder" ? "default" : "ghost"}
-							onClick={() => handleSubTabChange("builder")}
-						/>
-						<AnimatedIconButton
-							icon={
-								<LayoutPanelTopIcon
-									className="-ms-0.5 me-1.5 opacity-60"
-									size={16}
-								/>
-							}
-							text="Template"
-							variant={activeTab === "template" ? "default" : "ghost"}
-							onClick={() => handleSubTabChange("template")}
-						/>
-						<AnimatedIconButton
-							icon={
-								<SettingsGearIcon
-									className="-ms-0.5 me-1.5 opacity-60"
-									size={16}
-								/>
-							}
-							text="Settings"
-							variant={activeTab === "settings" ? "default" : "ghost"}
-							onClick={() => handleSubTabChange("settings")}
-						/>
-					</div>
-				</div>
+			<div className="flex h-auto lg:h-14 border-y items-center justify-end">
 				{/* Actions section */}
-				<ScrollArea className="md:w-fit w-full py-2 order-1 lg:order-2">
+				<ScrollArea className="md:w-fit w-full py-2">
 					<div className="flex items-center gap-2">
 						<nav className="flex items-center space-x-2">
 							<DropdownMenu>

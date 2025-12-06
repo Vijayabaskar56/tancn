@@ -119,19 +119,19 @@ export function TableColumnEdit() {
 	}
 
 	return (
-		<div className="w-full space-y-4">
-			<div className="mb-4 pb-2 px-4 border-b">
+		<div className="w-full h-full flex flex-col gap-4">
+			<div className="flex-none p-4 border-b">
 				<h3 className="text-lg font-semibold text-primary">Columns</h3>
 				<p className="text-sm text-muted-foreground">
 					Add Columns to Your Table
 				</p>
 			</div>
-			<div className="flex items-center justify-between">
+			<div className="flex-none flex items-center justify-between px-4">
 				<Label className="text-sm font-medium">Table Columns</Label>
 				<TableColumnDropdown onAddColumn={handleAddColumn} />
 			</div>
 
-			<ScrollArea className="h-[calc(100vh-20rem)]">
+			<ScrollArea className="flex-1 px-4 min-h-0">
 				<DndContext
 					sensors={sensors}
 					collisionDetection={closestCenter}
