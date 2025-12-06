@@ -17,7 +17,7 @@ const sizeOrder: Record<ScreenSize, number> = {
 } as const;
 
 class ComparableScreenSize {
-	constructor(private value: ScreenSize) {}
+	constructor(private value: ScreenSize) { }
 
 	toString(): ScreenSize {
 		return this.value;
@@ -50,7 +50,7 @@ class ComparableScreenSize {
 }
 
 const useScreenSize = (): ComparableScreenSize => {
-	const [screenSize, setScreenSize] = useState<ScreenSize>("xs");
+	const [screenSize, setScreenSize] = useState<ScreenSize>("lg");
 
 	useEffect(() => {
 		const handleResize = () => {
