@@ -1,4 +1,4 @@
-import { extractImportDependencies } from '@/lib/form-code-generators/react/generate-imports';
+import { extractImportDependencies, generateImports } from '@/lib/form-code-generators/react/generate-imports';
 import { describe, expect, it } from 'vitest';
 
 describe('extractImportDependencies', () => {
@@ -37,5 +37,51 @@ describe('extractImportDependencies', () => {
 
 		expect(result.registryDependencies).toEqual([]);
 		expect(result.dependencies).toEqual(['react']);
+	});
+});
+
+describe('generateImports', () => {
+	it('should generate correct imports for field components with Separator', () => {
+		const formElements = [
+			{ id: '1', fieldType: 'FieldDescription', name: 'desc', static: true, content: 'test' },
+			{ id: '2', fieldType: 'Separator', name: 'sep', static: true },
+		] as any;
+		const validationSchema = 'zod';
+		const isMS = false;
+		const schemaName = 'testSchema';
+
+		const result = generateImports(formElements, validationSchema, isMS, schemaName);
+
+		expect(result).toContain('import { FieldDescription, FieldLegend, FieldSeparator } from "@/components/ui/field"');
+		expect(result).toContain('import * as z from "zod"');
+	});
+
+	it('should generate correct imports for field components without Separator', () => {
+		const formElements = [
+			{ id: '1', fieldType: 'FieldDescription', name: 'desc', static: true, content: 'test' },
+		] as any;
+		const validationSchema = 'zod';
+		const isMS = false;
+		const schemaName = 'testSchema';
+
+		const result = generateImports(formElements, validationSchema, isMS, schemaName);
+
+		expect(result).toContain('import { FieldDescription, FieldLegend } from "@/components/ui/field"');
+		expect(result).not.toContain('FieldSeparator');
+		expect(result).toContain('import * as z from "zod"');
+	});
+
+	it('should generate correct imports for Separator only', () => {
+		const formElements = [
+			{ id: '1', fieldType: 'Separator', name: 'sep', static: true },
+		] as any;
+		const validationSchema = 'zod';
+		const isMS = false;
+		const schemaName = 'testSchema';
+
+		const result = generateImports(formElements, validationSchema, isMS, schemaName);
+
+		expect(result).toContain('import { FieldSeparator } from "@/components/ui/field"');
+		expect(result).toContain('import * as z from "zod"');
 	});
 });
