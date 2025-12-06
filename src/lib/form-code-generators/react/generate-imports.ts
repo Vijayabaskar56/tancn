@@ -77,12 +77,29 @@ export const generateImports = (
 				importSet.add('import { Separator } from "@/components/ui/separator"');
 				importSet.add('import { Plus, Trash2 } from "lucide-react"');
 				break;
+			case "Separator":
+				if (
+					!formElements
+						.flat()
+						.some(
+							(f) =>
+								f.fieldType === "FieldDescription" ||
+								f.fieldType === "FieldLegend",
+						)
+				) {
+					importSet.add(
+						'import { FieldSeparator } from "@/components/ui/field"',
+					);
+				}
+				break;
 			case "FieldDescription":
-			case "FieldLegend":
+			case "FieldLegend": {
+				const hasSeparator = formElements.flat().some((f) => f.fieldType === "Separator");
 				importSet.add(
-					'import { FieldDescription , FieldLegend} from "@/components/ui/field"',
+					`import { FieldDescription, FieldLegend${hasSeparator ? ", FieldSeparator" : ""} } from "@/components/ui/field"`,
 				);
 				break;
+			}
 			default:
 				if (field.fieldType) {
 					importSet.add(
