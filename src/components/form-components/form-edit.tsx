@@ -767,8 +767,11 @@ const FormArrayItemContainer = ({
 					<div className="flex items-center gap-2">
 						<button
 							type="button"
-							onPointerDown={(e) => dragControls.start(e)}
-							className="cursor-grab active:cursor-grabbing p-1 hover:bg-muted rounded"
+							onPointerDown={(e) => {
+								e.preventDefault();
+								dragControls.start(e);
+							}}
+							className="cursor-grab active:cursor-grabbing p-1 hover:bg-muted rounded touch-none"
 						>
 							<LucideGripVertical
 								size={20}
@@ -925,8 +928,11 @@ const HorizontalReorderItem = ({
 		>
 			<button
 				type="button"
-				onPointerDown={(e) => dragControls.start(e)}
-				className="cursor-grab active:cursor-grabbing p-1 hover:bg-muted rounded"
+				onPointerDown={(e) => {
+					e.preventDefault();
+					dragControls.start(e);
+				}}
+				className="cursor-grab active:cursor-grabbing p-1 hover:bg-muted rounded touch-none"
 			>
 				<LucideGripVertical
 					size={20}
