@@ -76,13 +76,14 @@ export function TableSettingsSidebar() {
 			<form.AppForm>
 				<form
 					noValidate
+					className="flex flex-col h-full"
 					onSubmit={(e) => {
 						e.preventDefault();
 						e.stopPropagation();
 						void form.handleSubmit();
 					}}
 				>
-					<div className="mb-4 pb-2 px-4 border-b">
+					<div className="mb-4 p-4 border-b">
 						<h3 className="text-lg font-semibold text-primary">
 							Table Settings
 						</h3>
@@ -91,8 +92,8 @@ export function TableSettingsSidebar() {
 						</p>
 					</div>
 
-					<ScrollArea className="h-[calc(100vh-20rem)]">
-						<div className=" space-y-4 sm:space-y-6">
+					<ScrollArea className="flex-1 min-h-0">
+						<div className="px-4 space-y-4 sm:space-y-6">
 							<div>
 								<div className="space-y-3">
 									<form.AppField name="isGlobalSearch" mode="value">

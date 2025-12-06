@@ -234,8 +234,15 @@ function RouteComponent() {
 		[dataIds, tableData.table.data],
 	);
 	return (
-		<div className="m-6">
-			<div className="w-full space-y-4 h-full overflow-auto">
+		<>
+			<div className="mb-4 p-4 border-b">
+				<h3 className="text-lg font-semibold text-primary">Table Preview</h3>
+				<p className="text-sm text-muted-foreground">
+					See how your table looks
+				</p>
+			</div>
+
+			<ScrollArea className="w-full p-4 space-y-4 h-full overflow-auto">
 				{/* Filters */}
 
 				<div className="flex flex-wrap items-start gap-2.5 mb-3.5">
@@ -362,7 +369,7 @@ function RouteComponent() {
 						ReUI Components
 					</a>
 				</div>
-			</div>
-		</div>
+			</ScrollArea>
+		</>
 	);
 }

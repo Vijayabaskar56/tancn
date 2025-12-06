@@ -76,14 +76,14 @@ export function TableTemplates() {
 
 	return (
 		<div className="flex flex-col h-full md:h-full max-h-[35vh] md:max-h-none">
-			<div className="mb-4 pb-2 px-4 border-b">
+			<div className="mb-4 p-4 border-b">
 				<h3 className="text-lg font-semibold text-primary">Table Templates</h3>
 				<p className="text-sm text-muted-foreground">
 					Predefined table templates
 				</p>
 			</div>
 			<ScrollArea className="flex-1 overflow-auto max-h-[calc(35vh-8rem)] md:max-h-none">
-				<div className="p-3 sm:p-4 space-y-4 sm:space-y-6">
+				<div className="px-3 sm:px-4 space-y-4 sm:space-y-6">
 					{savedTemplates.length > 0 && (
 						<div>
 							<h3 className="text-sm font-medium text-muted-foreground mb-2 flex items-center gap-2">

@@ -88,8 +88,8 @@ export default function TableHeader() {
 	};
 
 	return (
-		<header className="w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-			<div className="flex h-auto lg:h-14 border-y items-center mx-3 flex-col lg:flex-row md:justify-end justify-center">
+		<header className="w-full bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
+			<div className="flex h-auto lg:h-14 border-y items-center flex-col lg:flex-row md:justify-end justify-center">
 				{/* Actions section */}
 				<ScrollArea className="md:w-fit w-full py-2 order-1 lg:order-2">
 					<div className="flex items-center gap-2 justify-center">
