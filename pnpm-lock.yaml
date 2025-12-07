@@ -182,6 +182,9 @@ importers:
       '@unpic/react':
         specifier: ^1.0.1
         version: 1.0.1(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+      '@wandry/analytics-sdk':
+        specifier: ^1.16.0
+        version: 1.16.0
       arktype:
         specifier: ^2.1.28
         version: 2.1.28
@@ -2930,6 +2933,9 @@ packages:
 
   '@vitest/utils@3.2.4':
     resolution: {integrity: sha512-fB2V0JFrQSMsCo9HiSq3Ezpdv4iYaXRG1Sx8edX3MwxfyNn83mKiGzOcH+Fkxt4MHxr3y42fQi1oeAInqgX2QA==}
+
+  '@wandry/analytics-sdk@1.16.0':
+    resolution: {integrity: sha512-YtXDA2SdG+kHfyvAuRr4UFoTOu2mZTuc1JMhGjJK2p7p3LZgvYIp8ySiSMX0ENnIs3C04K7Jg7N+C75gbmIB5Q==}
 
   JSONStream@1.3.5:
     resolution: {integrity: sha512-E+iruNOY8VV9s4JEbe1aNEm6MiszPRr/UfcHMz0TQh1BXSxHK+ASV1R6W4HpjBhSeS+54PIsAMCBmwD06LLsqQ==}
@@ -8373,6 +8379,8 @@ snapshots:
       '@vitest/pretty-format': 3.2.4
       loupe: 3.2.1
       tinyrainbow: 2.0.0
+
+  '@wandry/analytics-sdk@1.16.0': {}
 
   JSONStream@1.3.5:
     dependencies:

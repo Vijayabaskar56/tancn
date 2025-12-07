@@ -78,6 +78,7 @@
 		"@tanstack/router-plugin": "^1.139.14",
 		"@tanstack/store": "^0.7.7",
 		"@unpic/react": "^1.0.1",
+		"@wandry/analytics-sdk": "^1.16.0",
 		"arktype": "^2.1.28",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
