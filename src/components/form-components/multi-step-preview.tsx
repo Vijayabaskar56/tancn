@@ -7,10 +7,10 @@ import { RenderFormElement } from "@/components/form-components/render-form-elem
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useFormBuilder } from "@/hooks/use-form-builder";
-import { useFormStore } from "@/hooks/use-form-store";
+import useFormBuilderState from "@/hooks/use-form-builder-state";
 import { useMultiStepForm } from "@/hooks/use-multi-step-form";
 import useSettings from "@/hooks/use-settings";
-import type { FormArray, FormElement, FormStep } from "@/types/form-types";
+import type { FormArray, FormElement, FormStep } from "@/db-collections/form-builder.collections";
 
 function collectFieldNames(items: any[]): string[] {
 	const names: string[] = [];
@@ -37,13 +37,13 @@ function collectFieldNames(items: any[]): string[] {
 	return names;
 }
 export function MultiStepFormPreview() {
-	const { formElements } = useFormStore();
+	const { formElements  ,} = useFormBuilderState();
 	const { form, isDefault } = useFormBuilder();
-	const { validationMethod } = useSettings();
+	const settings = useSettings();
 	const validate =
-		validationMethod === "onBlur"
+		settings.validationMethod === "onBlur"
 			? "blur"
-			: validationMethod === "onChange"
+			: settings.validationMethod === "onChange"
 				? "change"
 				: "submit";
 	const { currentStep, isLastStep, goToNext, goToPrevious } = useMultiStepForm({

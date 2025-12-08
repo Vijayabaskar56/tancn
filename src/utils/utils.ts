@@ -2,8 +2,8 @@ import { createClientOnlyFn, createIsomorphicFn } from "@tanstack/react-start";
 import { type ClassValue, clsx } from "clsx";
 import js_beautify from "js-beautify";
 import { twMerge } from "tailwind-merge";
-import type { SettingsCollection } from "@/db-collections/settings.collections";
-import { setPreferredPackageManager } from "@/services/settings.service";
+import type { FormBuilderSettings } from "@/db-collections/form-builder.collections";
+import { setPreferredPackageManager } from "@/services/form-builder.service";
 import type { JsonData } from "@/types/table-types";
 
 export function cn(...inputs: ClassValue[]) {
@@ -152,7 +152,7 @@ export function formatCode(code: string): string {
 }
 
 export const updatePreferredPackageManager = createClientOnlyFn(
-	(value: SettingsCollection["preferredPackageManager"]) => {
+	(value: FormBuilderSettings["preferredPackageManager"]) => {
 		if (value) {
 			setPreferredPackageManager(value);
 		}
@@ -189,7 +189,7 @@ import { detectColumnsConfig } from "../lib/column-detection";
 export const detectColumns = (data: JsonData[]) => detectColumnsConfig(data);
 
 export const getRegistryUrl = (
-	framework?: SettingsCollection["preferredFramework"],
+	framework?: FormBuilderSettings["preferredFramework"],
 ) => {
 	const baseUrl = import.meta.env.MODE === "development" ? "http://localhost:3000" : "https://tancn.dev";
 	if (!framework) {

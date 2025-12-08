@@ -6,14 +6,14 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { useAppForm } from "@/components/ui/tanstack-form";
-import type {
-	PreferredFramework,
-	PreferredSchema,
-	ValidationMethod,
-} from "@/db-collections/settings.collections";
-import { SettingsSchema } from "@/db-collections/settings.collections";
+import {
+	type PreferredFramework,
+	type PreferredSchema,
+	type ValidationMethod,
+	FormBuilderSettingsSchema,
+} from "@/db-collections/form-builder.collections";
 import useSettings from "@/hooks/use-settings";
-import { setValidationSettings } from "@/services/settings.service";
+import { setValidationSettings } from "@/services/form-builder.service";
 import { Separator } from "../ui/separator";
 export function SettingsSidebar() {
 	const focusOnErrorId = useId();
@@ -31,9 +31,9 @@ export function SettingsSidebar() {
 			asyncValidation: data?.asyncValidation,
 			preferredSchema: data?.preferredSchema,
 			preferredFramework: data?.preferredFramework,
-		} as v.InferInput<typeof SettingsSchema>,
+		} as v.InferInput<typeof FormBuilderSettingsSchema>,
 		validators: {
-			onChange: SettingsSchema,
+			onChange: FormBuilderSettingsSchema,
 		},
 		listeners: {
 			onChangeDebounceMs: 1000,
@@ -49,7 +49,6 @@ export function SettingsSidebar() {
 					preferredFramework: formApi.baseStore.state.values.preferredFramework,
 				});
 
-				//  actions.setSettings(formApi.baseStore.state.values)
 			},
 		},
 	});

@@ -3,13 +3,14 @@ import { RenderFormElement } from "@/components/form-components/render-form-elem
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useFormBuilder } from "@/hooks/use-form-builder";
-import { useFormStore } from "@/hooks/use-form-store";
+import useFormBuilderState from "@/hooks/use-form-builder-state";
+import { addFormArrayEntry, removeFormArrayEntry } from "@/services/form-builder.service";
 import { getDefaultFormElement } from "@/lib/form-code-generators/react/generate-default-value";
 import type {
 	FormArray,
 	FormElement,
 	FormElementOrList,
-} from "@/types/form-types";
+} from "@/db-collections/form-builder.collections";
 
 interface FormArrayPreviewProps {
 	formArray: FormArray;
@@ -17,7 +18,7 @@ interface FormArrayPreviewProps {
 }
 
 export function FormArrayPreview({ formArray }: FormArrayPreviewProps) {
-	const { formElements, actions } = useFormStore();
+	const { formElements } = useFormBuilderState();
 
 	// Get the latest FormArray from the store to ensure reactivity
 	const currentFormArray = formElements.find(
@@ -82,7 +83,7 @@ export function FormArrayPreview({ formArray }: FormArrayPreviewProps) {
 								type="button"
 								onClick={() => {
 									field.pushValue(defaultValue as never);
-									actions.addFormArrayEntry(arrayToUse.id);
+									addFormArrayEntry(arrayToUse.id);
 								}}
 								disabled={arrayToUse.arrayField.length === 0}
 							>
@@ -97,7 +98,7 @@ export function FormArrayPreview({ formArray }: FormArrayPreviewProps) {
 										((field.state.value || []) as unknown[]).length - 1;
 									field.removeValue(lastIndex);
 									if (arrayToUse.entries[lastIndex]) {
-										actions.removeFormArrayEntry(
+										removeFormArrayEntry(
 											arrayToUse.id,
 											arrayToUse.entries[lastIndex].id,
 										);

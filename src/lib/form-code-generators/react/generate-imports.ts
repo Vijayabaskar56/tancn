@@ -144,10 +144,12 @@ export const extractImportDependencies = (
 		const fromMatch = stmt.match(/from\s+["']([^"']+)["']/);
 		if (!fromMatch) continue;
 		const modulePath = fromMatch[1];
-
+		if (modulePath.includes("@/lib/")) {
+			continue
+		}
 		if (modulePath.startsWith("@/components/")) {
 			const component = modulePath.split("/").pop();
-			if (component && component === "tanstack-form") {
+			if (component && (component === "tanstack-form" || component === "utils")) {
 				registry.add(
 					`${getRegistryUrl(settings.preferredFramework)}/tanstack-form.json`,
 				);
@@ -158,7 +160,6 @@ export const extractImportDependencies = (
 			deps.add(modulePath);
 		}
 	}
-
 	return {
 		registryDependencies: Array.from(registry),
 		dependencies: Array.from(deps),

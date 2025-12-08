@@ -4,7 +4,12 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { templates } from "@/constants/templates";
-import { useFormStore } from "@/hooks/use-form-store";
+import {
+	setTemplate,
+	getSavedFormTemplates,
+	loadFormTemplate,
+	deleteFormTemplate,
+} from "@/services/form-builder.service";
 
 const formTemplates = Object.entries(templates).map((template) => ({
 	label: template[1].name,
@@ -15,34 +20,33 @@ const formTemplates = Object.entries(templates).map((template) => ({
 export function TemplateSidebar() {
 	const [searchQuery, _setSearchQuery] = useState("");
 	const [savedForms, setSavedForms] = useState<
-		Array<{ name: string; data: Record<string, unknown>; createdAt: string }>
+		Array<{ id: string; name: string; createdAt: string }>
 	>([]);
-	const { actions } = useFormStore();
 
 	// Load saved forms on component mount
 	useEffect(() => {
-		setSavedForms(actions.getSavedForms());
-	}, [actions]);
+		setSavedForms(getSavedFormTemplates().map(t => ({ id: t.id, name: t.name, createdAt: t.createdAt })));
+	}, []);
 
-	const handleLoadSavedForm = (formName: string) => {
-		const success = actions.loadForm(formName);
+	const handleLoadSavedForm = (formId: string) => {
+		const success = loadFormTemplate(formId);
 		if (success) {
 			toast("Form loaded successfully");
 		} else {
 			toast("Failed to load form");
 		}
 		// Refresh the saved forms list after loading
-		setSavedForms(actions.getSavedForms());
+		setSavedForms(getSavedFormTemplates().map(t => ({ id: t.id, name: t.name, createdAt: t.createdAt })));
 	};
 
-	const handleDeleteSavedForm = (formName: string) => {
-		const success = actions.deleteSavedForm(formName);
+	const handleDeleteSavedForm = (formId: string, formName: string) => {
+		const success = deleteFormTemplate(formId);
 		if (success) {
 			toast(`Form "${formName}" deleted`);
 		} else {
 			toast("Failed to delete form");
 		}
-		setSavedForms(actions.getSavedForms());
+		setSavedForms(getSavedFormTemplates().map(t => ({ id: t.id, name: t.name, createdAt: t.createdAt })));
 	};
 
 	const filteredTemplates = searchQuery
@@ -68,9 +72,9 @@ export function TemplateSidebar() {
 							</h3>
 							<div className="space-y-2">
 								{savedForms.map((template) => (
-									<div key={template.name} className="flex items-center gap-2">
+									<div key={template.id} className="flex items-center gap-2">
 										<Button
-											onClick={() => handleLoadSavedForm(template.name)}
+											onClick={() => handleLoadSavedForm(template.id)}
 											className="justify-start text-[12px] flex-1"
 											variant="ghost"
 										>
@@ -78,7 +82,7 @@ export function TemplateSidebar() {
 											{template.name}
 										</Button>
 										<Button
-											onClick={() => handleDeleteSavedForm(template.name)}
+											onClick={() => handleDeleteSavedForm(template.id, template.name)}
 											size="sm"
 											variant="ghost"
 											className="text-destructive hover:text-destructive"
@@ -101,7 +105,7 @@ export function TemplateSidebar() {
 								{filteredTemplates.map(({ label, value, isMS }) => (
 									<Button
 										key={label}
-										onClick={() => actions.setTemplate(value)}
+										onClick={() => setTemplate(value)}
 										className="justify-start text-[12px] w-full"
 										variant="ghost"
 									>

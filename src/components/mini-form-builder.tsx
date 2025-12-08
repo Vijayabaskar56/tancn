@@ -211,8 +211,7 @@ function PreviewForm({ elements }: { elements: FormElement[] }) {
 		validators: {
 			onChange: formSchema,
 		},
-		onSubmit: async ({ value }) => {
-			console.log(value);
+		onSubmit: async () => {
 			toast.success("Form submitted successfully!");
 		},
 	});

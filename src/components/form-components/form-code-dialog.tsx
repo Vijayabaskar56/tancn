@@ -2,7 +2,8 @@ import { useMutation } from "@tanstack/react-query";
 import { useEffect, useId, useState } from "react";
 import * as z from "zod";
 import type { Settings } from "@/components/form-components/types";
-import { useFormStore } from "@/hooks/use-form-store";
+import useFormBuilderState from "@/hooks/use-form-builder-state";
+import { setFormName } from "@/services/form-builder.service";
 import useSettings from "@/hooks/use-settings";
 import {
 	extractImportDependencies,
@@ -11,11 +12,11 @@ import {
 } from "@/lib/form-code-generators";
 import { generateValidationCode } from "@/lib/schema-generators";
 import type {
-	CreateRegistryResponse,
 	FormArray,
 	FormElement,
 	FormElementOrList,
-} from "@/types/form-types";
+} from "@/db-collections/form-builder.collections";
+import type { CreateRegistryResponse } from "@/types/form-types";
 import { getRegistryUrl, logger } from "@/utils/utils";
 import { AnimatedIconButton } from "../ui/animated-icon-button";
 import {
@@ -45,13 +46,12 @@ const formSchema = z.object({
 function CodeDialog() {
 	const {
 		formName,
-		actions,
 		formElements,
-		validationSchema,
 		isMS,
 		schemaName,
-	} = useFormStore();
+	} = useFormBuilderState();
 	const settings = useSettings();
+	const validationSchema = settings?.preferredSchema || "zod";
 	const [open, setOpen] = useState(false);
 	const [isGenerateSuccess, setIsGenerateSuccess] = useState(false);
 	const [generatedId, setGeneratedId] = useState<string>("");
@@ -198,7 +198,7 @@ function CodeDialog() {
 							word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
 					)
 					.join("");
-				actions.setFormName(fieldApi.state.value as string);
+				setFormName(fieldApi.state.value as string);
 			},
 		},
 	});

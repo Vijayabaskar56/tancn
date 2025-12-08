@@ -28,10 +28,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAppForm } from "@/components/ui/tanstack-form";
 import type { AppForm } from "@/hooks/use-form-builder";
-import { useFormStore } from "@/hooks/use-form-store";
+import { editElement } from "@/services/form-builder.service";
 import { useListState } from "@/hooks/use-list-state";
 import { useIsMobile } from "@/hooks/use-mobile";
-import type { FormElement, Option } from "@/types/form-types";
+import type { FormElement, Option } from "@/db-collections/form-builder.collections";
 import { isStatic } from "@/utils/utils";
 
 const inputTypes = [
@@ -269,7 +269,7 @@ function FormElementAttributes({
 	const form = useAppForm({
 		defaultValues: formElement as FormElement,
 		onSubmit: ({ value }) => {
-			actions.editElement({
+			editElement({
 				fieldIndex: fieldIndex,
 				modifiedFormElement: value,
 				j,
@@ -278,7 +278,6 @@ function FormElementAttributes({
 			close();
 		},
 	});
-	const { actions } = useFormStore();
 	const { fieldType } = formElement;
 	const isFieldWithOptions =
 		fieldType === "Select" ||

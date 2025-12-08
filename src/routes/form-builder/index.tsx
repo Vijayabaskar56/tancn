@@ -19,7 +19,7 @@ import { SettingsGearIcon } from "@/components/ui/settings-gear";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useScreenSize } from "@/hooks/use-screen-size";
 import useSettings from "@/hooks/use-settings";
-import { setActiveTab } from "@/services/settings.service";
+import { setActiveTab } from "@/services/form-builder.service";
 import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import type { ImperativePanelHandle } from "react-resizable-panels";

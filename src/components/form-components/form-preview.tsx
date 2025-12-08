@@ -4,14 +4,13 @@ import { RenderFormElement } from "@/components/form-components/render-form-elem
 import NoFieldPlaceholder from "@/components/no-field-placeholder";
 import { Button } from "@/components/ui/button";
 import { useFormBuilder } from "@/hooks/use-form-builder";
-import { useFormStore, useIsMultiStep } from "@/hooks/use-form-store";
-import type { FormArray, FormElement } from "@/types/form-types";
+import useFormBuilderState from "@/hooks/use-form-builder-state";
+import type { FormArray, FormElement } from "@/db-collections/form-builder.collections";
 
 export function SingleStepFormPreview() {
-	const { formElements, formName } = useFormStore();
+	const { formElements, formName, isMS } = useFormBuilderState();
 	const { form, isDefault } = useFormBuilder();
-	const isMS = useIsMultiStep();
-	if (formElements.length < 1)
+	if (!formElements || formElements.length < 1)
 		return (
 			<NoFieldPlaceholder
 				title="No Field To Preview Yet"

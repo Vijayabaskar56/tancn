@@ -1,6 +1,6 @@
 import { useLocation } from "@tanstack/react-router";
 import { Brackets } from "lucide-react";
-import { useEffect, useId, useState } from "react";
+import { useId, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,11 +22,15 @@ import {
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
 import { useFormBuilder } from "@/hooks/use-form-builder";
-import { useFormStore } from "@/hooks/use-form-store";
+import useFormBuilderState from "@/hooks/use-form-builder-state";
 import useSettings from "@/hooks/use-settings";
 import {
 	setPreferredFramework,
-} from "@/services/settings.service";
+	setPreferredSchema,
+	setIsMS,
+	addFormArray,
+	saveFormTemplate,
+} from "@/services/form-builder.service";
 import {
 	AnimatedIconButton,
 	AnimatedIconSpan,
@@ -44,31 +48,14 @@ import { getRegistryUrl } from "@/utils/utils";
 
 export default function FormHeader() {
 	const location = useLocation();
-	const { preferredFramework, preferredSchema } = useSettings();
+	const settings = useSettings();
 	const frameworks = ["react", "solid", "vue", "angular"];
 	const validationLibs = ["zod", "valibot", "arktype"];
-
 	const _isFormBuilder = location.pathname.startsWith("/form-builder");
 
 	const id = useId();
-	const { actions, isMS, framework, validationSchema, formElements } =
-		useFormStore();
+	const { isMS, formElements } = useFormBuilderState();
 	const { resetForm } = useFormBuilder();
-
-	// Sync form store with preferred settings on initial load or when settings change
-	// biome-ignore lint/correctness/useExhaustiveDependencies: Avoid overriding user selections by excluding framework from deps
-	useEffect(() => {
-		if (preferredFramework && preferredFramework !== framework) {
-			actions.setFramework(preferredFramework as Framework);
-		}
-	}, [preferredFramework, actions]); // Remove framework from deps to avoid overriding user selections
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies: Avoid overriding user selections by excluding validationSchema from deps
-	useEffect(() => {
-		if (preferredSchema && preferredSchema !== validationSchema) {
-			actions.setValidationSchema(preferredSchema as ValidationSchema);
-		}
-	}, [preferredSchema, actions]); // Remove validationSchema from deps to avoid overriding user selections
 
 	// Save dialog state
 	const [saveDialogOpen, setSaveDialogOpen] = useState(false);
@@ -76,15 +63,14 @@ export default function FormHeader() {
 
 	const handleSaveForm = () => {
 		if (saveFormName.trim()) {
-			actions.saveForm(saveFormName.trim());
+			saveFormTemplate(saveFormName.trim());
 			setSaveDialogOpen(false);
 			setSaveFormName("");
 		}
 	};
 
-	const handleFrameworkChange = (framework: Framework) => {
-		actions.setFramework(framework as Framework);
-		setPreferredFramework(framework);
+	const handleFrameworkChange = (newFramework: Framework) => {
+		setPreferredFramework(newFramework);
 	};
 
 	function handleShare() {
@@ -106,7 +92,7 @@ export default function FormHeader() {
 									<AnimatedIconButton
 										icon={<ChevronDownIcon className="w-4 h-4 ml-1" />}
 										text={
-											framework.charAt(0).toUpperCase() + framework.slice(1)
+											(settings?.preferredFramework ?? "react")?.charAt(0).toUpperCase() + (settings?.preferredFramework ?? "react")?.slice(1)
 										}
 										variant="ghost"
 										size="sm"
@@ -136,8 +122,8 @@ export default function FormHeader() {
 									<AnimatedIconButton
 										icon={<ChevronDownIcon className="w-4 h-4 ml-1" />}
 										text={
-											validationSchema.charAt(0).toUpperCase() +
-											validationSchema.slice(1)
+											(settings?.preferredSchema ?? "zod")?.charAt(0).toUpperCase() +
+											(settings?.preferredSchema ?? "zod")?.slice(1)
 										}
 										variant="ghost"
 										size="sm"
@@ -149,7 +135,7 @@ export default function FormHeader() {
 										<DropdownMenuItem
 											key={lib}
 											onClick={() =>
-												actions.setValidationSchema(lib as ValidationSchema)
+												setPreferredSchema(lib as ValidationSchema)
 											}
 										>
 											{lib.charAt(0).toUpperCase() + lib.slice(1)}
@@ -167,14 +153,14 @@ export default function FormHeader() {
 							<Switch
 								id={id}
 								checked={isMS}
-								onCheckedChange={() => actions.setIsMS(!isMS)}
+								onCheckedChange={() => setIsMS(!isMS)}
 								aria-labelledby={`${id}-off ${id}-on`}
 								aria-label="Toggle between dark and light mode"
 							/>
 							<AnimatedIconSpan
 								icon={<LayersIcon size={16} aria-hidden="true" />}
 								text="Multi Step Form"
-								onClick={() => actions.setIsMS(!isMS)}
+								onClick={() => setIsMS(!isMS)}
 								className="group-data-[state=unchecked]:text-muted-foreground/70 flex gap-2 items-center cursor-pointer text-left text-sm font-medium"
 								textClassName="hidden xl:block ml-1"
 								aria-controls={id}
@@ -185,7 +171,7 @@ export default function FormHeader() {
 						<Button
 							variant="ghost"
 							size="sm"
-							onClick={() => actions.addFormArray([])}
+							onClick={() => addFormArray([])}
 						>
 							<Brackets className="w-4 h-4 mr-1" />
 							<span className="hidden xl:block ml-1">Field Array</span>
