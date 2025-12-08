@@ -92,7 +92,7 @@ export const Route = createFileRoute('/api/ai')({
           const stream = chat({
             adapter: gemini(),
             messages,
-            model: "gemini-2.0-flash",
+            model: "gemini-2.5-flash",
             conversationId,
             abortController : abortController,
             tools: [generateFormDef],

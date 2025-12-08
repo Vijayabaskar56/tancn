@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { useChat, fetchServerSentEvents } from "@tanstack/ai-react";
-import { setFormElements, setFormName } from "@/services/form-builder.service";
+import { setFormElements, setFormName, setIsMS } from "@/services/form-builder.service";
 import { clientTools } from "@tanstack/ai-client";
 import { generateFormDef } from "@/lib/ai/form-tools";
 import { v4 as uuid } from "uuid";
@@ -17,27 +17,92 @@ export function FormGenerator() {
 		description?: string;
 	}>({});
 
+	// Normalize field to match Valibot schema requirements
+	const normalizeField = (field: any): any => {
+		const normalized = { ...field };
+
+		// Password fieldType requires type: "password"
+		if (normalized.fieldType === "Password" && !normalized.type) {
+			normalized.type = "password";
+		}
+
+		// Static elements need static: true
+		if (["H1", "H2", "H3", "Separator", "FieldDescription", "FieldLegend"].includes(normalized.fieldType)) {
+			normalized.static = true;
+		}
+
+		// Select/RadioGroup/ToggleGroup/MultiSelect need options array
+		if (["Select", "RadioGroup", "ToggleGroup", "MultiSelect"].includes(normalized.fieldType)) {
+			if (!normalized.options) {
+				normalized.options = [];
+			}
+		}
+
+		// Select/MultiSelect need placeholder
+		if (["Select", "MultiSelect"].includes(normalized.fieldType) && !normalized.placeholder) {
+			normalized.placeholder = `Select ${normalized.label || normalized.name}...`;
+		}
+
+		// FormArray needs entries array initialized
+		if (normalized.fieldType === "FormArray") {
+			if (!normalized.entries) {
+				normalized.entries = [];
+			}
+			if (!normalized.arrayField) {
+				normalized.arrayField = [];
+			}
+		}
+
+		return normalized;
+	};
+
+	// Helper to ensure all elements have IDs and are normalized
+	const ensureIds = (elements: any[]): any[] => {
+		return elements.map((el: any) => {
+			if (Array.isArray(el)) {
+				return ensureIds(el);
+			}
+			const normalized = normalizeField(el);
+			const withId = { ...normalized, id: normalized.id || uuid() };
+			// Handle FormArray fields
+			if (withId.fieldType === "FormArray" && withId.arrayField) {
+				withId.arrayField = ensureIds(withId.arrayField);
+				withId.entries = (withId.entries || []).map((entry: any) => ({
+					id: entry.id || uuid(),
+					fields: ensureIds(entry.fields || []),
+				}));
+			}
+			return withId;
+		});
+	};
+
 	// Client tool that updates form state when AI calls it with generated form data
-	const generateFormTool = generateFormDef.client(({ title, description, formElements }) => {
-		console.log("Client: generate_form called with:", title, description);
+	const generateFormTool = generateFormDef.client(({ title, description, isMultiStep, formElements, steps }) => {
+		console.log("Client: generate_form called with:", { title, description, isMultiStep });
 
 		try {
-			// Add unique IDs to elements that don't have them
-			const elementsWithIds = formElements.map((el: any) => {
-				if (Array.isArray(el)) {
-					return el.map((e: any) => ({
-						...e,
-						id: e.id || uuid(),
-					}));
-				}
-				return {
-					...el,
-					id: el.id || uuid(),
-				};
-			});
+			let fieldCount = 0;
 
-			// Update form store
-			setFormElements(elementsWithIds as any);
+			if (isMultiStep && steps && steps.length > 0) {
+				// Multi-step form: convert steps to form elements with stepFields
+				const stepsWithIds = steps.map((step: any) => ({
+					id: step.id || uuid(),
+					stepFields: ensureIds(step.stepFields || []),
+				}));
+
+				// Set multi-step mode first
+				setIsMS(true);
+				setFormElements(stepsWithIds as any);
+				fieldCount = steps.reduce((acc: number, step: any) => acc + (step.stepFields?.length || 0), 0);
+			} else if (formElements && formElements.length > 0) {
+				// Single-page form
+				const elementsWithIds = ensureIds(formElements);
+				console.log("Setting form elements:", JSON.stringify(elementsWithIds, null, 2));
+
+				// setFormElements also sets isMS internally based on the structure
+				setFormElements(elementsWithIds as any);
+				fieldCount = formElements.length;
+			}
 
 			// Update form metadata
 			setFormMetadata({ title, description });
@@ -48,15 +113,15 @@ export function FormGenerator() {
 			// Return success
 			return {
 				success: true,
-				message: `Form "${title}" generated successfully`,
-				fieldCount: formElements.length
+				message: `Form "${title}" generated successfully${isMultiStep ? ` with ${steps?.length || 0} steps` : ""}`,
+				fieldCount,
 			};
 		} catch (error) {
 			console.error("Error updating form:", error);
 			return {
 				success: false,
 				message: `Error: ${error}`,
-				fieldCount: 0
+				fieldCount: 0,
 			};
 		}
 	});
