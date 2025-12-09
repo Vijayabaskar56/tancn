@@ -76,6 +76,51 @@ export function FormGenerator() {
 		});
 	};
 
+	// Transform consecutive grouped fields into nested arrays for side-by-side layout
+	const groupFields = (elements: any[]): any[] => {
+		const result: any[] = [];
+		let currentGroup: any[] = [];
+
+		for (const el of elements) {
+			// Skip already nested arrays (shouldn't happen from AI, but be safe)
+			if (Array.isArray(el)) {
+				// Flush current group first
+				if (currentGroup.length > 0) {
+					result.push(currentGroup.length === 1 ? currentGroup[0] : currentGroup);
+					currentGroup = [];
+				}
+				result.push(el);
+				continue;
+			}
+
+			if (el.grouped) {
+				// Remove the grouped property (it's just a hint for transformation)
+				const { grouped: _, ...fieldWithoutGrouped } = el;
+				currentGroup.push(fieldWithoutGrouped);
+			} else {
+				// Flush current group
+				if (currentGroup.length > 0) {
+					result.push(currentGroup.length === 1 ? currentGroup[0] : currentGroup);
+					currentGroup = [];
+				}
+				result.push(el);
+			}
+		}
+
+		// Flush remaining group
+		if (currentGroup.length > 0) {
+			result.push(currentGroup.length === 1 ? currentGroup[0] : currentGroup);
+		}
+
+		return result;
+	};
+
+	// Process elements: ensure IDs, then group consecutive grouped fields
+	const processElements = (elements: any[]): any[] => {
+		const withIds = ensureIds(elements);
+		return groupFields(withIds);
+	};
+
 	// Client tool that updates form state when AI calls it with generated form data
 	const generateFormTool = generateFormDef.client(({ title, description, isMultiStep, formElements, steps }) => {
 		console.log("Client: generate_form called with:", { title, description, isMultiStep });
@@ -87,7 +132,7 @@ export function FormGenerator() {
 				// Multi-step form: convert steps to form elements with stepFields
 				const stepsWithIds = steps.map((step: any) => ({
 					id: step.id || uuid(),
-					stepFields: ensureIds(step.stepFields || []),
+					stepFields: processElements(step.stepFields || []),
 				}));
 
 				// Set multi-step mode first
@@ -96,7 +141,7 @@ export function FormGenerator() {
 				fieldCount = steps.reduce((acc: number, step: any) => acc + (step.stepFields?.length || 0), 0);
 			} else if (formElements && formElements.length > 0) {
 				// Single-page form
-				const elementsWithIds = ensureIds(formElements);
+				const elementsWithIds = processElements(formElements);
 				console.log("Setting form elements:", JSON.stringify(elementsWithIds, null, 2));
 
 				// setFormElements also sets isMS internally based on the structure

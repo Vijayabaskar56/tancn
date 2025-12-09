@@ -31,7 +31,13 @@ Field types and their required properties:
 - DatePicker: name, label
 - H1/H2/H3: content, static=true
 - Separator: static=true
-- FormArray: name, label, arrayField (template fields that repeat)`,
+- FormArray: name, label, arrayField (template fields that repeat)
+
+SIDE-BY-SIDE FIELD PLACEMENT:
+- Use grouped: true on consecutive fields to place them horizontally next to each other
+- Example: first_name (grouped: true), last_name (grouped: true) will appear side-by-side
+- Common patterns: first/last name, city/state/zip, start/end date
+- Only group 2-3 related fields maximum for good UX`,
   inputSchema: z.object({
     title: z.string().describe("Descriptive title for the form"),
     description: z.string().describe("Brief description of the form's purpose"),
@@ -47,6 +53,7 @@ Field types and their required properties:
       placeholder: z.string().optional().describe("Placeholder text"),
       required: z.boolean().optional().describe("Is required"),
       disabled: z.boolean().optional().describe("Is disabled"),
+      grouped: z.boolean().optional().describe("Set to true to place this field side-by-side with adjacent grouped fields"),
       type: z.string().optional().describe("Input type: text, email, password, tel, number, url"),
       options: z.array(z.object({
         value: z.string().describe("Option value"),
@@ -86,6 +93,7 @@ Field types and their required properties:
         placeholder: z.string().nonempty('Placeholder is required').describe("Placeholder text"),
         required: z.boolean().optional().describe("Is required"),
         disabled: z.boolean().optional().describe("Is disabled"),
+        grouped: z.boolean().optional().describe("Set to true to place this field side-by-side with adjacent grouped fields"),
         type: z.string().optional().describe("Input type: text, email, password, tel, number, url"),
         options: z.array(z.object({
           value: z.string().describe("Option value"),
@@ -139,6 +147,7 @@ export type AIFormElement = {
   content?: string;
   static?: boolean;
   checked?: boolean;
+  grouped?: boolean;
   arrayField?: AIFormElement[];
 };
 

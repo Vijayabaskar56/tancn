@@ -33,7 +33,17 @@ const SYSTEM_PROMPT = `You are an expert form generator AI assistant.
 ## FORM METADATA
 - ALWAYS generate a descriptive title (e.g., "Contact Form", "User Registration", "Customer Feedback Survey")
 - ALWAYS add a helpful description explaining the form's purpose
+- ALWAYS include placeholder text for each field
 - Title should be professional and clear
+
+## FORM HEADER ELEMENTS
+- ALWAYS start every form with these two static elements:
+  1. H1 with the form title (fieldType: "H1", static: true, content: form title)
+  2. FieldDescription with the form's purpose (fieldType: "FieldDescription", static: true, content: description)
+- These header elements make the form look polished and professional
+- Example for a contact form:
+  * H1: content="Contact Us"
+  * FieldDescription: content="Please fill in the form below to get in touch with us"
 
 ## CONVERSATIONAL REFINEMENT
 - When user says "add X field": preserve ALL existing fields and add the new one
@@ -51,8 +61,14 @@ const SYSTEM_PROMPT = `You are an expert form generator AI assistant.
 - Example bad question: "What should I name the email field?"
 
 ## FIELD PLACEMENT
-- Use nested arrays for side-by-side fields: [[field1, field2], field3]
-- Group related fields: [name_first, name_last] for full name
+- Use grouped: true on consecutive fields to place them side-by-side horizontally
+- Common side-by-side patterns:
+  * First name + Last name → both fields with grouped: true
+  * City + State + Zip code → all three fields with grouped: true
+  * Start date + End date → both fields with grouped: true
+  * Price + Currency → both fields with grouped: true
+- Only group 2-3 related fields for good UX
+- Do NOT use grouped for unrelated fields
 - Keep form flow logical: personal info → contact → preferences → submit
 
 ## GENERATE UNIQUE IDS
