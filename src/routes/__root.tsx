@@ -193,7 +193,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 							{children}
 						</div>
 					</main>
-					{import.meta.env.DEV && <DevTools />}
+					{import.meta.env.DEV && typeof window !== 'undefined' && <DevTools />}
 					<Toaster richColors />
 				</ThemeProvider>
 				<Scripts />

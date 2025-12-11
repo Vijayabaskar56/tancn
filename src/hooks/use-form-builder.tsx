@@ -3,11 +3,12 @@ import { useMemo } from "react";
 import { toast } from "sonner";
 import type * as v from "valibot";
 import { revalidateLogic, useAppForm } from "@/components/ui/tanstack-form";
-import { useFormStore, useIsMultiStep } from "@/hooks/use-form-store";
+import useFormBuilderState from "@/hooks/use-form-builder-state";
+import { resetFormElements } from "@/services/form-builder.service";
 import { getDefaultFormElement } from "@/lib/form-code-generators/react/generate-default-value";
 import { flattenFormSteps } from "@/lib/form-elements-helpers";
 import { generateValiSchemaObject } from "@/lib/schema-generators/generate-valibot-schema";
-import type { FormElement, FormStep } from "@/types/form-types";
+import type { FormElement, FormStep } from "@/db-collections/form-builder.collections";
 import useSettings from "./use-settings";
 
 interface DefaultValues {
@@ -44,12 +45,11 @@ export const useFormBuilder = (): {
 	resetForm: () => void;
 	isDefault: boolean;
 } => {
-	const isMS = useIsMultiStep();
-	const { actions, formElements } = useFormStore();
+	const { isMS, formElements } = useFormBuilderState();
 	const settings = useSettings();
 	const flattenFormElements = isMS
 		? flattenFormSteps(formElements as FormStep[]).flat()
-		: (formElements.flat() as FormElement[]);
+		: ((formElements || []).flat() as FormElement[]);
 	const filteredFormFields = flattenFormElements.filter((o) => o && !o.static);
 	const valiSchema = useMemo(
 		() => generateValiSchemaObject(filteredFormFields),
@@ -126,7 +126,7 @@ export const useFormBuilder = (): {
 	const { reset } = form;
 	const isDefault = useStore(form.store, (state) => state.isDefaultValue);
 	const resetForm = () => {
-		actions.resetFormElements();
+		resetFormElements();
 		reset();
 	};
 	return { form: form as unknown as AppForm, resetForm, isDefault };

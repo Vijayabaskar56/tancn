@@ -7,7 +7,7 @@ import {
 import CopyButton from "@/components/ui/copy-button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import type { SettingsCollection } from "@/db-collections/settings.collections";
+import type { FormBuilderSettings } from "@/db-collections/form-builder.collections";
 import useSettings from "@/hooks/use-settings";
 import { formatCode, updatePreferredPackageManager } from "@/utils/utils";
 
@@ -69,7 +69,7 @@ const TableCodeBlockPackagesInstallation = () => {
 				value={settings?.preferredPackageManager}
 				onValueChange={(value) =>
 					updatePreferredPackageManager(
-						value as SettingsCollection["preferredPackageManager"],
+						value as FormBuilderSettings["preferredPackageManager"],
 					)
 				}
 				className="w-full mt-2 rounded-md"
@@ -96,7 +96,7 @@ const TableCodeBlockPackagesInstallation = () => {
 				value={preferredPackageManager}
 				onValueChange={(value) =>
 					updatePreferredPackageManager(
-						value as SettingsCollection["preferredPackageManager"],
+						value as FormBuilderSettings["preferredPackageManager"],
 					)
 				}
 				className="w-full mt-2 rounded-md"
@@ -192,7 +192,7 @@ export function GeneratedTableCodeViewer({
 									value={settings?.preferredPackageManager}
 									onValueChange={(value) =>
 										updatePreferredPackageManager(
-											value as SettingsCollection["preferredPackageManager"],
+											value as FormBuilderSettings["preferredPackageManager"],
 										)
 									}
 									className="w-full mt-2 rounded-md"

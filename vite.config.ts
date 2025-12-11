@@ -14,6 +14,9 @@ const config = defineConfig({
 		}),
 		tailwindcss(),
 		tanstackStart({
+			// spa : {
+			// 	enabled: true,
+			// },
 			sitemap: {
 				enabled: true,
 				host: 'https://tancn.dev/',

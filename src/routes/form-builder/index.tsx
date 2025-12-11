@@ -9,6 +9,8 @@ import Loader from "@/components/loader";
 import { AnimatedIconButton } from "@/components/ui/animated-icon-button";
 import { BlocksIcon } from "@/components/ui/blocks";
 import { LayoutPanelTopIcon } from "@/components/ui/layout-panel-top";
+import { Sparkles } from "lucide-react";
+import { FormGenerator } from "@/components/form-components/form-generator";
 import {
 	ResizableHandle,
 	ResizablePanel,
@@ -19,7 +21,7 @@ import { SettingsGearIcon } from "@/components/ui/settings-gear";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useScreenSize } from "@/hooks/use-screen-size";
 import useSettings from "@/hooks/use-settings";
-import { setActiveTab } from "@/services/settings.service";
+import { setActiveTab } from "@/services/form-builder.service";
 import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import type { ImperativePanelHandle } from "react-resizable-panels";
@@ -43,7 +45,7 @@ function FormBuilderComponent() {
 	const [sidebarWidth, setSidebarWidth] = useState(300); // Default width
 
 	const handleSubTabChange = (newSubTab: string) => {
-		setActiveTab(newSubTab as "builder" | "template" | "settings");
+		setActiveTab(newSubTab as "builder" | "template" | "settings" | "generate");
 	};
 
 	const renderSidebarContent = () => {
@@ -54,6 +56,8 @@ function FormBuilderComponent() {
 				return <TemplateSidebar />;
 			case "settings":
 				return <SettingsSidebar />;
+			case "generate":
+				return <FormGenerator />;
 			default:
 				return <FieldTab />;
 		}
@@ -98,6 +102,20 @@ function FormBuilderComponent() {
 				}
 				variant={activeTab === "settings" ? "default" : "ghost"}
 				onClick={() => handleSubTabChange("settings")}
+				size="sm"
+			/>
+			<AnimatedIconButton
+				icon={
+					<Sparkles
+						className="-ms-0.5 me-1.5 opacity-60"
+						size={16}
+					/>
+				}
+				text={
+					sidebarWidth > 350 || isMobile || isTablet ? "Generate" : ""
+				}
+				variant={activeTab === "generate" ? "default" : "ghost"}
+				onClick={() => handleSubTabChange("generate")}
 				size="sm"
 			/>
 		</div>

@@ -121,7 +121,7 @@ export const resetSettings = (): boolean => {
  * Set active tab
  */
 export const setActiveTab = (
-	tab: "builder" | "template" | "settings",
+	tab: "builder" | "template" | "settings" | "generate",
 ): boolean => {
 	return updateSetting("activeTab", tab);
 };

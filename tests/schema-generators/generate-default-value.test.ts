@@ -5,17 +5,17 @@ import {
 	getDefaultValuesString,
 	objectToLiteralString,
 } from "@/lib/form-code-generators/react/generate-default-value";
-import type { FormStep } from "@/types/form-types";
+import type { FormStep } from "@/db-collections/form-builder.collections";
 
-// Mock the useFormStore hook
-vi.mock("@/hooks/use-form-store", () => ({
-	useFormStore: vi.fn(),
+// Mock the useFormBuilderState hook
+vi.mock("@/hooks/use-form-builder-state", () => ({
+	default: vi.fn(),
 }));
 
 // Import the mocked function
-import { useFormStore } from "@/hooks/use-form-store";
+import useFormBuilderState from "@/hooks/use-form-builder-state";
 
-const mockedUseFormStore = vi.mocked(useFormStore);
+const mockedUseFormBuilderState = vi.mocked(useFormBuilderState);
 
 describe("Default Value Generator - FormArray Support", () => {
 	it("should generate default values for FormArray with proper key quoting", () => {
@@ -151,7 +151,7 @@ describe("Default Value Generator - Multi-Step Form Support", () => {
 		];
 
 		// Mock the useFormStore hook
-		mockedUseFormStore.mockReturnValue({
+		mockedUseFormBuilderState.mockReturnValue({
 			isMS: true,
 			formElements: multiStepFormElements,
 			formName: "Test Form",
@@ -223,7 +223,7 @@ describe("Default Value Generator - Multi-Step Form Support", () => {
 		];
 
 		// Mock the useFormStore hook
-		mockedUseFormStore.mockReturnValue({
+		mockedUseFormBuilderState.mockReturnValue({
 			isMS: true,
 			formElements: multiStepFormWithArrays,
 			formName: "Test Form",
@@ -263,7 +263,7 @@ describe("Default Value Generator - Multi-Step Form Support", () => {
 		];
 
 		// Mock the useFormStore hook
-		mockedUseFormStore.mockReturnValue({
+		mockedUseFormBuilderState.mockReturnValue({
 			isMS: true,
 			formElements: emptyMultiStepForm,
 			formName: "Test Form",
@@ -302,7 +302,7 @@ describe("Default Value Generator - Multi-Step Form Support", () => {
 		];
 
 		// Test with Valibot
-		mockedUseFormStore.mockReturnValue({
+		mockedUseFormBuilderState.mockReturnValue({
 			isMS: true,
 			formElements: simpleMultiStepForm,
 			formName: "Test Form",
@@ -320,7 +320,7 @@ describe("Default Value Generator - Multi-Step Form Support", () => {
 		const valibotResult = getDefaultValuesString("valibot", "formSchema", simpleMultiStepForm);
 
 		// Test with Arktype
-		mockedUseFormStore.mockReturnValue({
+		mockedUseFormBuilderState.mockReturnValue({
 			isMS: true,
 			formElements: simpleMultiStepForm,
 			formName: "Test Form",

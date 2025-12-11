@@ -18,15 +18,26 @@ import { Label } from "@/components/ui/label";
 import { SquarePenIcon } from "@/components/ui/square-pen";
 import { useAppForm } from "@/components/ui/tanstack-form";
 import type { AppForm } from "@/hooks/use-form-builder";
-import type { FormBuilderActions } from "@/hooks/use-form-store";
-import { useFormStore, useIsMultiStep } from "@/hooks/use-form-store";
+import useFormBuilderState from "@/hooks/use-form-builder-state";
+import {
+	dropElement,
+	editElement,
+	removeFormArray,
+	removeFormArrayField,
+	reorder,
+	reorderFormArrayFields,
+	reorderSteps,
+	updateFormArray,
+	updateFormArrayField,
+	updateFormArrayProperties,
+} from "@/services/form-builder.service";
 import type {
 	FormArray,
 	FormElement,
 	FormElementOrList,
 	FormStep,
-	Option,
-} from "@/types/form-types";
+} from "@/db-collections/form-builder.collections";
+import type { Option } from "@/types/form-types";
 import { isStatic, logger } from "@/utils/utils";
 
 const getTransitionProps = (isLayoutTransitioning: boolean) => ({
@@ -294,7 +305,6 @@ const FormElementEditor = ({
 	arrayId,
 	isFormArrayField,
 }: FormElementEditorProps) => {
-	const { actions } = useFormStore();
 	const { fieldType } = formElement;
 
 	const form = useAppForm({
@@ -302,9 +312,9 @@ const FormElementEditor = ({
 		onSubmit: ({ value }) => {
 			if (isFormArrayField && arrayId) {
 				// Use updateTemplate: false for property-only updates
-				actions.updateFormArrayField(arrayId, fieldIndex, value, j, false);
+				updateFormArrayField(arrayId, fieldIndex, value, j, false);
 			} else {
-				actions.editElement({
+				editElement({
 					fieldIndex: fieldIndex,
 					modifiedFormElement: value,
 					j,
@@ -325,7 +335,7 @@ const FormElementEditor = ({
 						stepIndex,
 					});
 					// Use updateTemplate: false for property-only updates
-					actions.updateFormArrayField(
+					updateFormArrayField(
 						arrayId,
 						fieldIndex,
 						formApi.baseStore.state.values,
@@ -347,7 +357,7 @@ const FormElementEditor = ({
 								.replace(/_+/g, "_")
 								.replace(/^_|_$/g, "");
 					}
-					actions.editElement({
+					editElement({
 						fieldIndex: fieldIndex,
 						modifiedFormElement: formApi.baseStore.state.values,
 						j,
@@ -552,7 +562,6 @@ const FormElementEditor = ({
 
 const EditFormItem = (props: EditFormItemProps) => {
 	const { element, fieldIndex } = props;
-	const { actions } = useFormStore();
 	const isNested = typeof props?.j === "number";
 	const DisplayName =
 		"label" in element && element?.label !== null && element?.label !== ""
@@ -584,7 +593,7 @@ const EditFormItem = (props: EditFormItemProps) => {
 						size="icon"
 						variant="ghost"
 						onClick={() => {
-							actions.dropElement({
+							dropElement({
 								fieldIndex,
 								j: props?.j,
 								stepIndex: props?.stepIndex,
@@ -643,7 +652,6 @@ const FormArrayFieldItem = ({
 	formArrayElement?: FormArray;
 	isLayoutTransitioning?: boolean;
 }) => {
-	const { actions } = useFormStore();
 	const isNested = typeof nestedIndex === "number";
 	const DisplayName =
 		"label" in element
@@ -692,9 +700,9 @@ const FormArrayFieldItem = ({
 									updatedNestedArray.length === 1
 										? updatedNestedArray[0]
 										: updatedNestedArray;
-								actions.updateFormArray(arrayId, updatedArrayField);
+								updateFormArray(arrayId, updatedArrayField);
 							} else {
-								actions.removeFormArrayField(arrayId, fieldIndex);
+								removeFormArrayField(arrayId, fieldIndex);
 							}
 						}}
 						className="rounded-xl h-9"
@@ -736,12 +744,10 @@ const FormArrayFieldItem = ({
 // Component for FormArray item with proper drag handling
 const FormArrayItemContainer = ({
 	formArrayElement,
-	actions,
 	mainFieldIndex,
 	isLayoutTransitioning = false,
 }: {
 	formArrayElement: FormArray;
-	actions: FormBuilderActions;
 	mainFieldIndex?: number;
 	isLayoutTransitioning?: boolean;
 }) => {
@@ -786,7 +792,7 @@ const FormArrayItemContainer = ({
 							onChange={(e) => setLocalName(e.target.value)}
 							onBlur={() => {
 								if (localName !== formArrayElement.name) {
-									actions.updateFormArrayProperties(formArrayElement.id, {
+									updateFormArrayProperties(formArrayElement.id, {
 										name: localName,
 									});
 								}
@@ -806,7 +812,7 @@ const FormArrayItemContainer = ({
 						<Button
 							variant="ghost"
 							size="sm"
-							onClick={() => actions.removeFormArray(formArrayElement.id)}
+							onClick={() => removeFormArray(formArrayElement.id)}
 							className="h-8 w-8 p-0 text-destructive hover:text-destructive"
 						>
 							<DeleteIcon className="h-4 w-4" />
@@ -817,7 +823,7 @@ const FormArrayItemContainer = ({
 					axis="y"
 					values={formArrayElement.arrayField}
 					onReorder={(newOrder) =>
-						actions.reorderFormArrayFields(formArrayElement.id, newOrder)
+						reorderFormArrayFields(formArrayElement.id, newOrder)
 					}
 					className="space-y-2 relative"
 					{...getTransitionProps(isLayoutTransitioning)}
@@ -844,7 +850,7 @@ const FormArrayItemContainer = ({
 												...formArrayElement.arrayField,
 											];
 											updatedArrayField[fieldIndex] = newOrder;
-											actions.updateFormArray(
+											updateFormArray(
 												formArrayElement.id,
 												updatedArrayField,
 											);
@@ -913,7 +919,6 @@ const HorizontalReorderItem = ({
 	isLayoutTransitioning: boolean;
 	stepIndex?: number;
 }) => {
-	const { actions } = useFormStore();
 	const dragControls = useDragControls();
 
 	return (
@@ -942,7 +947,7 @@ const HorizontalReorderItem = ({
 			<Reorder.Group
 				axis="x"
 				onReorder={(newOrder) => {
-					actions.reorder({ newOrder, fieldIndex, stepIndex });
+					reorder({ newOrder, fieldIndex, stepIndex });
 				}}
 				values={element}
 				className="flex items-center justify-start gap-2 w-full relative"
@@ -973,8 +978,7 @@ const HorizontalReorderItem = ({
 
 //======================================
 export function FormEdit() {
-	const isMultiStep = useIsMultiStep();
-	const { formElements, actions } = useFormStore();
+	const { formElements, isMS: isMultiStep } = useFormBuilderState();
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [isLayoutTransitioning, setIsLayoutTransitioning] = useState(false);
 
@@ -1012,7 +1016,7 @@ export function FormEdit() {
 					<Reorder.Group
 						values={formElements as FormStep[]}
 						onReorder={(newOrder) => {
-							actions.reorderSteps(newOrder);
+							reorderSteps(newOrder);
 						}}
 						className="flex flex-col gap-4 relative"
 						layoutScroll
@@ -1030,7 +1034,7 @@ export function FormEdit() {
 										<Reorder.Group
 											axis="y"
 											onReorder={(newOrder) => {
-												actions.reorder({ newOrder, stepIndex });
+												reorder({ newOrder, stepIndex });
 											}}
 											values={step.stepFields}
 											className="flex flex-col gap-3"
@@ -1080,7 +1084,7 @@ export function FormEdit() {
 																			variant="ghost"
 																			size="sm"
 																			onClick={() =>
-																				actions.removeFormArray(
+																				removeFormArray(
 																					formArrayElement.id,
 																				)
 																			}
@@ -1118,7 +1122,7 @@ export function FormEdit() {
 																								updatedArrayField[
 																									arrayFieldIndex
 																								] = newOrder;
-																								actions.updateFormArray(
+																								updateFormArray(
 																									formArrayElement.id,
 																									updatedArrayField,
 																								);
@@ -1231,7 +1235,7 @@ export function FormEdit() {
 					<Reorder.Group
 						axis="y"
 						onReorder={(newOrder) => {
-							actions.reorder({ newOrder, fieldIndex: null });
+							reorder({ newOrder, fieldIndex: null });
 						}}
 						values={formElements as FormElementOrList[]}
 						className="flex flex-col gap-3 rounded-lg px-3 md:px-4 md:py-5 py-4 border-dashed border bg-muted relative"
@@ -1249,7 +1253,6 @@ export function FormEdit() {
 									<FormArrayItemContainer
 										key={formArrayElement.id}
 										formArrayElement={formArrayElement}
-										actions={actions}
 										mainFieldIndex={i}
 										isLayoutTransitioning={isLayoutTransitioning}
 									/>

@@ -1,25 +1,25 @@
 import CopyButton from "@/components/ui/copy-button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import type { SettingsCollection } from "@/db-collections/settings.collections";
+import type { FormBuilderSettings } from "@/db-collections/form-builder.collections";
 import useSettings from "@/hooks/use-settings";
 import { getRegistryUrl, updatePreferredPackageManager } from "@/utils/utils";
 
 export default function CliCommands({ name }: { name: string }) {
-	const { preferredPackageManager, preferredFramework } = useSettings();
+	const settings = useSettings();
 	const commands = {
-		pnpm: `pnpm dlx shadcn@latest add ${getRegistryUrl(preferredFramework)}/${name}.json`,
-		npm: `npx shadcn@latest add ${getRegistryUrl(preferredFramework)}/${name}.json`,
-		yarn: `yarn shadcn@latest add ${getRegistryUrl(preferredFramework)}/${name}.json`,
-		bun: `bunx --bun shadcn@latest add ${getRegistryUrl(preferredFramework)}/${name}.json`,
+		pnpm: `pnpm dlx shadcn@latest add ${getRegistryUrl(settings.preferredFramework)}/${name}.json`,
+		npm: `npx shadcn@latest add ${getRegistryUrl(settings.preferredFramework)}/${name}.json`,
+		yarn: `yarn shadcn@latest add ${getRegistryUrl(settings.preferredFramework)}/${name}.json`,
+		bun: `bunx --bun shadcn@latest add ${getRegistryUrl(settings.preferredFramework)}/${name}.json`,
 	};
 
 	return (
 		<div className="relative">
 			<Tabs
-				value={preferredPackageManager}
+				value={settings.preferredPackageManager}
 				onValueChange={(value) =>
 					updatePreferredPackageManager(
-						value as SettingsCollection["preferredPackageManager"],
+						value as FormBuilderSettings["preferredPackageManager"],
 					)
 				}
 				className="rounded-md bg-card"
@@ -59,7 +59,9 @@ export default function CliCommands({ name }: { name: string }) {
 							<div className="absolute bg-accent top-2 right-2">
 								<CopyButton
 									text={
-										commands[preferredPackageManager as keyof typeof commands]
+										commands[
+											settings.preferredPackageManager as keyof typeof commands
+										]
 									}
 								/>
 							</div>

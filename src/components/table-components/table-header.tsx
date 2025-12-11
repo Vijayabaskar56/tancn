@@ -24,7 +24,7 @@ import {
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
 import useTableStore from "@/hooks/use-table-store";
-import { setPreferredFramework } from "@/services/settings.service";
+import { setPreferredFramework } from "@/services/form-builder.service";
 import {
 	resetTable,
 	saveTableTemplate,

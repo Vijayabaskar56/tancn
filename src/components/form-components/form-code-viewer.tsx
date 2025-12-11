@@ -9,8 +9,8 @@ import {
 import CopyButton from "@/components/ui/copy-button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import type { SettingsCollection } from "@/db-collections/settings.collections";
-import { useFormStore, useIsMultiStep } from "@/hooks/use-form-store";
+import type { FormBuilderSettings } from "@/db-collections/form-builder.collections";
+import useFormBuilderState from "@/hooks/use-form-builder-state";
 import useSettings from "@/hooks/use-settings";
 import { generateFormCode } from "@/lib/form-code-generators";
 import { flattenFormSteps } from "@/lib/form-elements-helpers";
@@ -18,12 +18,12 @@ import { generateValidationCode } from "@/lib/schema-generators";
 import {
 	setPreferredFramework,
 	setPreferredSchema,
-} from "@/services/settings.service";
+} from "@/services/form-builder.service";
 import type {
 	FormElement,
 	FormElementOrList,
 	FormStep,
-} from "@/types/form-types";
+} from "@/db-collections/form-builder.collections";
 import {
 	formatCode,
 	getRegistryUrl,
@@ -102,8 +102,7 @@ export function CodeBlockPackagesInstallation({
 }: {
 	customRegistryUrl?: string;
 }) {
-	const { formElements } = useFormStore();
-	const isMS = useIsMultiStep();
+	const { formElements, isMS } = useFormBuilderState();
 	const processedFormElements = isMS
 		? flattenFormSteps(formElements as FormStep[])
 		: formElements;
@@ -159,7 +158,7 @@ export function CodeBlockPackagesInstallation({
 				value={settings?.preferredPackageManager}
 				onValueChange={(value) =>
 					updatePreferredPackageManager(
-						value as SettingsCollection["preferredPackageManager"],
+						value as FormBuilderSettings["preferredPackageManager"],
 					)
 				}
 				className="w-full mt-2 rounded-md"
@@ -186,7 +185,7 @@ export function CodeBlockPackagesInstallation({
 				value={preferredPackageManager}
 				onValueChange={(value) =>
 					updatePreferredPackageManager(
-						value as SettingsCollection["preferredPackageManager"],
+						value as FormBuilderSettings["preferredPackageManager"],
 					)
 				}
 				className="w-full mt-2 rounded-md"
@@ -213,7 +212,7 @@ export function CodeBlockPackagesInstallation({
 				value={preferredPackageManager}
 				onValueChange={(value) =>
 					updatePreferredPackageManager(
-						value as SettingsCollection["preferredPackageManager"],
+						value as FormBuilderSettings["preferredPackageManager"],
 					)
 				}
 				className="w-full mt-2 rounded-md"
@@ -237,9 +236,9 @@ export function CodeBlockPackagesInstallation({
 	);
 }
 const CodeBlockTSX = () => {
-	const { formElements, validationSchema, formName } = useFormStore();
-	const isMS = useIsMultiStep();
+	const { formElements, formName, isMS } = useFormBuilderState();
 	const settings = useSettings();
+	const validationSchema = settings?.preferredSchema || "zod";
 	const preferredFramework = (settings?.preferredFramework || "react") as
 		| "react"
 		| "solid"
@@ -273,7 +272,9 @@ const CodeBlockTSX = () => {
 	);
 };
 const CodeBlockSchema = () => {
-	const { formName, formElements, validationSchema, isMS } = useFormStore();
+	const { formName, formElements, isMS } = useFormBuilderState();
+	const settings = useSettings();
+	const validationSchema = settings?.preferredSchema || "zod";
 	useEffect(() => {
 		logger("Form elements changed, regenerating schema code:", formElements);
 	}, [formElements]);
@@ -303,7 +304,7 @@ export function GeneratedFormCodeViewer({
 	tabsData: { value: string; registery: string }[];
 }) {
 	const settings = useSettings();
-	const { actions, validationSchema } = useFormStore();
+	const validationSchema = settings?.preferredSchema || "zod";
 	const frameworks = ["react", "solid", "vue", "angular"] as const;
 	const validationLibs = ["zod", "valibot", "arktype"] as const;
 	return (
@@ -367,7 +368,6 @@ export function GeneratedFormCodeViewer({
 								<DropdownMenuItem
 									key={lib}
 									onClick={() => {
-										actions.setValidationSchema(lib);
 										setPreferredSchema(lib as "zod" | "valibot" | "arktype");
 									}}
 								>
@@ -398,7 +398,7 @@ export function GeneratedFormCodeViewer({
 									value={settings?.preferredPackageManager}
 									onValueChange={(value) =>
 										updatePreferredPackageManager(
-											value as SettingsCollection["preferredPackageManager"],
+											value as FormBuilderSettings["preferredPackageManager"],
 										)
 									}
 									className="w-full mt-2 rounded-md"

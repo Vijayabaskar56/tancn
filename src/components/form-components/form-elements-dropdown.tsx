@@ -10,8 +10,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { formElementsList } from "@/constants/form-elements-list";
-import { useFormStore } from "@/hooks/use-form-store";
-import type { FormArray, FormElement } from "@/types/form-types";
+import useFormBuilderState from "@/hooks/use-form-builder-state";
+import { appendElement, addFormArrayField, updateFormArray } from "@/services/form-builder.service";
+import type { FormArray, FormElement } from "@/db-collections/form-builder.collections";
 import { logger } from "@/utils/utils";
 import { PlusIcon } from "../ui/plus";
 
@@ -46,10 +47,9 @@ export function FormElementsDropdown({
 	j?: number;
 	isFormArrayField?: boolean;
 }) {
-	const { actions } = useFormStore();
 	const handleAddingElement = (fieldType: string) => {
 		if (type === "MS" || isFormArrayField) {
-			actions.appendElement({
+			appendElement({
 				fieldIndex,
 				fieldType: fieldType as FormElement["fieldType"],
 				stepIndex,
@@ -57,7 +57,7 @@ export function FormElementsDropdown({
 			});
 		} else {
 			if (arrayId) {
-				actions.addFormArrayField(
+				addFormArrayField(
 					arrayId,
 					fieldType as FormElement["fieldType"],
 				);
@@ -78,11 +78,6 @@ export function FormElementsDropdown({
 						{formElementsList.map((o) => (
 							<DropdownMenuItem
 								onSelect={() => handleAddingElement(o.fieldType)}
-								// actions.appendElement({
-								// 	fieldIndex,
-								// 	fieldType: o.fieldType as FormElement["fieldType"],
-								// 	stepIndex,
-								// });
 								key={o.name}
 								disabled={!!o.static}
 								className="px-4"
@@ -106,13 +101,13 @@ export function UnifiedFormElementsDropdown({
 	stepIndex,
 	formArrayId,
 }: BaseDropdownProps) {
-	const { actions, formElements } = useFormStore();
+	const { formElements } = useFormBuilderState();
 
 	const handleElementSelect = (fieldType: FormElement["fieldType"]) => {
 		switch (context) {
 			case "nested":
 				if (fieldIndex !== undefined) {
-					actions.appendElement({
+					appendElement({
 						fieldIndex,
 						fieldType,
 						stepIndex,
@@ -120,7 +115,7 @@ export function UnifiedFormElementsDropdown({
 				}
 				break;
 			case "multistep":
-				actions.appendElement({
+				appendElement({
 					fieldIndex: null,
 					fieldType,
 					stepIndex,
@@ -246,7 +241,7 @@ export function UnifiedFormElementsDropdown({
 							newElement,
 						];
 						logger("updatedArrayField", updatedArrayField);
-						actions.updateFormArray(formArrayId, updatedArrayField);
+						updateFormArray(formArrayId, updatedArrayField);
 					}
 				}
 				break;
@@ -316,7 +311,6 @@ export function FormElementsStepDropdown({
 }: {
 	stepIndex?: number;
 }) {
-	const { actions } = useFormStore();
 	return (
 		<DropdownMenu modal={false}>
 			<DropdownMenuTrigger asChild>
@@ -337,7 +331,7 @@ export function FormElementsStepDropdown({
 							<DropdownMenuItem
 								onSelect={(e) => {
 									e.preventDefault(); // Prevent the menu from closing
-									actions.appendElement({
+									appendElement({
 										fieldIndex: null,
 										fieldType: o.fieldType as FormElement["fieldType"],
 										stepIndex,

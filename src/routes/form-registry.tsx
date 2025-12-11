@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { CodeBlock, CodeBlockCode } from "@/components/ui/code-block";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { fieldItems, items } from "@/constants/registry";
-import type { SettingsCollection } from "@/db-collections/settings.collections";
+import type { FormBuilderSettings } from "@/db-collections/form-builder.collections";
 import useSettings from "@/hooks/use-settings";
 import { seo } from "@/utils/seo";
 import { getRegistryUrl, updatePreferredPackageManager } from "@/utils/utils";
@@ -379,7 +379,7 @@ function RouteComponent() {
 						value={preferredPackageManager}
 						onValueChange={(value) =>
 							updatePreferredPackageManager(
-								value as SettingsCollection["preferredPackageManager"],
+								value as FormBuilderSettings["preferredPackageManager"],
 							)
 						}
 						className="w-full mt-2 rounded-md"

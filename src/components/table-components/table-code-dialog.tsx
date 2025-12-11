@@ -86,7 +86,7 @@ function TableCodeDialog() {
 	const mutation = useMutation<CreateRegistryResponse, Error, void>({
 		mutationKey: ["/create-command", tableData.tableName],
 		mutationFn: async (): Promise<CreateRegistryResponse> => {
-			const res = await fetch(`${getRegistryUrl()}/r/${tableData.tableName}`, {
+			const res = await fetch(`/r/${tableData.tableName}`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

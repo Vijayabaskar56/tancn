@@ -35,7 +35,7 @@ export default function ComponentDetails({
 }) {
 	const [code, setCode] = useState<string | null>(null);
 	// Removed pre-highlighting state; CodeBlockCode handles rendering
-	const { preferredFramework } = useSettings();
+	const settings = useSettings();
 	useEffect(() => {
 		let isMounted = true;
 		const controller = new AbortController();
@@ -48,7 +48,7 @@ export default function ComponentDetails({
 		const loadCode = async () => {
 			try {
 				const response = await fetch(
-					`/r/${preferredFramework.toLowerCase()}/${component.name}.json`,
+					`/r/${settings.preferredFramework?.toLowerCase()}/${component.name}.json`,
 					{
 						signal: controller.signal,
 					},
@@ -81,18 +81,18 @@ export default function ComponentDetails({
 			isMounted = false;
 			controller.abort();
 		};
-	}, [component.name, preferredFramework.toLowerCase]);
+	}, [component.name, settings.preferredFramework?.toLowerCase]);
 
 	return (
 		<div className="absolute top-2 right-2 flex gap-1 peer-data-comp-loading:hidden">
 			{showRegistry && (
 				<CopyRegistry
-					url={`${getRegistryUrl(preferredFramework)}/${component.name}.json`}
+					url={`${getRegistryUrl(settings.preferredFramework)}/${component.name}.json`}
 				/>
 			)}
 			{showV0 && (
 				<OpenInV0
-					componentSource={`${getRegistryUrl(preferredFramework)}/${component.name}.json`}
+					componentSource={`${getRegistryUrl(settings.preferredFramework)}/${component.name}.json`}
 				/>
 			)}
 			<Dialog>

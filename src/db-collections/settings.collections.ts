@@ -18,7 +18,7 @@ export const SettingsSchema = v.object({
 		500,
 	),
 	activeTab: v.optional(
-		v.picklist(["builder", "template", "settings"]),
+		v.picklist(["builder", "template", "settings", "generate"]),
 		"builder",
 	),
 	preferredSchema: v.optional(v.picklist(["zod", "valibot", "arktype"]), "zod"),
@@ -64,7 +64,7 @@ export type {
 // 		),
 // 	)();
 
-const settingsCollection =createCollection(
+const settingsCollection = createCollection(
 	localStorageCollectionOptions({
 		storageKey: "settings",
 		getKey: (settings) => settings.id,

@@ -1,18 +1,17 @@
 import { TanStackDevtools } from "@tanstack/react-devtools";
-import { FormDevtoolsPlugin } from "@tanstack/react-form-devtools";
 import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
+import { FormDevtoolsPlugin } from "@tanstack/react-form-devtools";
 const DevTools = () => {
 	return (
 		<TanStackDevtools
 			config={{
-				position: "bottom-left",
+				position: "bottom-right",
 			}}
 			plugins={[
 				FormDevtoolsPlugin(),
-				// TODO: Check Once the Update Available
-				// pacerDevtoolsPlugin(),
+				// aiDevtoolsPlugin(),
 				{
 					name: "Tanstack Router",
 					render: <TanStackRouterDevtoolsPanel />,
@@ -22,6 +21,9 @@ const DevTools = () => {
 					render: <ReactQueryDevtoolsPanel />,
 				},
 			]}
+			eventBusConfig={{
+        connectToServerBus: true,
+      }}
 		/>
 	);
 };

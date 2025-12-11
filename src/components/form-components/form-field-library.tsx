@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { formElementsList } from "@/constants/form-elements-list";
-import { useFormStore } from "@/hooks/use-form-store";
-import type { FormElement } from "@/types/form-types";
+import useFormBuilderState from "@/hooks/use-form-builder-state";
+import { appendElement } from "@/services/form-builder.service";
+import type { FormElement } from "@/db-collections/form-builder.collections";
 import { ScrollArea } from "../ui/scroll-area";
 
 export function FieldTab() {
 	const [searchQuery] = useState("");
-	const { actions, isMS, formElements } = useFormStore();
+	const { isMS, formElements } = useFormBuilderState();
 	// Group elements by their group property
 	const groupedElements = formElementsList.reduce(
 		(acc, element) => {
@@ -37,11 +38,11 @@ export function FieldTab() {
 				variant="ghost"
 				// size="sm"
 				onClick={() => {
-					actions.appendElement({
-						fieldType: o.fieldType as FormElement["fieldType"],
-						stepIndex: isMS ? formElements.length - 1 : undefined,
-					});
-				}}
+				appendElement({
+					fieldType: o.fieldType as FormElement["fieldType"],
+					stepIndex: isMS ? (formElements?.length ?? 1) - 1 : undefined,
+				});
+			}}
 				className="gap-2 justify-start w-full text-sm sm:text-[13px] py-2 sm:py-1.5 h-auto min-h-[44px]"
 			>
 				<div className="flex items-center justify-start gap-2 sm:gap-1.5 flex-1">
