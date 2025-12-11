@@ -1,9 +1,14 @@
 import { Sparkles, Send } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { useChat, fetchServerSentEvents } from "@tanstack/ai-react";
-import { setFormElements, setFormName, setIsMS } from "@/services/form-builder.service";
+import {
+	setFormElements,
+	setFormName,
+	setIsMS,
+} from "@/services/form-builder.service";
 import { clientTools } from "@tanstack/ai-client";
 import { generateFormDef } from "@/lib/ai/form-tools";
 import { v4 as uuid } from "uuid";
@@ -27,19 +32,35 @@ export function FormGenerator() {
 		}
 
 		// Static elements need static: true
-		if (["H1", "H2", "H3", "Separator", "FieldDescription", "FieldLegend"].includes(normalized.fieldType)) {
+		if (
+			[
+				"H1",
+				"H2",
+				"H3",
+				"Separator",
+				"FieldDescription",
+				"FieldLegend",
+			].includes(normalized.fieldType)
+		) {
 			normalized.static = true;
 		}
 
 		// Select/RadioGroup/ToggleGroup/MultiSelect need options array
-		if (["Select", "RadioGroup", "ToggleGroup", "MultiSelect"].includes(normalized.fieldType)) {
+		if (
+			["Select", "RadioGroup", "ToggleGroup", "MultiSelect"].includes(
+				normalized.fieldType,
+			)
+		) {
 			if (!normalized.options) {
 				normalized.options = [];
 			}
 		}
 
 		// Select/MultiSelect need placeholder
-		if (["Select", "MultiSelect"].includes(normalized.fieldType) && !normalized.placeholder) {
+		if (
+			["Select", "MultiSelect"].includes(normalized.fieldType) &&
+			!normalized.placeholder
+		) {
 			normalized.placeholder = `Select ${normalized.label || normalized.name}...`;
 		}
 
@@ -86,7 +107,9 @@ export function FormGenerator() {
 			if (Array.isArray(el)) {
 				// Flush current group first
 				if (currentGroup.length > 0) {
-					result.push(currentGroup.length === 1 ? currentGroup[0] : currentGroup);
+					result.push(
+						currentGroup.length === 1 ? currentGroup[0] : currentGroup,
+					);
 					currentGroup = [];
 				}
 				result.push(el);
@@ -100,7 +123,9 @@ export function FormGenerator() {
 			} else {
 				// Flush current group
 				if (currentGroup.length > 0) {
-					result.push(currentGroup.length === 1 ? currentGroup[0] : currentGroup);
+					result.push(
+						currentGroup.length === 1 ? currentGroup[0] : currentGroup,
+					);
 					currentGroup = [];
 				}
 				result.push(el);
@@ -122,60 +147,72 @@ export function FormGenerator() {
 	};
 
 	// Client tool that updates form state when AI calls it with generated form data
-	const generateFormTool = generateFormDef.client(({ title, description, isMultiStep, formElements, steps }) => {
-		console.log("Client: generate_form called with:", { title, description, isMultiStep });
+	const generateFormTool = generateFormDef.client(
+		({ title, description, isMultiStep, formElements, steps }) => {
+			console.log("Client: generate_form called with:", {
+				title,
+				description,
+				isMultiStep,
+			});
 
-		try {
-			let fieldCount = 0;
+			try {
+				let fieldCount = 0;
 
-			if (isMultiStep && steps && steps.length > 0) {
-				// Multi-step form: convert steps to form elements with stepFields
-				const stepsWithIds = steps.map((step: any) => ({
-					id: step.id || uuid(),
-					stepFields: processElements(step.stepFields || []),
-				}));
+				if (isMultiStep && steps && steps.length > 0) {
+					// Multi-step form: convert steps to form elements with stepFields
+					const stepsWithIds = steps.map((step: any) => ({
+						id: step.id || uuid(),
+						stepFields: processElements(step.stepFields || []),
+					}));
 
-				// Set multi-step mode first
-				setIsMS(true);
-				setFormElements(stepsWithIds as any);
-				fieldCount = steps.reduce((acc: number, step: any) => acc + (step.stepFields?.length || 0), 0);
-			} else if (formElements && formElements.length > 0) {
-				// Single-page form
-				const elementsWithIds = processElements(formElements);
-				console.log("Setting form elements:", JSON.stringify(elementsWithIds, null, 2));
+					// Set multi-step mode first
+					setIsMS(true);
+					setFormElements(stepsWithIds as any);
+					fieldCount = steps.reduce(
+						(acc: number, step: any) => acc + (step.stepFields?.length || 0),
+						0,
+					);
+				} else if (formElements && formElements.length > 0) {
+					// Single-page form
+					const elementsWithIds = processElements(formElements);
+					console.log(
+						"Setting form elements:",
+						JSON.stringify(elementsWithIds, null, 2),
+					);
 
-				// setFormElements also sets isMS internally based on the structure
-				setFormElements(elementsWithIds as any);
-				fieldCount = formElements.length;
+					// setFormElements also sets isMS internally based on the structure
+					setFormElements(elementsWithIds as any);
+					fieldCount = formElements.length;
+				}
+
+				// Update form metadata
+				setFormMetadata({ title, description });
+				if (title) {
+					setFormName(title.toLowerCase().replace(/\s+/g, "_"));
+				}
+
+				// Return success
+				return {
+					success: true,
+					message: `Form "${title}" generated successfully${isMultiStep ? ` with ${steps?.length || 0} steps` : ""}`,
+					fieldCount,
+				};
+			} catch (error) {
+				console.error("Error updating form:", error);
+				return {
+					success: false,
+					message: `Error: ${error}`,
+					fieldCount: 0,
+				};
 			}
+		},
+	);
 
-			// Update form metadata
-			setFormMetadata({ title, description });
-			if (title) {
-				setFormName(title.toLowerCase().replace(/\s+/g, "_"));
-			}
-
-			// Return success
-			return {
-				success: true,
-				message: `Form "${title}" generated successfully${isMultiStep ? ` with ${steps?.length || 0} steps` : ""}`,
-				fieldCount,
-			};
-		} catch (error) {
-			console.error("Error updating form:", error);
-			return {
-				success: false,
-				message: `Error: ${error}`,
-				fieldCount: 0,
-			};
-		}
-	});
-
-	const { messages, sendMessage, isLoading  , error} = useChat({
+	const { messages, sendMessage, isLoading, error } = useChat({
 		connection: fetchServerSentEvents("/api/ai"),
 		tools: clientTools(generateFormTool),
 	});
-	console.log(error)
+	console.log(error);
 	// No useEffect needed - the client tool handles the action directly when called
 
 	const handleSubmit = (e: React.FormEvent) => {
@@ -188,8 +225,9 @@ export function FormGenerator() {
 	return (
 		<div className="flex flex-col h-full">
 			<div className="mb-4 p-4 border-b">
-				<h3 className="text-lg font-semibold text-primary">
+				<h3 className="text-lg font-semibold text-primary flex items-center gap-2">
 					{formMetadata.title || "Generate"}
+					<Badge variant="secondary">Beta</Badge>
 				</h3>
 				<p className="text-sm text-muted-foreground">
 					{formMetadata.description || "Generate forms with AI"}
@@ -197,96 +235,104 @@ export function FormGenerator() {
 			</div>
 
 			<ScrollArea className="flex-1 min-h-0">
-			<div className="p-4 space-y-6">
-				{messages.length === 0 ? (
-					<>
-						<div className="space-y-4">
-							<h2 className="text-2xl font-bold tracking-tight">
-								What can I help you build?
-							</h2>
-						</div>
+				<div className="p-4 space-y-6">
+					{messages.length === 0 ? (
+						<>
+							<div className="space-y-4">
+								<h2 className="text-2xl font-bold tracking-tight">
+									What can I help you build?
+								</h2>
+							</div>
 
-						<div className="space-y-2">
-							{[
-								"Contact form with name, email, and message",
-								"Job application form with resume upload",
-								"Feedback survey with rating scale",
-								"Event registration form with payment details",
-								"Login form with email and password",
-							].map((suggestion, i) => (
-								<Button
-									key={i}
-									variant="ghost"
-									onClick={() => sendMessage(suggestion)}
-									className="w-full text-left p-3 rounded-lg border bg-card hover:bg-accent/50 transition-colors text-sm text-muted-foreground hover:text-foreground"
+							<div className="space-y-2">
+								{[
+									"Contact form with name, email, and message",
+									"Job application form with resume upload",
+									"Feedback survey with rating scale",
+									"Event registration form with payment details",
+									"Login form with email and password",
+								].map((suggestion, i) => (
+									<Button
+										key={i}
+										variant="ghost"
+										onClick={() => sendMessage(suggestion)}
+										className="w-full text-left p-3 rounded-lg border bg-card hover:bg-accent/50 transition-colors text-sm text-muted-foreground hover:text-foreground"
+									>
+										{suggestion}
+									</Button>
+								))}
+							</div>
+						</>
+					) : (
+						<div className="space-y-4">
+							{messages.map((message) => (
+								<div
+									key={message.id}
+									className={`p-3 rounded-lg ${
+										message.role === "assistant"
+											? "bg-muted/50"
+											: "bg-primary/10"
+									}`}
 								>
-									{suggestion}
-								</Button>
+									<div className="font-semibold text-sm mb-1 text-muted-foreground">
+										{message.role === "assistant" ? "Assistant" : "You"}
+									</div>
+									<div className="space-y-2">
+										{message.parts.map((part, idx) => {
+											if (part.type === "text") {
+												return (
+													<div key={idx} className="text-sm">
+														{part.content}
+													</div>
+												);
+											}
+											if (
+												part.type === "tool-call" &&
+												part.name === "generate_form"
+											) {
+												const output = part.output as {
+													success?: boolean;
+													fieldCount?: number;
+													message?: string;
+												};
+												const fieldCount = output?.fieldCount || 0;
+												const success = output?.success !== false;
+												return (
+													<div
+														key={idx}
+														className={`flex items-center gap-2 text-sm p-2 rounded-md ${
+															success
+																? "text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950/30"
+																: "text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30"
+														}`}
+													>
+														<Sparkles className="w-4 h-4" />
+														<span>
+															✓ Generated {fieldCount} form field
+															{fieldCount !== 1 ? "s" : ""}
+														</span>
+													</div>
+												);
+											}
+											return null;
+										})}
+									</div>
+								</div>
 							))}
+							{isLoading && (
+								<div className="p-3 rounded-lg bg-muted/50">
+									<div className="font-semibold text-sm mb-1 text-muted-foreground">
+										Assistant
+									</div>
+									<div className="text-sm text-muted-foreground animate-pulse">
+										Thinking...
+									</div>
+								</div>
+							)}
 						</div>
-					</>
-				) : (
-					<div className="space-y-4">
-						{messages.map((message) => (
-							<div
-								key={message.id}
-								className={`p-3 rounded-lg ${
-									message.role === "assistant"
-										? "bg-muted/50"
-										: "bg-primary/10"
-								}`}
-							>
-								<div className="font-semibold text-sm mb-1 text-muted-foreground">
-									{message.role === "assistant" ? "Assistant" : "You"}
-								</div>
-								<div className="space-y-2">
-									{message.parts.map((part, idx) => {
-										if (part.type === "text") {
-											return (
-												<div key={idx} className="text-sm">
-													{part.content}
-												</div>
-											);
-										}
-										if (part.type === "tool-call" && part.name === "generate_form") {
-											const output = part.output as { success?: boolean; fieldCount?: number; message?: string };
-											const fieldCount = output?.fieldCount || 0;
-											const success = output?.success !== false;
-											return (
-												<div
-													key={idx}
-													className={`flex items-center gap-2 text-sm p-2 rounded-md ${
-														success
-															? "text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950/30"
-															: "text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30"
-													}`}
-												>
-													<Sparkles className="w-4 h-4" />
-													<span>
-														✓ Generated {fieldCount} form field{fieldCount !== 1 ? "s" : ""}
-													</span>
-												</div>
-											);
-										}
-										return null;
-									})}
-								</div>
-							</div>
-						))}
-						{isLoading && (
-							<div className="p-3 rounded-lg bg-muted/50">
-								<div className="font-semibold text-sm mb-1 text-muted-foreground">
-									Assistant
-								</div>
-								<div className="text-sm text-muted-foreground animate-pulse">
-									Thinking...
-								</div>
-							</div>
-						)}
-					</div>
-				)}
-			</div>
-		</ScrollArea>
+					)}
+				</div>
+			</ScrollArea>
 
 			<div className="p-4 border-t mt-auto">
 				<form onSubmit={handleSubmit} className="relative">
