@@ -160,7 +160,7 @@ export default function FooterSection() {
 						{/* Email Icon */}
 						<div className="w-6 h-6 relative overflow-hidden">
 							<div className="w-6 h-6 left-0 top-0 absolute flex items-center justify-center">
-								<a href="mailto:vj2k02@gmail.com" aria-label="Email">
+								<a href="mailto:vj2k02@gmail" aria-label="Email">
 									<svg
 										width="16"
 										height="16"
@@ -200,7 +200,7 @@ export default function FooterSection() {
 								}}
 							/>
 						))}
-						© 2025 Better-T-Stack. All rights reserved.
+						© 2025 TANCN. All rights reserved.
 					</div>
 				</div>
 			</div>
