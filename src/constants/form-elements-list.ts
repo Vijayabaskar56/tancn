@@ -90,34 +90,34 @@ export const formElementsList = [
 		fieldType: "OTP",
 		icon: Shield,
 	},
-	{
-		group: "field",
-		name: "Multi select",
-		fieldType: "MultiSelect",
-		icon: ListChecks,
-		options: [
-			{
-				value: "1",
-				label: "Option 1",
-			},
-			{
-				value: "2",
-				label: "Option 2",
-			},
-			{
-				value: "3",
-				label: "Option 3",
-			},
-			{
-				value: "4",
-				label: "Option 4",
-			},
-			{
-				value: "5",
-				label: "Option 5",
-			},
-		],
-	},
+	// {
+	// 	group: "field",
+	// 	name: "Multi select",
+	// 	fieldType: "MultiSelect",
+	// 	icon: ListChecks,
+	// 	options: [
+	// 		{
+	// 			value: "1",
+	// 			label: "Option 1",
+	// 		},
+	// 		{
+	// 			value: "2",
+	// 			label: "Option 2",
+	// 		},
+	// 		{
+	// 			value: "3",
+	// 			label: "Option 3",
+	// 		},
+	// 		{
+	// 			value: "4",
+	// 			label: "Option 4",
+	// 		},
+	// 		{
+	// 			value: "5",
+	// 			label: "Option 5",
+	// 		},
+	// 	],
+	// },
 	{
 		group: "field",
 		name: "Password",

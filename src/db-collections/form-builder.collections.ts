@@ -2,191 +2,195 @@ import {
 	createCollection,
 	localStorageCollectionOptions,
 } from "@tanstack/react-db";
-import * as v from "valibot";
+import { z } from "zod";
 
-export const FormBuilderSettingsSchema = v.object({
-	defaultRequiredValidation: v.optional(v.boolean(), true),
-	numericInput: v.optional(v.boolean(), false),
-	focusOnError: v.optional(v.boolean(), true),
-	validationMethod: v.optional(
-		v.picklist(["onChange", "onBlur", "onDynamic"]),
-		"onDynamic",
-	),
-	asyncValidation: v.optional(
-		v.pipe(v.number(), v.minValue(0), v.maxValue(10000)),
-		500,
-	),
-	activeTab: v.optional(
-		v.picklist(["builder", "template", "settings", "generate"]),
-		"builder",
-	),
-	preferredSchema: v.optional(v.picklist(["zod", "valibot", "arktype"]), "zod"),
-	preferredFramework: v.optional(
-		v.picklist(["react", "vue", "angular", "solid"]),
-		"react",
-	),
-	preferredPackageManager: v.optional(
-		v.picklist(["pnpm", "npm", "yarn", "bun"]),
-		"pnpm",
-	),
-	isCodeSidebarOpen: v.optional(v.boolean(), false),
+export const FormBuilderSettingsSchema = z.object({
+	defaultRequiredValidation: z.boolean().default(true),
+	numericInput: z.boolean().default(false),
+	focusOnError: z.boolean().default(true),
+	validationMethod: z
+		.enum(["onChange", "onBlur", "onDynamic"])
+		.default("onDynamic"),
+	asyncValidation: z.number().min(0).max(10000).default(500),
+	activeTab: z
+		.enum(["builder", "template", "settings", "generate"])
+		.default("builder"),
+	preferredSchema: z.enum(["zod", "valibot", "arktype"]).default("zod"),
+	preferredFramework: z.enum(["react", "vue", "angular", "solid"]).default("react"),
+	preferredPackageManager: z.enum(["pnpm", "npm", "yarn", "bun"]).default("pnpm"),
+	isCodeSidebarOpen: z.boolean().default(false),
 });
 
 // ============================================================================
 // Form Elements Schema
 // ============================================================================
 
-const OptionSchema = v.object({
-	value: v.string(),
-	label: v.string(),
+const OptionSchema = z.object({
+	value: z.string(),
+	label: z.string(),
 });
 
 // Common HTML attributes that might be stored
-const CommonHtmlProps = v.object({
-	placeholder: v.optional(v.string()),
-	disabled: v.optional(v.boolean()),
-	className: v.optional(v.string()),
-	defaultValue: v.optional(v.union([v.string(), v.number(), v.boolean()])),
+const CommonHtmlProps = z.object({
+	placeholder: z.string().optional(),
+	disabled: z.boolean().optional(),
+	className: z.string().optional(),
+	defaultValue: z.union([z.string(), z.number(), z.boolean()]).optional(),
 });
 
-const SharedFormPropsSchema = v.object({
-	...CommonHtmlProps.entries,
-	id: v.string(),
-	name: v.string(),
-	label: v.optional(v.string()),
-	description: v.optional(v.string()),
-	required: v.optional(v.boolean()),
-	static: v.optional(v.boolean()),
+const SharedFormPropsSchema = CommonHtmlProps.extend({
+	id: z.string(),
+	name: z.string(),
+	label: z.string().optional(),
+	description: z.string().optional(),
+	required: z.boolean().optional(),
+	static: z.boolean().optional(),
 });
 
 // Field Types
-const InputSchema = v.object({
-	...SharedFormPropsSchema.entries,
-	fieldType: v.literal("Input"),
-	type: v.optional(v.string()), // HTML input type
+const InputSchema = SharedFormPropsSchema.extend({
+	fieldType: z.literal("Input"),
+	type: z.string().optional(), // HTML input type
 });
 
-const PasswordInputSchema = v.object({
-	...SharedFormPropsSchema.entries,
-	fieldType: v.literal("Password"),
-	type: v.literal("password"),
+const PasswordInputSchema = SharedFormPropsSchema.extend({
+	fieldType: z.literal("Password"),
+	type: z.literal("password"),
 });
 
-const OTPInputSchema = v.object({
-	...SharedFormPropsSchema.entries,
-	fieldType: v.literal("OTP"),
-	children: v.optional(v.any()), // ReactNode is hard to validate, allowing any for children if stored
+const OTPInputSchema = SharedFormPropsSchema.extend({
+	fieldType: z.literal("OTP"),
+	children: z.any().optional(), // ReactNode is hard to validate, allowing any for children if stored
 });
 
-const TextareaSchema = v.object({
-	...SharedFormPropsSchema.entries,
-	fieldType: v.literal("Textarea"),
+const TextareaSchema = SharedFormPropsSchema.extend({
+	fieldType: z.literal("Textarea"),
 });
 
-const CheckboxSchema = v.object({
-	...SharedFormPropsSchema.entries,
-	fieldType: v.literal("Checkbox"),
-	checked: v.optional(v.boolean()),
+const CheckboxSchema = SharedFormPropsSchema.extend({
+	fieldType: z.literal("Checkbox"),
+	checked: z.boolean().optional(),
 });
 
-const RadioGroupSchema = v.object({
-	...SharedFormPropsSchema.entries,
-	fieldType: v.literal("RadioGroup"),
-	options: v.array(OptionSchema),
+const RadioGroupSchema = SharedFormPropsSchema.extend({
+	fieldType: z.literal("RadioGroup"),
+	options: z.array(OptionSchema),
 });
 
-const ToggleGroupSchema = v.object({
-	...SharedFormPropsSchema.entries,
-	fieldType: v.literal("ToggleGroup"),
-	options: v.array(OptionSchema),
-	type: v.union([v.literal("single"), v.literal("multiple")]),
+const ToggleGroupSchema = SharedFormPropsSchema.extend({
+	fieldType: z.literal("ToggleGroup"),
+	options: z.array(OptionSchema),
+	type: z.union([z.literal("single"), z.literal("multiple")]),
 });
 
-const SwitchSchema = v.object({
-	...SharedFormPropsSchema.entries,
-	fieldType: v.literal("Switch"),
-	checked: v.optional(v.boolean()),
+const SwitchSchema = SharedFormPropsSchema.extend({
+	fieldType: z.literal("Switch"),
+	checked: z.boolean().optional(),
 });
 
-const SliderSchema = v.object({
-	...SharedFormPropsSchema.entries,
-	fieldType: v.literal("Slider"),
-	min: v.optional(v.number()),
-	max: v.optional(v.number()),
-	step: v.optional(v.number()),
-	value: v.optional(v.array(v.number())),
+const SliderSchema = SharedFormPropsSchema.extend({
+	fieldType: z.literal("Slider"),
+	min: z.number().optional(),
+	max: z.number().optional(),
+	step: z.number().optional(),
+	value: z.array(z.number()).optional(),
 });
 
-const SelectSchema = v.object({
-	...SharedFormPropsSchema.entries,
-	fieldType: v.literal("Select"),
-	options: v.array(OptionSchema),
-	placeholder: v.string(),
+const SelectSchema = SharedFormPropsSchema.extend({
+	fieldType: z.literal("Select"),
+	options: z.array(OptionSchema),
+	placeholder: z.string(),
 });
 
-const MultiSelectSchema = v.object({
-	...SharedFormPropsSchema.entries,
-	fieldType: v.literal("MultiSelect"),
-	options: v.array(OptionSchema),
-	placeholder: v.string(),
+const MultiSelectSchema = SharedFormPropsSchema.extend({
+	fieldType: z.literal("MultiSelect"),
+	options: z.array(OptionSchema),
+	placeholder: z.string(),
 });
 
-const DatePickerSchema = v.object({
-	...SharedFormPropsSchema.entries,
-	fieldType: v.literal("DatePicker"),
+const DatePickerSchema = SharedFormPropsSchema.extend({
+	fieldType: z.literal("DatePicker"),
 });
 
 // Static Elements
-const StaticBaseSchema = v.object({
-	id: v.string(),
-	name: v.string(),
-	static: v.literal(true),
-	content: v.optional(v.string()),
+const StaticBaseSchema = z.object({
+	id: z.string(),
+	name: z.string(),
+	static: z.literal(true),
+	content: z.string().optional(),
 });
 
-const H1Schema = v.object({
-	...StaticBaseSchema.entries,
-	fieldType: v.literal("H1"),
-	content: v.string(),
+const H1Schema = StaticBaseSchema.extend({
+	fieldType: z.literal("H1"),
+	content: z.string(),
 });
 
-const H2Schema = v.object({
-	...StaticBaseSchema.entries,
-	fieldType: v.literal("H2"),
-	content: v.string(),
+const H2Schema = StaticBaseSchema.extend({
+	fieldType: z.literal("H2"),
+	content: z.string(),
 });
 
-const H3Schema = v.object({
-	...StaticBaseSchema.entries,
-	fieldType: v.literal("H3"),
-	content: v.string(),
+const H3Schema = StaticBaseSchema.extend({
+	fieldType: z.literal("H3"),
+	content: z.string(),
 });
 
-const DividerSchema = v.object({
-	...StaticBaseSchema.entries,
-	fieldType: v.literal("Separator"),
+const DividerSchema = StaticBaseSchema.extend({
+	fieldType: z.literal("Separator"),
 });
 
-const DescriptionSchema = v.object({
-	...StaticBaseSchema.entries,
-	fieldType: v.literal("FieldDescription"),
-	content: v.string(),
+const DescriptionSchema = StaticBaseSchema.extend({
+	fieldType: z.literal("FieldDescription"),
+	content: z.string(),
 });
 
-const LegendSchema = v.object({
-	...StaticBaseSchema.entries,
-	fieldType: v.literal("FieldLegend"),
-	content: v.string(),
+const LegendSchema = StaticBaseSchema.extend({
+	fieldType: z.literal("FieldLegend"),
+	content: z.string(),
 });
 
 // Recursive Structures
 // We need to define types for recursion
-export type FormElement = v.InferOutput<typeof FormElementSchema>;
+export type FormElement =
+	| z.infer<typeof InputSchema>
+	| z.infer<typeof PasswordInputSchema>
+	| z.infer<typeof OTPInputSchema>
+	| z.infer<typeof TextareaSchema>
+	| z.infer<typeof CheckboxSchema>
+	| z.infer<typeof RadioGroupSchema>
+	| z.infer<typeof ToggleGroupSchema>
+	| z.infer<typeof SwitchSchema>
+	| z.infer<typeof SliderSchema>
+	| z.infer<typeof SelectSchema>
+	| z.infer<typeof MultiSelectSchema>
+	| z.infer<typeof DatePickerSchema>
+	| z.infer<typeof H1Schema>
+	| z.infer<typeof H2Schema>
+	| z.infer<typeof H3Schema>
+	| z.infer<typeof DividerSchema>
+	| z.infer<typeof DescriptionSchema>
+	| z.infer<typeof LegendSchema>
+	| FormArray;
+
 export type FormElementOrList = FormElement | FormElement[];
 export type FormElementList = FormElementOrList[];
 
-const FormElementSchema: v.GenericSchema<any> = v.lazy(() =>
-	v.union([
+export interface FormArrayEntry {
+	id: string;
+	fields: FormElementList;
+}
+
+export interface FormArray {
+	fieldType: "FormArray";
+	id: string;
+	name: string;
+	label?: string;
+	arrayField: FormElementList;
+	entries: FormArrayEntry[];
+}
+
+const FormElementSchema: z.ZodType<FormElement> = z.lazy(() =>
+	z.union([
 		InputSchema,
 		PasswordInputSchema,
 		OTPInputSchema,
@@ -209,28 +213,32 @@ const FormElementSchema: v.GenericSchema<any> = v.lazy(() =>
 	]),
 );
 
-const FormElementOrListSchema = v.lazy(() =>
-	v.union([FormElementSchema, v.array(FormElementSchema)]),
+const FormElementOrListSchema: z.ZodType<FormElementOrList> = z.lazy(() =>
+	z.union([FormElementSchema, z.array(FormElementSchema)]),
 );
 
-const FormElementListSchema = v.array(FormElementOrListSchema);
+const FormElementListSchema: z.ZodType<FormElementList> = z.array(
+	FormElementOrListSchema,
+);
 
-const FormArrayEntrySchema = v.object({
-	id: v.string(),
+const FormArrayEntrySchema: z.ZodType<FormArrayEntry> = z.object({
+	id: z.string(),
 	fields: FormElementListSchema,
 });
 
-const FormArraySchema = v.object({
-	fieldType: v.literal("FormArray"),
-	id: v.string(),
-	name: v.string(),
-	label: v.optional(v.string()),
-	arrayField: FormElementListSchema,
-	entries: v.array(FormArrayEntrySchema),
-});
+const FormArraySchema: z.ZodType<FormArray> = z.lazy(() =>
+	z.object({
+		fieldType: z.literal("FormArray"),
+		id: z.string(),
+		name: z.string(),
+		label: z.string().optional(),
+		arrayField: FormElementListSchema,
+		entries: z.array(FormArrayEntrySchema),
+	}),
+);
 
-const FormStepSchema = v.object({
-	id: v.string(),
+export const FormStepSchema = z.object({
+	id: z.string(),
 	stepFields: FormElementListSchema,
 });
 
@@ -238,34 +246,44 @@ const FormStepSchema = v.object({
 // Unified Form Builder Schema
 // ============================================================================
 // The top-level formElements can be a list of elements (single or row) OR a list of steps
-const FormElementsSchema = v.custom((input) => {
-	// Allow any array-like structure for formElements
-	return Array.isArray(input);
-}, "FormElements must be an array");
 
-export const FormBuilderSchema = v.object({
-	id: v.number(),
-	formName: v.optional(v.string(), "draft"),
-	schemaName: v.optional(v.string(), "draftFormSchema"),
-	isMS: v.optional(v.boolean(), false),
-	formElements: v.optional(FormElementsSchema, []),
-	settings: v.optional(FormBuilderSettingsSchema, {}),
-	lastAddedStepIndex: v.optional(v.number()),
+// The top-level formElements can be a list of elements (single or row) OR a list of steps
+const FormElementsSchema = z.union([
+	FormElementListSchema,
+	z.array(FormStepSchema),
+	z.array(FormArraySchema), // Less likely at top level but possible by type def
+]);
+
+export const FormBuilderSchema = z.object({
+	id: z.number(),
+	formName: z.string().default("draft"),
+	schemaName: z.string().default("draftFormSchema"),
+	isMS: z.boolean().default(false),
+	formElements: FormElementsSchema.default([]),
+	settings: FormBuilderSettingsSchema.default({
+		defaultRequiredValidation: true,
+		numericInput: false,
+		focusOnError: true,
+		validationMethod: "onDynamic",
+		asyncValidation: 500,
+		activeTab: "builder",
+		preferredSchema: "zod",
+		preferredFramework: "react",
+		preferredPackageManager: "pnpm",
+		isCodeSidebarOpen: false,
+	}),
+	lastAddedStepIndex: z.number().optional(),
 });
 
 // ============================================================================
 // Type Exports
 // ============================================================================
 
-export type FormBuilder = v.InferOutput<typeof FormBuilderSchema>;
-export type FormBuilderSettings = v.InferOutput<
-	typeof FormBuilderSettingsSchema
->;
+export type FormBuilder = z.infer<typeof FormBuilderSchema>;
+export type FormBuilderSettings = z.infer<typeof FormBuilderSettingsSchema>;
 
-export type FormStep = v.InferOutput<typeof FormStepSchema>;
-export type FormArray = v.InferOutput<typeof FormArraySchema>;
-export type FormArrayEntry = v.InferOutput<typeof FormArrayEntrySchema>;
-export type FormElements = v.InferOutput<typeof FormElementsSchema>;
+export type FormStep = z.infer<typeof FormStepSchema>;
+export type FormElements = z.infer<typeof FormElementsSchema>;
 
 export type ValidationMethod = FormBuilderSettings["validationMethod"];
 export type PreferredSchema = FormBuilderSettings["preferredSchema"];
@@ -273,7 +291,7 @@ export type PreferredFramework = FormBuilderSettings["preferredFramework"];
 export type PreferredPackageManager =
 	FormBuilderSettings["preferredPackageManager"];
 export type ActiveTab = FormBuilderSettings["activeTab"];
-export type Option = v.InferOutput<typeof OptionSchema>;
+export type Option = z.infer<typeof OptionSchema>;
 // ============================================================================
 // Collection Setup
 // ============================================================================
@@ -290,13 +308,13 @@ const formBuilderCollection = createCollection(
 // Saved Form Templates Schema
 // ============================================================================
 
-export const SavedFormTemplateSchema = v.object({
-	id: v.string(),
-	name: v.string(),
+export const SavedFormTemplateSchema = z.object({
+	id: z.string(),
+	name: z.string(),
 	data: FormBuilderSchema,
-	createdAt: v.string(),
+	createdAt: z.string(),
 });
 
-export type SavedFormTemplate = v.InferOutput<typeof SavedFormTemplateSchema>;
+export type SavedFormTemplate = z.infer<typeof SavedFormTemplateSchema>;
 
 export { formBuilderCollection };

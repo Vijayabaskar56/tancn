@@ -82,24 +82,6 @@ export const TableBuilderSchema = v.object({
 
 export type TableBuilder = v.InferOutput<typeof TableBuilderSchema>;
 
-//  const tableBuilderCollection = createIsomorphicFn()
-// 	.client(() =>
-// 		createCollection(
-// 			localStorageCollectionOptions({
-// 				storageKey: "table-builder",
-// 				getKey: (tableBuilder) => tableBuilder.id,
-// 				schema: TableBuilderSchema,
-// 			}),
-// 		),
-// 	)
-// 	.server(() =>
-// 		createCollection(
-// 			localOnlyCollectionOptions({
-// 				getKey: (tableBuilder) => tableBuilder.id,
-// 				schema: TableBuilderSchema,
-// 			}),
-// 		),
-// 	)();
 
 const tableBuilderCollection = createCollection(
 	localStorageCollectionOptions({
